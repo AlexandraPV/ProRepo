@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>logo</title>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
+
+
+  <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
+
+<body>
+
+<div class="container">
+
+        <header>
+
+          <nav>
+          <ul>
+          <li class="menu">
+            <a href="/">Головна</a></li>
+          <li><a href="#">Бренди</a></li>
+          <li><a href="/products">Каталог товарів</a></li>
+          <li><a href="#">Контакти</a></li>
+          <li><a href="/enter">Акаунт</a></li>
+          <li><a href="/add">Додаты продукт</a></li>
+           <li><button> <img src="img/korzina1.png" href = "#"></button></li>
+          </ul>
+          </nav>
+
+            <div class="head">
+                <div class="logo">
+                    <a href="#"><img src="img/up.png" title="Logo" alt="Logo" /></a>
+                </div>
+
+                <section id="search">
+                    <form action="#" onsubmit="return false;" method="get">
+                        <input type="text" onfocus="if (this.value =='Пошук...' ) this.value=''" onblur="if (this.value=='') this.value='Пошук...'" value="Пошук..." name="q">
+                        <input type="submit" value="Пошук">
+                    </form>
+
+                    <ul id="social">
+                        <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
+                        <li><a href="#" title="twitter" rel="external nofollow"><img alt="" src="img/twitter.png"></a></li>
+                        <li><a href="#" title="vk" rel="external nofollow"><img alt="" src="img/vk.png"></a></li>
+                        <li><a href="https://ok.ru" title="odnoklassniki" rel="external nofollow"><img alt="" src="img/odnoklassniki.png"></a></li>
+                        <li><a href="#" title="youtube" rel="external nofollow"><img alt="" src="img/youtube.png"></a></li>
+                    </ul>
+                </section>
+            </div>
+
+            <section id="submenu">
+              <ul>
+              <li><a href="#">Комп'ютери та ноутбуки</a></li>
+              <li><a href="#">Телефони</a></li>
+              <li><a href="#">Товари для дому</a></li>
+              <li><a href="#">Одяг та взуття</a></li>
+              <li><a href="#">Книги та канцтовари</a></li>
+              <li><a href="#">Пубутова техніка</a></li>
+              </ul>
+            </section>
+
+        </header>
+
+                   <span id="slide1" class="slide"></span>
+                   <span id="slide2" class="slide"></span>
+                   <span id="slide3" class="slide"></span>
+                   <span id="slide4" class="slide"></span>
+                   <span id="slide5" class="slide"></span>
+
+                   <ul class="slider">
+
+                       <li class="slides">
+                           <img src="img/6.jpg" alt="" class="g0" />
+                           <img src="img/1.jpg" alt="" class="g1" />
+                           <img src="img/2.jpg" alt="" class="g2" />
+                           <img src="img/3.jpg" alt="" class="g3" />
+                           <img src="img/4.jpg" alt="" class="g4" />
+                           <img src="img/5.jpg" alt="" class="g5" />
+                       </li>
+
+                       <li class="track">
+                           <a href="#slide0" class="tr0"></a>
+                           <a href="#slide1" class="tr1"></a>
+                           <a href="#slide2" class="tr2"></a>
+                           <a href="#slide3" class="tr3"></a>
+                           <a href="#slide4" class="tr4"></a>
+                           <a href="#slide5" class="tr5"></a>
+                       </li>
+                   </ul>
+
+
+        <div id="main">
+            <section id="content">
+                <div id="columL">
+                  <h3>Interesting offers</h3>
+                 <ul>
+                   <% prods.filter(x => x.title).forEach( prod => { %>
+
+                     <li>
+                         <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
+                         <div class="info">
+                             <a  class="title" href="/products/<%=prod.href%>"><%= prod.title %></a>
+
+                           <p class="size"> <%= prod.description %> </p>
+                             <div class="price">
+                                 <span class="st">Our price:</span><strong>$<%= prod.price %></strong>
+                             </div>
+                             <div class="actions">
+
+                                 <a href="/products/<%=prod.href%>">Details</a>
+                                 <a href="#">Add to cart</a>
+                             </div>
+                         </div>
+                     </li>
+
+                     <% }); %>
+
+                 </ul>
+
+                </div>
+
+
+                <div id="columR">
+                    <h3>Top sells</h3>
+                    <ul>
+                           <% sales.filter(x => x.title).forEach( sale => { %>
+                        <li>
+                            <div class="img"><a href="/products/<%=sale.href%>"><img alt="" src='data:image/jpg;base64,<%= sale.avatar1 %>'></a></div>
+                            <div class="info">
+                                <a class="title" href="/products/<%=sale.href%>"><%= sale.title %></a>
+                                <div class="price">
+                                    <span id="lprice" class="usual"> $<%= sale.lastprice %> </span>&nbsp;
+                                    <span class="special">$<%= sale.price %></span>
+                                </div>
+                            </div>
+                        </li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+
+    <footer>
+
+             Copyright © 2016 Aleksandra Pyvovarchuk
+
+    </footer>
+
+</div>
+
+</body></html>
