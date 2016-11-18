@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>logo</title>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
+
+
+<link rel="stylesheet" href="../stylesheets/styleprod.css" type="text/css" media="all">
+
+<body>
+
+<div class="container">
+
+        <header>
+
+          <nav>
+          <ul>
+          <li class="menu">
+            <a href="/">Головна</a></li>
+          <li><a href="#">Бренди</a></li>
+          <li><a href="/products">Каталог товарів</a></li>
+          <li><a href="#">Контакти</a></li>
+          <li><a href="/enter">Акаунт</a></li>
+           <li><button> <img src="../stylesheets/img/korzina1.png" href = "index.html"></button></li>
+          </ul>
+          </nav>
+
+            <div class="head">
+                <div class="logo">
+                    <a href="#"><img src="../stylesheets/img/up.png" title="Logo" alt="Logo" /></a>
+                </div>
+
+                <section id="search">
+                    <form action="#" onsubmit="return false;" method="get">
+                        <input type="text" onfocus="if (this.value =='Пошук...' ) this.value=''" onblur="if (this.value=='') this.value='Пошук...'" value="Пошук..." name="q">
+                        <input type="submit" value="Пошук">
+                    </form>
+
+                    <ul id="social">
+                        <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="../stylesheets/img/facebook.png"></a></li>
+                        <li><a href="https://ok.ru" title="twitter" rel="external nofollow"><img alt="" src="../stylesheets/img/twitter.png"></a></li>
+                        <li><a href="#" title="vk" rel="external nofollow"><img alt="" src="../stylesheets/img/vk.png"></a></li>
+                        <li><a href="https://ok.ru" title="odnoklassniki" rel="external nofollow"><img alt="" src="../stylesheets/img/odnoklassniki.png"></a></li>
+                        <li><a href="#" title="youtube" rel="external nofollow"><img alt="" src="../stylesheets/img/youtube.png"></a></li>
+                    </ul>
+                </section>
+            </div>
+
+            <section id="submenu">
+              <ul>
+              <li><a href="#">Комп'ютери та ноутбуки</a></li>
+              <li><a href="#">Телефони</a></li>
+              <li><a href="#">Товари для дому</a></li>
+              <li><a href="#">Одяг та взуття</a></li>
+              <li><a href="#">Книги та канцтовари</a></li>
+              <li><a href="#">Побутова техніка</a></li>
+              </ul>
+            </section>
+
+        </header>
+
+
+<script type="text/javascript">
+function changeImg(lin){
+  var img = document.getElementById("myImg");
+  img.src=lin;
+}
+</script>
+
+        <div id="main">
+            <section id="content">
+                <div id="columL">
+                    <h3><%= prod.title %></h3>
+                 <div class = "left-left">
+                       <div class = "anons">
+                           <section>
+                             <div class = "image">
+                              <a href = "#"> <img id="myImg" src='data:image/jpg;base64,<%= prod.avatar1 %>' height="200" width="200" alt = "Apple"></a>
+                             </div>
+                           </section>
+                       </div>
+                    <div class="block">
+                        <div class ="smal_img">
+                          <a href = "#" onclick="changeImg('data:image/jpg;base64,<%= prod.avatar1 %>')"><img src='data:image/jpg;base64,<%= prod.avatar1 %>' height="50" width="50" alt = "Apple"></a>
+                        </div>
+                        <div class ="smal_img">
+                          <a href = "#" onclick="changeImg('data:image/jpg;base64,<%= prod.avatar2 %>')"><img src='data:image/jpg;base64,<%= prod.avatar2 %>' height="50" width="50" alt = "Apple"></a>
+                        </div>
+                        <div class ="smal_img">
+                          <a href = "#" onclick="changeImg('data:image/jpg;base64,<%= prod.avatar3 %>')"><img src='data:image/jpg;base64,<%= prod.avatar3 %>' height="50" width="50" alt = "Apple"></a>
+                        </div>
+                        <div class ="smal_img">
+                          <a href = "#" onclick="changeImg('data:image/jpg;base64,<%= prod.avatar4 %>')"><img src='data:image/jpg;base64,<%= prod.avatar4 %>' height="50" width="50"  alt = "Apple"></a>
+                        </div>
+
+                    </div>
+                  </div>
+                <div class="columMed">
+<table>
+
+<tbody>
+  <tr>
+    <td><strong>Name</strong></td>
+
+    <td><%= prod.title%></td>
+  </tr>
+  <tr>
+    <td><strong>Price</strong></td>
+
+    <td>$<%= prod.price%></td>
+  </tr>
+
+  <tr>
+    <td><strong>Weight</strong></td>
+
+    <td><%= prod.weight %></td>
+  </tr>
+  <tr>
+    <td><strong>Guarantee</strong></td>
+
+    <td><%= prod.guarantee %></td>
+  </tr>
+  <tr>
+    <td><strong>Description </strong></td>
+
+    <td><%= prod.description %></td>
+  </tr>
+
+</tbody>
+</table>
+<ul>
+    <li>
+
+        <div class="info">
+
+            <div class="actions">
+                <a href="#">Watch list</a>
+                <a href="#">Add to cart</a>
+            </div>
+        </div>
+    </li>
+  </ul>
+                </div>
+
+                </div>
+                <div id="columR">
+                    <h3>Top sells</h3>
+                    <ul>
+                           <% sales.filter(x => x.title).forEach( sale => { %>
+                        <li>
+                            <div class="img"><a href="/products/<%=sale.href%>"><img alt="" src='data:image/jpg;base64,<%= sale.avatar1 %>'></a></div>
+                            <div class="info">
+                                <a class="title" href="/products/<%=sale.href%>"><%= sale.title %></a>
+                                <div class="price">
+                                    <span id="lprice" class="usual"> $<%= sale.lastprice %> </span>&nbsp;
+                                    <span class="special">$<%= sale.price %></span>
+                                </div>
+                            </div>
+                        </li>
+                        <% }); %>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+
+    <footer>
+
+             Copyright © 2016 Aleksandra Pyvovarchuk
+
+    </footer>
+
+</div>
+
+</body></html>
