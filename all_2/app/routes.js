@@ -54,26 +54,38 @@ module.exports = function(app, passport) {
         user : req.user
       });
         })
-    });
+     });
 
 
-    app.get('/addtocart',isLoggedIn, (req, res) => {
-    	db.collection('prod').find()
-    		.then(prods => {
-    			db.collection('prod').find().skip(1).limit(7)
+
+
+
+  
+
+
+    app.get('/products/*',isLoggedIn, (req, res) => {
+    	var decrease = req.path;
+      decrease = decrease.slice(10);
+      var uri_dec = decodeURIComponent(decrease);
+
+    	db.collection('prod').findOne({ href: uri_dec})
+    		.then(prod => {
+    			db.collection('prod').find().skip(5).limit(7)
     			.then(sales => {
 
-    			res.render('products', {
-    				prods: prods,
-    				sales:sales,
-    				user : req.user
+    			res.render('prod', {
+    				prod: prod,
+            sales: sales,
+            user : req.user
     			});
-    				})
+    			})
     		})
-    		//.then(() => res.redirect('/prod'))
+
     		.catch(err => res.status(500).end(err));
 
-    });
+      });
+
+
 
 app.get('/products',isLoggedIn, (req, res) => {
 	db.collection('prod').find()
@@ -88,10 +100,190 @@ app.get('/products',isLoggedIn, (req, res) => {
 			});
 				})
 		})
-		//.then(() => res.redirect('/prod'))
+
 		.catch(err => res.status(500).end(err));
 
 });
+
+
+
+
+app.get('/phones',isLoggedIn, (req, res) => {
+	db.collection('prod').find({"type":"phon"})
+		.then(prods => {
+			db.collection('prod').find().skip(1).limit(7)
+			.then(sales => {
+
+			res.render('categori', {
+				prods: prods,
+				sales:sales,
+        user : req.user
+			});
+				})
+		})
+		.catch(err => res.status(500).end(err));
+
+});
+
+
+app.get('/comp',isLoggedIn, (req, res) => {
+	db.collection('prod').find({"type":"comp"})
+		.then(prods => {
+			db.collection('prod').find().skip(1).limit(7)
+			.then(sales => {
+
+			res.render('categori', {
+				prods: prods,
+				sales:sales,
+        user : req.user
+			});
+				})
+		})
+		.catch(err => res.status(500).end(err));
+
+});
+
+app.get('/home',isLoggedIn, (req, res) => {
+	db.collection('prod').find({"type":"home"})
+		.then(prods => {
+			db.collection('prod').find().skip(1).limit(7)
+			.then(sales => {
+
+			res.render('categori', {
+				prods: prods,
+				sales:sales,
+        user : req.user
+			});
+				})
+		})
+		.catch(err => res.status(500).end(err));
+
+});
+
+app.get('/book',isLoggedIn, (req, res) => {
+	db.collection('prod').find({"type":"book"})
+		.then(prods => {
+			db.collection('prod').find().skip(1).limit(7)
+			.then(sales => {
+
+			res.render('categori', {
+				prods: prods,
+				sales:sales,
+        user : req.user
+			});
+				})
+		})
+		.catch(err => res.status(500).end(err));
+
+});
+
+
+app.get('/applhome',isLoggedIn, (req, res) => {
+	db.collection('prod').find({"type":"applhome"})
+		.then(prods => {
+			db.collection('prod').find().skip(1).limit(7)
+			.then(sales => {
+
+			res.render('categori', {
+				prods: prods,
+				sales:sales,
+        user : req.user
+			});
+				})
+		})
+		.catch(err => res.status(500).end(err));
+
+});
+
+app.get('/cloth',isLoggedIn, (req, res) => {
+	db.collection('prod').find({"type":"cloth"})
+		.then(prods => {
+			db.collection('prod').find().skip(1).limit(7)
+			.then(sales => {
+
+			res.render('categori', {
+				prods: prods,
+				sales:sales,
+        user : req.user
+			});
+				})
+		})
+		.catch(err => res.status(500).end(err));
+
+});
+
+
+
+   app.get('/cart',isLoggedIn, (req, res) => {
+    var user = req.user;
+    var cart = user.cart;
+     var mas=[];
+
+    console.log(cart);
+    db.collection('prod').find().skip(1).limit(7)
+    .then(sales => {
+
+      db.collection('prod').find()
+        .then(prods => {
+          for (var i=0; i<cart.length; i++) {
+            for (var j=0; j<prods.length; j++){
+              if (cart[i]==prods[j].title){
+                mas.push(prods[j]);
+                console.log("elem" + cart[i]);
+                break;
+          }
+          }
+        }
+        res.render('cart', {
+          prods: mas,
+          sales:sales,
+          user : req.user
+        });
+      });
+   				})
+          .catch(err => res.status(500).end(err));
+
+   		});
+
+
+
+
+
+
+      app.get('/list',isLoggedIn, (req, res) => {
+       var user = req.user;
+       var list = user.list;
+        var mas=[];
+
+       db.collection('prod').find().skip(1).limit(7)
+       .then(sales => {
+
+         db.collection('prod').find()
+           .then(prods => {
+             for (var i=0; i<list.length; i++) {
+               for (var j=0; j<prods.length; j++){
+                 if (list[i]==prods[j].title){
+                   mas.push(prods[j]);
+                   console.log("elem" + list[i]);
+                   break;
+             }
+             }
+           }
+           res.render('list', {
+             prods: mas,
+             sales:sales,
+             user : req.user
+           });
+         });
+
+
+      				})
+             .catch(err => res.status(500).end(err));
+
+      		});
+
+
+
 
 
     app.get('/profile', isLoggedIn, function(req, res) {
@@ -102,8 +294,154 @@ app.get('/products',isLoggedIn, (req, res) => {
         user : req.user
       });
         })
-
     });
+
+
+
+
+
+
+     ////////////////////////////////////////////////////////////////////
+     ///////////////////////JSON////////////////////////////////////////
+
+
+
+
+     		app.get('/jsonphones', (req, res) => {
+     			db.collection('prod').find({"type":"phon"})
+     				.then(prod => res.json(prod))
+     				/*	db.collection('prod').find().skip(1).limit(7)
+     					.then(sales => res.json(sales))*/
+     					.catch(err => res.status(404).json({ error: err }));
+
+     		});
+
+        app.get('/jsoncomp', (req, res) => {
+          db.collection('prod').find({"type":"comp"})
+            .then(prod => res.json(prod))
+            /*	db.collection('prod').find().skip(1).limit(7)
+              .then(sales => res.json(sales))*/
+              .catch(err => res.status(404).json({ error: err }));
+
+        });
+
+        app.get('/jsonhome', (req, res) => {
+          db.collection('prod').find({"type":"home"})
+            .then(prod => res.json(prod))
+            /*	db.collection('prod').find().skip(1).limit(7)
+              .then(sales => res.json(sales))*/
+              .catch(err => res.status(404).json({ error: err }));
+
+        });
+
+        app.get('/jsonbook', (req, res) => {
+          db.collection('prod').find({"type":"book"})
+            .then(prod => res.json(prod))
+            /*	db.collection('prod').find().skip(1).limit(7)
+              .then(sales => res.json(sales))*/
+              .catch(err => res.status(404).json({ error: err }));
+
+        });
+
+        app.get('/jsonapplhome', (req, res) => {
+          db.collection('prod').find({"type":"applhome"})
+            .then(prod => res.json(prod))
+            /*	db.collection('prod').find().skip(1).limit(7)
+              .then(sales => res.json(sales))*/
+              .catch(err => res.status(404).json({ error: err }));
+
+        });
+
+        app.get('/jsonapplcloth', (req, res) => {
+          db.collection('prod').find({"type":"applcloth"})
+            .then(prod => res.json(prod))
+            /*	db.collection('prod').find().skip(1).limit(7)
+              .then(sales => res.json(sales))*/
+              .catch(err => res.status(404).json({ error: err }));
+
+        });
+
+      app.get('/jsonprofile', isLoggedIn, function(req, res) {
+        var  user = req.user;
+          if (!user){
+      			res.json({'error':'need login'})
+      		}
+      	else{	db.collection('users').find({"identef": parseInt(user.identef)})
+      			 .then(users => res.json(users))
+           }
+        });
+
+      app.get('/jsonproducts',isLoggedIn, (req, res) => {
+        	db.collection('prod').find()
+            .then(prod => res.json(prod))
+            /*	db.collection('prod').find().skip(1).limit(7)
+              .then(sales => res.json(sales))*/
+              .catch(err => res.status(404).json({ error: err }));
+        		})
+
+
+    app.get('/jsoncart',isLoggedIn, (req, res) => {
+             var user = req.user;
+             var cart = user.cart;
+              var mas=[]
+             console.log(cart);
+
+               db.collection('prod').find()
+                 .then(prods => {
+                   for (var i=0; i<cart.length; i++) {
+                     for (var j=0; j<prods.length; j++){
+                       if (cart[i]==prods[j].title){
+                         mas.push(prods[j]);
+                         console.log("elem" + cart[i]);
+                         break;
+                   }
+                   }
+                 }res.json(mas)
+
+            				/*	db.collection('prod').find().skip(1).limit(7)
+            					.then(sales => res.json(sales))*/
+            					.catch(err => res.status(404).json({ error: err }));
+               });
+
+
+               });
+
+
+
+
+     ///////////////////////JSON////////////////////////////////////////
+     ////////////////////////////////////////////////////////////////////
+
+
+     app.get('/jsonlist',isLoggedIn, (req, res) => {
+      var user = req.user;
+      var list = user.list;
+       var mas=[]
+
+        db.collection('prod').find()
+          .then(prods => {
+            for (var i=0; i<list.length; i++) {
+              for (var j=0; j<prods.length; j++){
+                if (list[i]==prods[j].title){
+                  mas.push(prods[j]);
+                  console.log("elem" + list[i]);
+                  break;
+            }
+            }
+          }res.json(mas)
+
+             /*	db.collection('prod').find().skip(1).limit(7)
+               .then(sales => res.json(sales))*/
+               .catch(err => res.status(404).json({ error: err }));
+        });
+
+
+        });
+
+
+
+
+
 
 
     app.get('/logout', function(req, res) {

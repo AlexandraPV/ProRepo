@@ -1,4 +1,3 @@
-// server.js
 
 // set up ======================================================================
 // get all the tools we need
@@ -54,24 +53,7 @@ app.use(busboyBodyParser({ limit: '5mb' }));
 app.use(express.static(path.join(__dirname, 'design')));
 const salt = '%656_das9870';
 
-app.get('/', (req, res) => {
 
-		db.collection('prod').find()
-		.then(prods => {
-			db.collection('prod').find().skip(4).limit(7)
-			.then(sales => {
-
-
-
-			res.render('index', {
-				sales: sales,
-				prods: prods,
-        href_add:'addprod'
-			});
-			})
-		})
-    .catch(err => res.status(500).end(err));
-});
 
 
 app.get('/add', (req, res) => {
@@ -81,19 +63,9 @@ app.get('/add', (req, res) => {
 		sales:sales
 	});
 		})
-});
+	});
 
-bla= function(id){
-    var hex, i;
 
-    var result = "";
-    for (i=0; i<id; i++) {
-        hex = id.charCodeAt(i).toString(16);
-        result += ("000"+hex).slice(-4);
-    }
-
-    return result
-}
 
 
 app.post('/addtocart', (req, res) => {
@@ -104,199 +76,46 @@ app.post('/addtocart', (req, res) => {
 	.then(users => {
 		console.log(users);
 				db.collection('users').update({"identef": parseInt(id)}, {$push: {"cart": title}});
-
-
 		})
 		.then(() => res.redirect('/products'))
 		.catch(err => res.status(500).end(err));
 
-			//res.redirect('/products')
-	});
+});
 
 
-	//console.log(us.local);
-
-
-	/*db.collection('prod').findOne({ title: title})
-		.then(prod => {
-			if (prod) {
-		return db.us.insert({
-      cart: [title]
-
-		})
-		}
-		})
-		.then(() => res.redirect('/products'))
-		.catch(err => res.status(500).end(err));*/
-
-
-
-
-/*	if (!title ) res.status(400).end('not ok');
-	else {
-
-		db.collection('users').findOne({"_id": id1})
-			.then(user => {
-				console.log(user);
-				if (user) {
-
-					return db.collection('user').insert({
-					    cart: [title]
-					});
-					console.log("ok");
-				}
-
-
+	app.post('/addtolist', (req, res) => {
+		var title = req.body.prtitle;
+	  var id= req.body.prid;
+		console.log(id);
+		db.collection('users').find({"identef": parseInt(id)})
+		.then(users => {
+			console.log(users);
+					db.collection('users').update({"identef": parseInt(id)}, {$push: {"list": title}});
 			})
-			us.cart= [title];
+			.then(() => res.redirect('/products'))
+			.catch(err => res.status(500).end(err));
 
-			console.log("ok");
-
-			//.then(() => res.redirect('/products'))
-			//.catch(err => res.status(500).end(err));
-
-	}
-});*/
+		});
 
 
-app.get('/phones', (req, res) => {
-	db.collection('prod').find({"type":"phon"})
+
+app.get('/', (req, res) => {
+
+		db.collection('prod').find()
 		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
+			db.collection('prod').find().skip(4).limit(7)
 			.then(sales => {
 
-			res.render('categori', {
+			res.render('index', {
+				sales: sales,
 				prods: prods,
-				sales:sales
-			});
-				})
-		})
-		//.then(() => res.redirect('/prod'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-
-app.get('/comp', (req, res) => {
-	db.collection('prod').find({"type":"comp"})
-		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
-			.then(sales => {
-
-			res.render('categori', {
-				prods: prods,
-				sales:sales
-			});
-				})
-		})
-		//.then(() => res.redirect('/prod'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-app.get('/home', (req, res) => {
-	db.collection('prod').find({"type":"home"})
-		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
-			.then(sales => {
-
-			res.render('categori', {
-				prods: prods,
-				sales:sales
-			});
-				})
-		})
-		//.then(() => res.redirect('/prod'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-app.get('/book', (req, res) => {
-	db.collection('prod').find({"type":"book"})
-		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
-			.then(sales => {
-
-			res.render('categori', {
-				prods: prods,
-				sales:sales
-			});
-				})
-		})
-		//.then(() => res.redirect('/prod'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-
-
-
-app.get('/applhome', (req, res) => {
-	db.collection('prod').find({"type":"applhome"})
-		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
-			.then(sales => {
-
-			res.render('categori', {
-				prods: prods,
-				sales:sales
-			});
-				})
-		})
-		//.then(() => res.redirect('/prod'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-app.get('/cloth', (req, res) => {
-	db.collection('prod').find({"type":"cloth"})
-		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
-			.then(sales => {
-
-			res.render('categori', {
-				prods: prods,
-				sales:sales
-			});
-				})
-		})
-		//.then(() => res.redirect('/prod'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-
-app.get('/products/*', (req, res) => {
-	var decrease = req.path;
-
-  decrease = decrease.slice(10);
-
-var uri_dec = decodeURIComponent(decrease);
-
-	db.collection('prod').findOne({ href: uri_dec})
-		.then(prod => {
-			db.collection('prod').find().skip(5).limit(7)
-			.then(sales => {
-
-			res.render('prod', {
-				prod: prod,
-        sales: sales
+				href_add:'addprod',
+			//	user : req.user
 			});
 			})
 		})
-		//.then(() => res.redirect('/prod'))
 		.catch(err => res.status(500).end(err));
-
-});
-
-
-
-
-
-
-
-
-
+  });
 
 app.post('/add', (req, res) => {
 	var title = req.body.title;
@@ -319,7 +138,6 @@ app.post('/add', (req, res) => {
 	hrefProd = hrefProd.replace(/ /g, '').replace(/\//g, '');
 	hrefProd= hrefProd.toLowerCase();
 	var hrProd =( '/' + hrefProd);
-
 
 	var base64String1 = avaFile1.data.toString('base64');
 	var base64String2 = avaFile2.data.toString('base64');
@@ -356,6 +174,92 @@ app.post('/add', (req, res) => {
 	}
 });
 
+////////////////////////////////////////////////////////////////////
+///////////////////////JSON////////////////////////////////////////
+
+app.get('/jsonadd', (req, res) => {
+	db.collection('prod').find().skip(5).limit(7)
+	.then(sales => res.json(sales))
+	 .catch(err => res.status(404).json({ error: err }));
+});
+
+   app.post('/jsonaddtocart', (req, res) => {
+  	var title = req.body.prtitle;
+    var id= req.body.prid;
+  	if (!title || ! id){
+		res.json({'error':'need login'})
+	   }
+  	  db.collection('users').find({"identef": parseInt(id)})
+		  .then(user => res.json(user))
+	 });
+
+	app.post('/jsonaddtolist', (req, res) => {
+	  	var title = req.body.prtitle;
+	   var id= req.body.prid;
+		 if (!title || ! id){
+			res.json({'error':'need login'})
+		 }
+		 db.collection('users').find({"identef": parseInt(id)})
+			 .then(user => res.json(user))
+	});
+
+		app.post('/jsonPadd', (req, res) => {
+			var title = req.body.title;
+			var color = req.body.color;
+			var weight = req.body.weight;
+			var guarantee = req.body.guarantee;
+			var description = req.body.description;
+			var lastprice = req.body.lastprice;
+			var price = req.body.price;
+			var type = req.body.type;
+			var brand = req.body.brand;
+			var admEmail = req.body.email;
+			var admpass = req.body.password;
+
+
+			if (!title || !color || !brand || !price || !lastprice || !type || !weight || !description || !guarantee ) res.status(400).json({"error": "empty field"});
+			else {
+				db.collection('prod').findOne({ title: title})
+					.then(prod => {
+						if (prod) res.status(200).json({"error": "prod exists"});
+						else {
+
+
+							db.collection('prod').insert({
+								title: title,
+								color: color,
+								weight: weight,
+								guarantee: guarantee,
+								description: description,
+								price: price,
+								lastprice: lastprice,
+								type:type,
+								brand: brand,
+								avatar1: base64String1,
+								avatar2: base64String2,
+								avatar3: base64String3,
+								avatar4: base64String4,
+								href: hrefProd
+							});
+						}
+					})
+					.then(prod => res.json(prod))
+					/*	db.collection('prod').find().skip(1).limit(7)
+						.then(sales => res.json(sales))*/
+						.catch(err => res.status(404).json({ error: err }));
+			}
+		});
+
+	app.get('/json', (req, res) => {
+			db.collection('prod').find()
+				.then(prod => res.json(prod))
+				/*	db.collection('prod').find().skip(1).limit(7)
+					.then(sales => res.json(sales))*/
+					.catch(err => res.status(404).json({ error: err }));
+				})
+
+///////////////////////JSON////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 
 
@@ -368,10 +272,10 @@ app.post('/add', (req, res) => {
 
 
 
-// routes ======================================================================
+
+
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 require('./config/passport')(passport); // pass passport for configuration
 
-// launch ======================================================================
 
 app.listen(8000, () => console.log('App started.'));

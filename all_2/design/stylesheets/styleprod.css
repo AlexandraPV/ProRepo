@@ -24,7 +24,7 @@ img {
 nav button {
 
   margin-top: 5px;
- margin-left: 725px;
+ margin-left: 735px;
  border-radius: 10px 10px;
 }
 
@@ -304,7 +304,7 @@ nav ul li a:hover, nav ul li.menu a {
     overflow:hidden;
     margin-bottom: 10px;
 }
- .actions a {
+ .actions input.b {
    margin-left: 10px;
     border: 1px solid #E0E0E0;
     color: #009832;
@@ -316,10 +316,37 @@ nav ul li a:hover, nav ul li.menu a {
     padding: 5px;
     text-decoration: none;
 }
- .actions a:first-child{
-    color: #fd7a01;
-    float:left;
+.actions input.a {
+  margin-left: 10px;
+   border: 1px solid #E0E0E0;
+   color:#fd7a01;
+   display: block;
+   background: #ffffff;
+   float:left;
+   font-size: 11px;
+   font-weight: bold;
+   line-height: 16px;
+   padding: 5px;
+   text-decoration: none;
 }
+
+.actions a {
+  margin-left: 10px;
+   border: 1px solid #E0E0E0;
+   color: #009832;
+   display: block;
+   float:right;
+   font-size: 11px;
+   font-weight: bold;
+   line-height: 16px;
+   padding: 5px;
+   text-decoration: none;
+}
+.actions a:first-child{
+   color: #fd7a01;
+   float:left;
+}
+
 
 /* footer section */
 footer {
@@ -517,4 +544,20 @@ div.columMed{
 
 div.left-left{
   width: 300px;
+}
+
+
+
+#content #columL ul li .info .actions input.b {
+    color: #009832;
+    background: #ffffff;
+    float:left;
+    display: block;
+    float:right;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 16px;
+    padding: 5px;
+    text-decoration: none;
+    border: 1px solid #E0E0E0;
 }

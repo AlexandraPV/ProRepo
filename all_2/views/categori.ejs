@@ -23,7 +23,7 @@
           <li><a href="/products">Каталог товарів</a></li>
           <li><a href="#">Контакти</a></li>
           <li><a href="/profile">Акаунт</a></li>
-           <li><button> <img src="img/korzina1.png" href = "index.html"></button></li>
+          <!-- <li><button> <img src="img/korzina1.png" href = "index.html"></button></li>-->
           </ul>
           </nav>
 
@@ -56,7 +56,7 @@
                 <li><a href="/home">Товари для дому</a></li>
                 <li><a href="/cloth">Одяг та взуття</a></li>
                 <li><a href="/book">Книги та канцтовари</a></li>
-                <li><a href="/applhome">Пубутова техніка</a></li>
+                <li><a href="/applhome">Побутова техніка</a></li>
                 </ul>
               </section>
 
@@ -84,7 +84,11 @@
                                 <div class="actions">
 
                                     <a href="/products/<%=prod.href%>">Details</a>
-                                    <a href="#">Add to cart</a>
+                                    <form action = "/addtocart" method="post">
+                                      <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
+                                      <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
+                                     <input class = "b" type="submit" name="submit" value="Add to cart">
+                                      </form >
                                 </div>
                             </div>
                         </li>

@@ -24,7 +24,7 @@
           <li><a href="/products">Каталог товарів</a></li>
           <li><a href="#">Контакти</a></li>
           <li><a href="/profile">Акаунт</a></li>
-           <li><button> <img src="../stylesheets/img/korzina1.png" href = "index.html"></button></li>
+          <!-- <li><button> <img src="img/korzina1.png" href = "index.html"></button></li>-->
           </ul>
           </nav>
 
@@ -56,7 +56,7 @@
               <li><a href="/home">Товари для дому</a></li>
               <li><a href="/cloth">Одяг та взуття</a></li>
               <li><a href="/book">Книги та канцтовари</a></li>
-              <li><a href="/applhome">Пубутова техніка</a></li>
+              <li><a href="/applhome">Побутова техніка</a></li>
               </ul>
             </section>
 
@@ -122,8 +122,16 @@
 
             <div class="actions">
                 <a href="/logout">Logout</a>
-                <a href="#">Watch list</a>
-                <a href="#">Cart</a>
+
+
+               <form action = "/cart" method="get">
+                  <input type="text" hidden="true" name="cart" value="<%= user.cart%>">
+                 <input class = "b" type="submit" name="submit" value="Cart">
+               </form >
+                  <form action = "/list" method="get">
+                    <input type="text" hidden="true" name="prid" value="<%= user.list%>">
+                   <input class = "b" type="submit" name="submit" value="Watch list">
+                    </form >
               <!--  <a href="/update">Add information</a> -->
                 <% if(user.local.role =="admin") { %>
                 <a id= "admin" href="/add">Додати продукт</a>

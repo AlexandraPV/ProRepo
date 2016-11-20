@@ -9,8 +9,7 @@ const mongodb = require('promised-mongo');
 var User            = require('../app/models/user');
 const url = 'mongodb://localhost:27017/magaz';
 const db = mongodb(url);
-var count = 1
-console.log(db.collection("users").find().sort({ $natural: -1 }).limit(1));
+var count = Math.floor(Math.random() * (70 - 60 + 1) + 60);
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -72,6 +71,7 @@ module.exports = function(passport) {
 
                 newUser.identef=count;
                 newUser.cart=[];
+                newUser.list=[];
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
 
