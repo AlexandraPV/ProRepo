@@ -82,6 +82,34 @@ app.post('/addtocart', (req, res) => {
 
 });
 
+app.post('/deletelist', (req, res) => {
+	var title = req.body.prtitle;
+  var id= req.body.prid;
+
+	db.collection('users').find({"identef": parseInt(id)})
+	.then(users => {
+
+				db.collection('users').update({"identef": parseInt(id)}, {$pull: {"list": title}});
+		})
+		.then(() => res.redirect('/list'))
+		.catch(err => res.status(500).end(err));
+
+});
+
+app.post('/deletecart', (req, res) => {
+	var title = req.body.prtitle;
+  var id= req.body.prid;
+
+	db.collection('users').find({"identef": parseInt(id)})
+	.then(users => {
+		
+				db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": title}});
+		})
+		.then(() => res.redirect('/cart'))
+		.catch(err => res.status(500).end(err));
+
+});
+
 
 	app.post('/addtolist', (req, res) => {
 		var title = req.body.prtitle;

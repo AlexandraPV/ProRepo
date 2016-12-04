@@ -73,6 +73,15 @@
                       <% prods.filter(x => x.title).forEach( prod => { %>
 
                         <li>
+                            <div class="info">
+                          <div class="actions">
+                          <form action = "/deletelist" method="post">
+                             <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
+                             <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
+                             <input class = "b" type="submit" name="submit" value="X">
+                             </form >
+                          </div>
+                        </div>
                             <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
                             <div class="info">
                                 <a  class="title" href="/products/<%=prod.href%>"><%= prod.title %></a>
