@@ -60,7 +60,7 @@ module.exports = function(app, passport) {
 
 
 
-  
+
 
 
     app.get('/products/*',isLoggedIn, (req, res) => {
@@ -76,9 +76,11 @@ module.exports = function(app, passport) {
     			res.render('prod', {
     				prod: prod,
             sales: sales,
+
             user : req.user
     			});
     			})
+
     		})
 
     		.catch(err => res.status(500).end(err));
@@ -86,19 +88,50 @@ module.exports = function(app, passport) {
       });
 
 
+      app.get('/propag*', isLoggedIn, (req, res) => {
+        var decrease = req.path;
+        decrease = decrease.slice(7);
+        var i = parseInt(decrease);
+      db.collection('prod').count()
+        .then(count => {
+      db.collection('prod').find().skip(0+i*9).limit(9+i*9)
+          .then(prods => {
+      db.collection('prod').find().skip(4).limit(7)
+          .then(sales => {
+
+            res.render('products', {
+              sales: sales,
+              count: count,
+              prods: prods,
+              href_add:'addprod',
+              user : req.user
+            //	user : req.user
+            });
+            })
+          })
+          .catch(err => res.status(500).end(err));
+        });
+
+      });
+
+
+
 
 app.get('/products',isLoggedIn, (req, res) => {
-	db.collection('prod').find()
+	db.collection('prod').find().limit(9)
 		.then(prods => {
 			db.collection('prod').find().skip(1).limit(7)
 			.then(sales => {
-
+        db.collection('prod').count()
+          .then(count => {
 			res.render('products', {
 				prods: prods,
 				sales:sales,
+        count: count,
 				user : req.user
 			});
 				})
+        	})
 		})
 
 		.catch(err => res.status(500).end(err));

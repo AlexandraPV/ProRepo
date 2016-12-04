@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
-
+<link rel="stylesheet" href="stylesheets/stylePag.css">
 
   <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
 
@@ -72,6 +72,17 @@
                       <% prods.filter(x => x.title).forEach( prod => { %>
 
                         <li>
+                          <% if(user.local.role =="admin") { %>
+                            <div class="info">
+                          <div class="actions">
+                          <form action = "/deleteprod" method="post">
+                             <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
+                             <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
+                             <input class = "b" type="submit" name="submit" value="X">
+                             </form >
+                          </div>
+                        </div>
+                              <% }; %>
                             <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
                             <div class="info">
                                 <a  class="title" href="/products/<%=prod.href%>"><%= prod.title %></a>
@@ -117,6 +128,14 @@
 
                     </ul>
                 </div>
+            </section>
+            <section class="pagination">
+                    <ul>
+                          <% for (var i = 0; i < (Math.floor(count/9)+1); i++) {  %>
+                        <li><a href="/propag<%=i%>" title="Страница 1"><%=i+1%></a></li>
+                        <%}%>
+
+                    </ul>
             </section>
         </div>
 
