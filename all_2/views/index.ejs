@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
-
+ <link rel="stylesheet" href="stylesheets/stylePag.css">
 
   <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
 
@@ -138,6 +138,15 @@
                     </ul>
                 </div>
             </section>
+            <section class="pagination">
+                    <ul>
+                          <% for (var i = 0; i < (Math.floor(count/9)+1); i++) {  %>
+                        <li><a href="/pag<%=i%>" title="Страница 1"><%=i+1%></a></li>
+                        <%}%>
+
+                    </ul>
+            </section>
+
         </div>
 
 

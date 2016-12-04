@@ -99,19 +99,50 @@ app.post('/addtocart', (req, res) => {
 
 
 
+			app.get('/pag*', (req, res) => {
+				var decrease = req.path;
+			  decrease = decrease.slice(4);
+				var i = parseInt(decrease);
+			db.collection('prod').count()
+				.then(count => {
+			db.collection('prod').find().skip(0+i*9).limit(9+i*9)
+			    .then(prods => {
+			db.collection('prod').find().skip(4).limit(7)
+					.then(sales => {
+
+						res.render('index', {
+							sales: sales,
+							count: count,
+							prods: prods,
+							href_add:'addprod',
+						//	user : req.user
+						});
+						})
+					})
+					.catch(err => res.status(500).end(err));
+				});
+
+});
+
+
+
+
 app.get('/', (req, res) => {
 
-		db.collection('prod').find()
+		db.collection('prod').find().limit(9)
 		.then(prods => {
 			db.collection('prod').find().skip(4).limit(7)
 			.then(sales => {
-
+				db.collection('prod').count()
+					.then(count => {
 			res.render('index', {
 				sales: sales,
 				prods: prods,
+				count: count,
 				href_add:'addprod',
 			//	user : req.user
 			});
+			})
 			})
 		})
 		.catch(err => res.status(500).end(err));

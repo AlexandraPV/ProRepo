@@ -1,0 +1,67 @@
+@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300&subset=latin,cyrillic);
+
+
+
+
+
+/* Вариант пагинации для светлого фона
+ * с использованием фоновой картинки в оформлении кнопок
+*/
+.pagination {
+	width:1000px;
+
+    padding: 10px;
+    margin:10px;
+    margin-left: 130px;
+    border: 0px solid none;
+}
+.pagination ul{
+
+	width:100%;
+	padding:0px;
+	margin:0px;
+}
+.pagination ul li{
+	display:inline-block;
+	list-style:none;
+	margin:5px 5px;
+	font-size:14px;
+    text-align:center;
+}
+.pagination ul li a, .pagination ul li a:visited{
+
+	display:block;
+	text-decoration:none;
+	color: #555555;
+    background: url(bgnav.png) repeat-x scroll 0 0 #efefef;
+    border: 1px solid #ccc;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    -webkit-box-shadow: 0 0 0 1px #fff, 1px 1px 3px #ddd;
+    -moz-box-shadow: 0 0 0 1px #fff, 1px 1px 3px #ddd;
+    -ms-box-shadow: 0 0 0 1px #fff, 1px 1px 3px #ddd;
+    box-shadow: 0 0 0 1px #fff, 1px 1px 3px #ddd;
+    height: 28px;
+	width: 28px;
+    line-height: 26px;
+    top: -1px;
+    text-shadow: 1px 1px #fff;
+}
+.pagination ul li a:hover{
+  display:block;
+  background-image: -webkit-linear-gradient(top, #fff, #ddd);
+  background-image: -moz-linear-gradient(top, #fff, #ddd);
+  background-image: -o-linear-gradient(top, #fff, #ddd);
+  background-image: linear-gradient(to bottom, #fff, #ddd);
+  background: -ms-linear-gradient(top, #fff 0%,#ddd 100%); /* IE10+ */
+  filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#bcbcbc', EndColorStr='#f7f4f4', GradientType=0); /* IE6-9 */
+  text-decoration:none;
+}
+.pagination ul li a:active {
+box-shadow: none;
+    position: relative;
+    top: 1px;
+}
