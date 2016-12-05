@@ -3,6 +3,21 @@
     margin: 0;
     padding: 0;
 }
+
+input:valid + span::after {
+	content:  '✓';
+	color: green;
+	position: absolute;
+	left: 640px;
+}
+
+input:invalid + span::after {
+	content:  '✗';
+	color: red;
+	position: absolute;
+	left: 640px;
+}
+
 body {
     background: url("../img/8.png") no-repeat fixed center top #FFFFFF;
     color: #7F7F7F;
