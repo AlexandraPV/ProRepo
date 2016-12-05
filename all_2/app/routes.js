@@ -340,7 +340,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
 
 
-     		app.get('/jsonphones', (req, res) => {
+     		app.get('/apiphones', (req, res) => {
      			db.collection('prod').find({"type":"phon"})
      				.then(prod => res.json(prod))
      				/*	db.collection('prod').find().skip(1).limit(7)
@@ -358,7 +358,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
         });
 
-        app.get('/jsonhome', (req, res) => {
+        app.get('/apihome', (req, res) => {
           db.collection('prod').find({"type":"home"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
@@ -367,7 +367,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
         });
 
-        app.get('/jsonbook', (req, res) => {
+        app.get('/apibook', (req, res) => {
           db.collection('prod').find({"type":"book"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
@@ -376,7 +376,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
         });
 
-        app.get('/jsonapplhome', (req, res) => {
+        app.get('/apiapplhome', (req, res) => {
           db.collection('prod').find({"type":"applhome"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
@@ -385,7 +385,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
         });
 
-        app.get('/jsonapplcloth', (req, res) => {
+        app.get('/apiapplcloth', (req, res) => {
           db.collection('prod').find({"type":"applcloth"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
@@ -394,7 +394,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
         });
 
-      app.get('/jsonprofile', isLoggedIn, function(req, res) {
+      app.get('/apiprofile', isLoggedIn, function(req, res) {
         var  user = req.user;
           if (!user){
       			res.json({'error':'need login'})
@@ -404,7 +404,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
            }
         });
 
-      app.get('/jsonproducts',isLoggedIn, (req, res) => {
+      app.get('/apiproducts',isLoggedIn, (req, res) => {
         	db.collection('prod').find()
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
@@ -413,7 +413,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
         		})
 
 
-    app.get('/jsoncart',isLoggedIn, (req, res) => {
+    app.get('/apicart',isLoggedIn, (req, res) => {
              var user = req.user;
              var cart = user.cart;
               var mas=[]
@@ -442,11 +442,10 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
 
 
-     ///////////////////////JSON////////////////////////////////////////
-     ////////////////////////////////////////////////////////////////////
 
 
-     app.get('/jsonlist',isLoggedIn, (req, res) => {
+
+     app.get('/apilist',isLoggedIn, (req, res) => {
       var user = req.user;
       var list = user.list;
        var mas=[]
@@ -473,7 +472,8 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
 
 
-
+        ///////////////////////JSON////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////
 
 
 

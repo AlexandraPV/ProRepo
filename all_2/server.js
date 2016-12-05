@@ -251,13 +251,13 @@ app.post('/add', (req, res) => {
 ////////////////////////////////////////////////////////////////////
 ///////////////////////JSON////////////////////////////////////////
 
-app.get('/jsonadd', (req, res) => {
+app.get('/apiadd', (req, res) => {
 	db.collection('prod').find().skip(5).limit(7)
 	.then(sales => res.json(sales))
 	 .catch(err => res.status(404).json({ error: err }));
 });
 
-   app.post('/jsonaddtocart', (req, res) => {
+   app.post('/apiaddtocart', (req, res) => {
   	var title = req.body.prtitle;
     var id= req.body.prid;
   	if (!title || ! id){
@@ -267,7 +267,7 @@ app.get('/jsonadd', (req, res) => {
 		  .then(user => res.json(user))
 	 });
 
-	app.post('/jsonaddtolist', (req, res) => {
+	app.post('/apiaddtolist', (req, res) => {
 	  	var title = req.body.prtitle;
 	   var id= req.body.prid;
 		 if (!title || ! id){
@@ -277,7 +277,7 @@ app.get('/jsonadd', (req, res) => {
 			 .then(user => res.json(user))
 	});
 
-		app.post('/jsonPadd', (req, res) => {
+		app.post('/apiPadd', (req, res) => {
 			var title = req.body.title;
 			var color = req.body.color;
 			var weight = req.body.weight;
@@ -324,7 +324,7 @@ app.get('/jsonadd', (req, res) => {
 			}
 		});
 
-	app.get('/json', (req, res) => {
+	app.get('/api', (req, res) => {
 			db.collection('prod').find()
 				.then(prod => res.json(prod))
 				/*	db.collection('prod').find().skip(1).limit(7)
