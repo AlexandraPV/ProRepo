@@ -1,4 +1,5 @@
 
+// set up ======================================================================
 // get all the tools we need
 var express  = require('express');
 var app      = express();
@@ -330,6 +331,24 @@ app.get('/apiadd', (req, res) => {
 					.then(sales => res.json(sales))*/
 					.catch(err => res.status(404).json({ error: err }));
 				})
+
+
+
+
+				app.delete('/apideletecart', (req, res) => {
+					var title = req.body.prtitle;
+				  var id= req.body.prid;
+if (title){
+					db.collection('users').find({"identef": parseInt(id)})
+					.then(users => {
+
+								db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": title}})
+
+						})
+						.then(user => res.json({"delete": title}))
+						.catch(err => res.status(404).json({"error": "prod exists"}));
+} else res.status(404).json({"error": "prod exists"});
+				});
 
 ///////////////////////JSON////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
