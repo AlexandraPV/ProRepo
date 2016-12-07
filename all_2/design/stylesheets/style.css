@@ -83,6 +83,21 @@ header {
     padding: 0;
     width: 64px;
 }
+
+#search  button[type="submit"] {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-left-width:0px;
+    color: #383838;
+    cursor:pointer;
+    float: left;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    height: 27px;
+    padding: 0;
+    width: 64px;
+}
 #social {
     float:right;
     list-style:none outside none;

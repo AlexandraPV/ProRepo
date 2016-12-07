@@ -459,3 +459,7 @@ mark, rp, rt, ruby, summary, time {display:inline;}
   background: #afdde6;
   cursor: default;
 }
+.test{
+  display: inline-block;
+
+}

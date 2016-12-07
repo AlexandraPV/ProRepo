@@ -5,9 +5,19 @@
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
-
-
   <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
+  <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
+
+  <script>
+  $(document).ready(function(){
+    $("#search_button").click(function(){
+      alert($("#search_input").val());
+      $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(result){
+        alert(result);
+      }});
+    });
+  });
+  </script>
 
 <body>
 
@@ -33,10 +43,10 @@
                 </div>
 
                 <section id="search">
-                  <form action="/search"  method="get" enctype="form-data">
+                  <form >
 
-                      <input type="text"  name='q' placeholder= "Search" >
-                      <input type="submit" value="search">
+                      <input type="text"  name='q' placeholder= "Search" id="search_input">
+                      <button type="submit"  id="search_button">Search</button>
                   </form>
 
                     <ul id="social">

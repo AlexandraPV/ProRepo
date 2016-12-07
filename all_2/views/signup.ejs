@@ -6,7 +6,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
 <script src="stylesheets/js/jquery.min.js"></script>
-
+<script src="stylesheets/js/messageReg.js"></script>
   <link rel="stylesheet" href="stylesheets/regstyle.css" type="text/css" media="all">
 
 <div class="container">
@@ -67,56 +67,64 @@
             <section id="content">
                 <div id="columL">
                      <h3>Registration</h3>
-                <form action='/signup' method='POST' enctype="multipart/form-data" class='reg-form'>
+                <form action='/signup' method='POST' enctype="multipart/form-data" class='reg-form rf '>
 
           	<div class='form-row'>
              			<label for='form_fname'>First Name: </label>
-                 		<input type='text' id='form_fname' name='first_name'>
+                 		<input type='text' class="rfield test" id='form_fname' name='first_name'>
+                      <span id="msg" style="float:right; margin-right:10px"></span>
                		</div>
 
                		<div class='form-row'>
                  		<label for='form_sname'>Second Name: </label>
-                 		<input type='text' id='form_sname' name='second_name'>
+                 		<input type='text' class="rfield test" id='form_sname' name='second_name'>
+                      <span id="msg1" style="float:right; margin-right:10px"></span>
              		</div>
 
                 <div class='form-row'>
                   <label for='form_login'>Login: </label>
-                  <input type='text' id='form_login' name='login'>
+                  <input type='text' class="rfield test" id='form_login' name='login'>
+                    <span id="msg2" style="float:right; margin-right:10px"></span>
               </div>
 
 
              		<div class='form-row'>
              			<label for='form_email'>Email: </label>
-             			<input type='email' id='form_email' name='email'>
+             			<input type='email' class="rfield test" id='form_email' name='email'>
+                    <span id="msg3" style="float:right; margin-right:10px"></span>
              		</div>
 
                 <div class='form-row'>
              			<label for='password'>Password: </label>
-             			<input type='password' id='password' name='password'>
+             			<input type='password' class="rfield test" id='password' name='password'>
+                    <span id="msg4" style="float:right; margin-right:10px"></span>
              		</div>
 
              <div class='form-row'>
              			<label for='password2'>Password repeat: </label>
-             			<input type='password' id='password2' name='password2'>
+             			<input type='password' class="rfield test" id='password2' name='password2'>
+                    <span id="msg5" style="float:right; margin-right:10px"></span>
              		</div>
 
-              
+
 
            		<div class='form-row'>
              			<label for='form_phone'>Phone: </label>
-             			<input type='text' id='form_phone' name='phone'>
+             			<input type='text' class="rfield test" id='form_phone' name='phone'>
+                    <span id="msg6" style="float:right; margin-right:10px"></span>
              		</div>
 
              		<div class='form-row'>
              			<label for='form_about'>About myself: </label>
-             			<textarea id='form_about' name='about'></textarea>
+             			<textarea id='form_about' class="rfield test" name='about'></textarea>
+                    <span id="msg7" style="float:right; margin-right:10px"></span>
              		</div>
 
                 <p>Add photo</p>
                    <input type='file' name='avatar' />
 
              		<div class="form-row">
-             			<input type="submit" value='Go'>
+             			<input type="submit" class="btn_submit disabled" value='Go'>
              		</div>
 
              	</form>

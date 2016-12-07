@@ -97,6 +97,19 @@ app.post('/addtocart', (req, res) => {
 
 		});
 
+		app.post('/deleteprod', (req, res) => {
+			var name = req.body.prtitle;
+		  var id= req.body.prid;
+
+			db.collection('users').find({"identef": parseInt(id)})
+			.then(users => {
+
+						db.collection('prod').remove({"title": name});
+				})
+				.then(() => res.redirect('/products'))
+				.catch(err => res.status(500).end(err));
+
+		});
 
 
 app.get('/', (req, res) => {

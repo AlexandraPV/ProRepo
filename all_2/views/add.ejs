@@ -6,6 +6,19 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
   <script src="stylesheets/js/jquery.min.js"></script>
+  <script src="stylesheets/js/messageAdd.js"></script>
+  <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
+
+  <script>
+  $(document).ready(function(){
+    $("#search_button").click(function(){
+      alert($("#search_input").val());
+      $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(result){
+        alert(result);
+      }});
+    });
+  });
+  </script>
   <script>
   $(document).ready(function(){
       $("input").focus(function(){
@@ -42,11 +55,12 @@
                 </div>
 
                 <section id="search">
-                  <form action="/search"  method="get" enctype="form-data">
+                  <form >
 
-                      <input type="text"  name='q' placeholder= "Search" >
-                      <input type="submit" value="search">
+                      <input type="text"  name='q' placeholder= "Search" id="search_input">
+                      <button type="submit"  id="search_button">Search</button>
                   </form>
+
 
                     <ul id="social">
                         <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
@@ -77,46 +91,54 @@
             <section id="content">
                 <div id="columL">
                      <h3>Add product</h3>
-          <form action='/add' method='POST' class='add-form' enctype="multipart/form-data">
+          <form action='/add' method='POST' class='add-form reg-form rf'  enctype="multipart/form-data" >
 
    		<div class='form-row'>
    			<label for='title'>Name: </label>
-       		<input maxlength="30" type='text' id='title' name='title'>
+       		<input maxlength="30" type='text' class="rfield test" id='title' name='title'>
+          <span id="msg" style="float:right; margin-right:10px"></span>
      		</div>
 
         <div class='form-row'>
           <label for='brand'>Brand: </label>
-          <input maxlength="20" type='text' id='brand' name='brand'>
+          <input maxlength="20" type='text'  class="rfield test" id='brand' name='brand'>
+          <span id="msg1" style="float:right; margin-right:10px"></span>
         </div>
 
      		<div class='form-row'>
        		<label for='color'>Color: </label>
-       		<input maxlength="20" type='text' id='color' name='color'>
+       		<input maxlength="20" type='text' class="rfield test" id='color' name='color'>
+          <span id="msg2" style="float:right; margin-right:10px"></span>
    		</div>
 
    		<div class='form-row'>
    			<label for='weight'>Weight: </label>
-   			<input maxlength="20" type='text' id='weight' name='weight'>
+   			<input maxlength="20" type='text' class="rfield test" id='weight' name='weight'>
+        <span id="msg3" style="float:right; margin-right:10px"></span>
    		</div>
 
    		<div class='form-row'>
    			<label for='guarantee'>Guarantee: </label>
-   			<input maxlength="20" type='text' id='guarantee' name='guarantee'>
+   			<input maxlength="20" type='text' class="rfield test" id='guarantee' name='guarantee'>
+          <span id="msg4" style="float:right; margin-right:10px"></span>
    		</div>
 
       <div class='form-row'>
         <label for='price'>Price: </label>
-        <input maxlength="20"  type='text' id='price' name='price'>
+        <input maxlength="20"  type='text' class="rfield test" id='price' name='price'>
+          <span id="msg5" style="float:right; margin-right:10px"></span>
       </div>
 
       <div class='form-row'>
         <label for='lastprice'>Last Price: </label>
-        <input maxlength="20"  type='text' id='lastprice' name='lastprice'>
+        <input maxlength="20"  type='text' class="rfield test" id='lastprice' name='lastprice'>
+          <span id="msg6" style="float:right; margin-right:10px"></span>
       </div>
 
    		<div class='form-row'>
    			<label for='description'>Description: </label>
-   			<textarea maxlength="200" id='description' name='description'></textarea>
+   			<textarea maxlength="200" id='description' class="rfield test" name='description'></textarea>
+          <span id="msg7" style="float:right; margin-right:10px"></span>
    		</div>
       <p>Add 1 photo</p>
          <input type='file' name='avatar1' />
@@ -138,7 +160,7 @@
 
 
    		<div class="form-row">
-   			<input type="submit" value='Add'>
+   			<input type="submit" class="btn_submit disabled" value='Add'>
    		</div>
 
    	</form>

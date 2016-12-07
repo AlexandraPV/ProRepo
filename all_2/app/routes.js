@@ -138,7 +138,7 @@ app.get('/products',isLoggedIn, (req, res) => {
                  .catch(err => res.status(500).end(err));
 }else{
 
-	db.collection('prod').find()
+	db.collection('prod').find().limit(9)
 		.then(prods => {
 			db.collection('prod').find().skip(1).limit(7)
 			.then(sales => {
