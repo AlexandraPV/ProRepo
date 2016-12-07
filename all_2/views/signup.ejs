@@ -5,10 +5,10 @@
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
- <script type="text/javascript" src="stylesheets/js/jquery.min.js"></script>
+<script src="stylesheets/js/jquery.min.js"></script>
 
   <link rel="stylesheet" href="stylesheets/regstyle.css" type="text/css" media="all">
-<script src="stylesheets/js/required_fields.js"></script>
+
 <div class="container">
 
         <header>
@@ -32,10 +32,11 @@
                 </div>
 
                 <section id="search">
-                    <form action="#" onsubmit="return false;" method="get">
-                        <input type="text" onfocus="if (this.value =='Пошук...' ) this.value=''" onblur="if (this.value=='') this.value='Пошук...'" value="Пошук..." name="q">
-                        <input type="submit" value="Пошук">
-                    </form>
+                  <form action="/search"  method="get" enctype="form-data">
+
+                      <input type="text"  name='q' placeholder= "Search" >
+                      <input type="submit" value="search">
+                  </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
@@ -68,55 +69,57 @@
                      <h3>Registration</h3>
                 <form action='/signup' method='POST' enctype="multipart/form-data" class='reg-form'>
 
-                  <div class='form-row'>
-                    <label for='form_fname'>First Name: </label>
-                      <input type='text' class="rfield" id='form_fname' name='first_name' required pattern="You mast enter name">
-                    </div>
+          	<div class='form-row'>
+             			<label for='form_fname'>First Name: </label>
+                 		<input type='text' id='form_fname' name='first_name'>
+               		</div>
 
-                    <div class='form-row'>
-                      <label for='form_sname'>Second Name: </label>
-                      <input type='text' class="rfield" id='form_sname' name='second_name' required pattern="You mast enter surname">
-                  </div>
+               		<div class='form-row'>
+                 		<label for='form_sname'>Second Name: </label>
+                 		<input type='text' id='form_sname' name='second_name'>
+             		</div>
 
-                  <div class='form-row'>
-                    <label for='form_login'>Login: </label>
-                    <input type='text' class="rfield" id='form_login' name='login' required pattern="You mast enter login">
-                </div>
+                <div class='form-row'>
+                  <label for='form_login'>Login: </label>
+                  <input type='text' id='form_login' name='login'>
+              </div>
 
-                  <div class='form-row'>
-                    <label for='form_email'>Email: </label>
-                    <input type='email' class="rfield" id='form_email' name='email' required pattern="You mast enter email">
-                  </div>
 
-                  <div class='form-row'>
-                    <label for='password'>Password: </label>
-                    <input type='password'class="rfield" id='password' name='password' required pattern="You mast enter password">
-                  </div>
+             		<div class='form-row'>
+             			<label for='form_email'>Email: </label>
+             			<input type='email' id='form_email' name='email'>
+             		</div>
 
-                  <div class='form-row'>
-                    <label for='password2'>Password repeat: </label>
-                    <input type='password' class="rfield" id='password2' name='password2' required pattern="You mast enter password repeat">
-                  </div>
+                <div class='form-row'>
+             			<label for='password'>Password: </label>
+             			<input type='password' id='password' name='password'>
+             		</div>
 
-                  <div class='form-row'>
-                    <label for='form_phone'>Phone: </label>
-                    <input type='tel' class="rfield" id='form_phone' name='phone' required pattern="You mast enter phone">
-                  </div>
+             <div class='form-row'>
+             			<label for='password2'>Password repeat: </label>
+             			<input type='password' id='password2' name='password2'>
+             		</div>
 
-                  <div class='form-row'>
-                    <label for='form_about'>About myself: </label>
-                    <textarea id='form_about' class="rfield" name='about' required pattern="You mast enter some information about yourself"></textarea>
-                  </div>
+              
 
-                  <p>Add photo</p>
-                     <input type='file'class="rfield" name='avatar' required pattern="You mast add photo"/>
+           		<div class='form-row'>
+             			<label for='form_phone'>Phone: </label>
+             			<input type='text' id='form_phone' name='phone'>
+             		</div>
 
-                  <div class="form-row">
-                    <input type="submit" class="btn_submit disabled" value='Go' formnovalidate>
-                  </div>
+             		<div class='form-row'>
+             			<label for='form_about'>About myself: </label>
+             			<textarea id='form_about' name='about'></textarea>
+             		</div>
+
+                <p>Add photo</p>
+                   <input type='file' name='avatar' />
+
+             		<div class="form-row">
+             			<input type="submit" value='Go'>
+             		</div>
 
              	</form>
-
                 </div>
                 <div id="columR">
                     <h3>Top sells</h3>

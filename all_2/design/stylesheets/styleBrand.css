@@ -1,0 +1,87 @@
+body{
+  background: #000000 url(img/8.png);
+  margin: 0;
+  padding: 0;
+  font: 16px/24px Arial, Tahoma, sans-serif;
+}
+a{text-decoration: none;}
+
+/*структура сайта*/
+
+div.content {
+  margin-top: 10px;
+}
+
+div.mid{
+  width: 1000px;
+  margin: 0 auto;
+}
+
+div.header{
+  background: #696969;
+  opacity: 0.8;
+}
+
+
+/*шапка сайта*/
+div.topmenu{
+  float: right;
+  height: 60px;
+  line-height: 67px;}
+
+div.topmenu a{
+  margin: 0 0 0 10px;
+  color: #F5F5F5;
+  text-shadow: 1px 1px 3px #000000;
+}
+
+div.topmenu a:hover{color: #FFE4E1;}
+
+/*Контент сайта*/
+div.block{
+  width: 440px;
+  float: left;
+  margin-bottom: 40px;
+}
+
+div.block:nth-of-type(even) {
+  float: right;
+}
+
+ div.anons{
+   background: #f5f5f5;
+   border: 1px solid #ccc;
+   border-radius: 3px;
+   padding: 10px;
+   box-shadow: 5px 5px 9px #777;
+ }
+
+div.anons img {box-shadow: 1px 1px 3px #777}
+div.anons h3{
+
+  font-size:30px;
+  margin: 10px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  line-height: 20px;
+  color: #000000;
+  text-align: center;
+  text-shadow: 1px 1px 1px #000000;
+ }
+ div.image {
+  overflow:hidden;
+  width: 420px;
+  height:280px;
+  }
+ div.image img {
+ -moz-transition: all 1s ease-out;
+ -o-transition: all 1s ease-out;
+ -webkit-transition: all 1s ease-out;
+ }
+
+div.image img:hover{
+ -webkit-transform: scale(1.1);
+ -moz-transform: scale(1.1);
+ -o-transform: scale(1.1);
+ }
+ div.anons a:hover h3{color: #191970;}

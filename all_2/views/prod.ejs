@@ -9,6 +9,9 @@
 
 <link rel="stylesheet" href="../stylesheets/styleprod.css" type="text/css" media="all">
 
+<script src="stylesheets/js/jquery.min.js"></script>
+
+
 <body>
 
 <div class="container">
@@ -33,10 +36,11 @@
                 </div>
 
                 <section id="search">
-                    <form action="#" onsubmit="return false;" method="get">
-                        <input type="text" onfocus="if (this.value =='Пошук...' ) this.value=''" onblur="if (this.value=='') this.value='Пошук...'" value="Пошук..." name="q">
-                        <input type="submit" value="Пошук">
-                    </form>
+                  <form action="/search"  method="get" enctype="form-data">
+
+                      <input type="text"  name='q' placeholder= "Search" >
+                      <input type="submit" value="search">
+                  </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="../stylesheets/img/facebook.png"></a></li>
@@ -67,7 +71,6 @@ function changeImg(lin){
   img.src=lin;
 }
 </script>
-
         <div id="main">
             <section id="content">
                 <div id="columL">
@@ -76,7 +79,7 @@ function changeImg(lin){
                        <div class = "anons">
                            <section>
                              <div class = "image">
-                              <a href = "#"> <img id="myImg" src='data:image/jpg;base64,<%= prod.avatar1 %>' height="200" width="200" alt = "Apple"></a>
+                              <a href = "#"> <img id="myImg"  src='data:image/jpg;base64,<%= prod.avatar1 %>' height="200" width="200" alt = "Apple"></a>
                              </div>
                            </section>
                        </div>
@@ -145,8 +148,33 @@ function changeImg(lin){
                   <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
                  <input class = "b" type="submit" name="submit" value="Add to watch list">
                   </form >
+                  <a href="#" id="easylink">Add comment</a>
+
             </div>
+            <script>
+$(document).ready(function () {
+        $('a#easylink').click(function (e) {
+            $(this).toggleClass('active');
+            $('#description').toggle();
+            e.stopPropagation();
+        });  $('#description').click(function (e) {
+            e.stopPropagation();
+        });
+        $('body').click(function () {
+            var link = $('input#easylink');
+            if (link.hasClass('active')) {
+                link.click();
+            }
+        });
+    });
+</script>
+
+
         </div>
+        <div class='form-row'>
+           <label for='description'>Comment: </label>
+           <textarea maxlength="500" id='description' name='description'></textarea>
+         </div>
     </li>
   </ul>
                 </div>

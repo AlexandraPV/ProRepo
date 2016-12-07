@@ -82,49 +82,6 @@ app.post('/addtocart', (req, res) => {
 
 });
 
-app.post('/deletelist', (req, res) => {
-	var title = req.body.prtitle;
-  var id= req.body.prid;
-
-	db.collection('users').find({"identef": parseInt(id)})
-	.then(users => {
-
-				db.collection('users').update({"identef": parseInt(id)}, {$pull: {"list": title}});
-		})
-		.then(() => res.redirect('/list'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-
-app.post('/deleteprod', (req, res) => {
-	var title = req.body.prtitle;
-  var id= req.body.prid;
-
-	db.collection('users').find({"identef": parseInt(id)})
-	.then(users => {
-
-				db.collection('prod').remove({"title": title});
-		})
-		.then(() => res.redirect('/products'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-app.post('/deletecart', (req, res) => {
-	var title = req.body.prtitle;
-  var id= req.body.prid;
-
-	db.collection('users').find({"identef": parseInt(id)})
-	.then(users => {
-
-				db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": title}});
-		})
-		.then(() => res.redirect('/cart'))
-		.catch(err => res.status(500).end(err));
-
-});
-
 
 	app.post('/addtolist', (req, res) => {
 		var title = req.body.prtitle;
@@ -139,34 +96,6 @@ app.post('/deletecart', (req, res) => {
 			.catch(err => res.status(500).end(err));
 
 		});
-
-
-
-			app.get('/pag*', (req, res) => {
-				var decrease = req.path;
-			  decrease = decrease.slice(4);
-				var i = parseInt(decrease);
-			db.collection('prod').count()
-				.then(count => {
-			db.collection('prod').find().skip(0+i*9).limit(9+i*9)
-			    .then(prods => {
-			db.collection('prod').find().skip(4).limit(7)
-					.then(sales => {
-
-						res.render('index', {
-							sales: sales,
-							count: count,
-							prods: prods,
-							href_add:'addprod',
-						//	user : req.user
-						});
-						})
-					})
-					.catch(err => res.status(500).end(err));
-				});
-
-});
-
 
 
 
@@ -186,7 +115,7 @@ app.get('/', (req, res) => {
 			//	user : req.user
 			});
 			})
-			})
+				})
 		})
 		.catch(err => res.status(500).end(err));
   });
@@ -251,13 +180,13 @@ app.post('/add', (req, res) => {
 ////////////////////////////////////////////////////////////////////
 ///////////////////////JSON////////////////////////////////////////
 
-app.get('/apiadd', (req, res) => {
+app.get('/jsonadd', (req, res) => {
 	db.collection('prod').find().skip(5).limit(7)
 	.then(sales => res.json(sales))
 	 .catch(err => res.status(404).json({ error: err }));
 });
 
-   app.post('/apiaddtocart', (req, res) => {
+   app.post('/jsonaddtocart', (req, res) => {
   	var title = req.body.prtitle;
     var id= req.body.prid;
   	if (!title || ! id){
@@ -267,7 +196,7 @@ app.get('/apiadd', (req, res) => {
 		  .then(user => res.json(user))
 	 });
 
-	app.post('/apiaddtolist', (req, res) => {
+	app.post('/jsonaddtolist', (req, res) => {
 	  	var title = req.body.prtitle;
 	   var id= req.body.prid;
 		 if (!title || ! id){
@@ -277,7 +206,7 @@ app.get('/apiadd', (req, res) => {
 			 .then(user => res.json(user))
 	});
 
-		app.post('/apiPadd', (req, res) => {
+		app.post('/jsonPadd', (req, res) => {
 			var title = req.body.title;
 			var color = req.body.color;
 			var weight = req.body.weight;
@@ -324,7 +253,7 @@ app.get('/apiadd', (req, res) => {
 			}
 		});
 
-	app.get('/api', (req, res) => {
+	app.get('/json', (req, res) => {
 			db.collection('prod').find()
 				.then(prod => res.json(prod))
 				/*	db.collection('prod').find().skip(1).limit(7)
@@ -332,30 +261,49 @@ app.get('/apiadd', (req, res) => {
 					.catch(err => res.status(404).json({ error: err }));
 				})
 
-
-
-
-				app.delete('/apideletecart', (req, res) => {
-					var title = req.body.prtitle;
-				  var id= req.body.prid;
-if (title){
-					db.collection('users').find({"identef": parseInt(id)})
-					.then(users => {
-
-								db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": title}})
-
-						})
-						.then(user => res.json({"delete": title}))
-						.catch(err => res.status(404).json({"error": "prod exists"}));
-} else res.status(404).json({"error": "prod exists"});
-				});
-
 ///////////////////////JSON////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
 
 
 
+app.post('/deleteprod', (req, res) => {
+	var title = req.body.prtitle;
+  var id= req.body.prid;
 
+	db.collection('users').find({"identef": parseInt(id)})
+	.then(users => {
+
+				db.collection('prod').remove({"title": title});
+		})
+		.then(() => res.redirect('/products'))
+		.catch(err => res.status(500).end(err));
+
+});
+
+app.get('/pag*', (req, res) => {
+	var decrease = req.path;
+	decrease = decrease.slice(4);
+	var i = parseInt(decrease);
+db.collection('prod').count()
+	.then(count => {
+db.collection('prod').find().skip(0+i*9).limit(9+i*9)
+		.then(prods => {
+db.collection('prod').find().skip(4).limit(7)
+		.then(sales => {
+
+			res.render('index', {
+				sales: sales,
+				count: count,
+				prods: prods,
+				href_add:'addprod',
+			//	user : req.user
+			});
+			})
+		})
+		.catch(err => res.status(500).end(err));
+	});
+
+});
 
 
 

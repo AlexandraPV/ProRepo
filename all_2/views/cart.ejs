@@ -6,9 +6,19 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
 
-
+  <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
   <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
-
+  <script>
+  $(document).ready(function(){
+    $("#search_button").click(function(){
+      alert($("#search_input").val());
+      $.ajax({type:"GET", url:"/search", data: {q:$("#search_input").val()}, success: function(result){
+        alert(result);
+      }});
+    });
+  });
+  </script>
+</head>
 <body>
 
 <div class="container">
@@ -33,10 +43,11 @@
                 </div>
 
                 <section id="search">
-                    <form action="#" onsubmit="return false;" method="get">
-                        <input type="text" onfocus="if (this.value =='Пошук...' ) this.value=''" onblur="if (this.value=='') this.value='Пошук...'" value="Пошук..." name="q">
-                        <input type="submit" value="Пошук">
-                    </form>
+                  <form >
+
+                      <input type="text"  name='q' placeholder= "Search" id="search_input">
+                      <button type="submit"  id="search_button">search</button>
+                  </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
@@ -73,15 +84,6 @@
                       <% prods.filter(x => x.title).forEach( prod => { %>
 
                         <li>
-                          <div class="info">
-                        <div class="actions">
-                        <form action = "/deletecart" method="post">
-                           <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
-                           <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
-                           <input class = "b" type="submit" name="submit" value="X">
-                           </form >
-                        </div>
-                      </div>
                             <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
                             <div class="info">
                                 <a  class="title" href="/products/<%=prod.href%>"><%= prod.title %></a>

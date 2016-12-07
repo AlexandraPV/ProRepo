@@ -32,10 +32,11 @@
                 </div>
 
                 <section id="search">
-                    <form action="#" onsubmit="return false;" method="get">
-                        <input type="text" onfocus="if (this.value =='Пошук...' ) this.value=''" onblur="if (this.value=='') this.value='Пошук...'" value="Пошук..." name="q">
-                        <input type="submit" value="Пошук">
-                    </form>
+                  <form action="/search"  method="get" enctype="form-data">
+
+                      <input type="text"  name='q' placeholder= "Search" >
+                      <input type="submit" value="search">
+                  </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>

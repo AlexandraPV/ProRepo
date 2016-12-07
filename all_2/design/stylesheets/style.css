@@ -21,10 +21,7 @@ img {
  background: none;
 }
 
-.del{
-  margin-left: 200px;
-  padding-top: 5px;
-}
+
 .container {
     margin:0 auto 0;
     position:relative;
@@ -361,7 +358,7 @@ footer {
     font-size: 12px;
     line-height: 20px;
     overflow: hidden;
-    width: 1180px;
+    width: 100%;
 }
 
 .columL{

@@ -33,10 +33,11 @@
                 </div>
 
                 <section id="search">
-                    <form action="#" onsubmit="return false;" method="get">
-                        <input type="text" onfocus="if (this.value =='Пошук...' ) this.value=''" onblur="if (this.value=='') this.value='Пошук...'" value="Пошук..." name="q">
-                        <input type="submit" value="Пошук">
-                    </form>
+                  <form action="/search"  method="get" enctype="form-data">
+
+                      <input type="text"  name='q' placeholder= "Search" >
+                      <input type="submit" value="search">
+                  </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
@@ -73,15 +74,6 @@
                       <% prods.filter(x => x.title).forEach( prod => { %>
 
                         <li>
-                            <div class="info">
-                          <div class="actions">
-                          <form action = "/deletelist" method="post">
-                             <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
-                             <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
-                             <input class = "b" type="submit" name="submit" value="X">
-                             </form >
-                          </div>
-                        </div>
                             <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
                             <div class="info">
                                 <a  class="title" href="/products/<%=prod.href%>"><%= prod.title %></a>
