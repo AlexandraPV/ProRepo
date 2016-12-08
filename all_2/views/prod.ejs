@@ -5,11 +5,24 @@
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
-
-
+<link rel="stylesheet" href="../stylesheets/js/jquery.min.js" type="text/css" media="all">
+<script type="text/javascript" src="../stylesheets/js/jquery-1.2.6.js"></script>
 <link rel="stylesheet" href="../stylesheets/styleprod.css" type="text/css" media="all">
 
 <script src="stylesheets/js/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#search_button").click(function(){
+    alert($("#search_input").val());
+    $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(result){
+      alert(result);
+    }});
+  });
+});
+</script>
+
+
+
 
 
 <body>
@@ -36,10 +49,10 @@
                 </div>
 
                 <section id="search">
-                  <form action="/search"  method="get" enctype="form-data">
+                  <form >
 
-                      <input type="text"  name='q' placeholder= "Search" >
-                      <input type="submit" value="search">
+                      <input type="text"  name='q' placeholder= "Search" id="search_input">
+                      <button type="submit"  id="search_button">Search</button>
                   </form>
 
                     <ul id="social">
@@ -147,34 +160,38 @@ function changeImg(lin){
                   <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
                   <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
                  <input class = "b" type="submit" name="submit" value="Add to watch list">
-                  </form >
-                  <a href="#" id="easylink">Add comment</a>
+               </form >
+               <form>
+
+                  <input id="but" class = "a" type="button" value="Add comment" >
+
+               </form>
 
             </div>
-            <script>
-$(document).ready(function () {
-        $('a#easylink').click(function (e) {
-            $(this).toggleClass('active');
-            $('#description').toggle();
-            e.stopPropagation();
-        });  $('#description').click(function (e) {
-            e.stopPropagation();
-        });
-        $('body').click(function () {
-            var link = $('input#easylink');
-            if (link.hasClass('active')) {
-                link.click();
-            }
-        });
-    });
-</script>
+
+            <script type="text/javascript">
+            $(document).ready(function(){
+    $("input#but").click(function(){
+      $("div#p2").append(" <label for='description'>Comment: </label><textarea maxlength='500' id='description' name='description'></textarea> <form action = '/addcomment' method='post'>  <input type='text' hidden='true' name='prtitle' value='<%= prod.title %>'><input class = 'b' type='submit' name='submit' value='Add comment'></form >");
+      $("input#but").remove();
+    })
+});
+
+        /*    function addHtml(){
+        $("input#but").click(function(){
+       $("div#p2").append(" <label for='description'>Comment: </label><textarea maxlength='500' id='description' name='description'></textarea>");
+});onclick="addHtml();"
+     }*/
+
+
+            </script>
+
+
 
 
         </div>
-        <div class='form-row'>
-           <label for='description'>Comment: </label>
-           <textarea maxlength="500" id='description' name='description'></textarea>
-         </div>
+<div id="p2" class='form-row'></div>
+
     </li>
   </ul>
                 </div>

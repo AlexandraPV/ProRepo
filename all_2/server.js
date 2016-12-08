@@ -83,6 +83,19 @@ app.post('/addtocart', (req, res) => {
 });
 
 
+app.post('/addcomment', (req, res) => {
+	var title = req.body.prtitle;
+	var com = req.body.description;
+
+
+				db.collection('prod').update({"title": title}, {$push: {"coments": com}})
+
+		.then(() => res.redirect('/products'))
+		.catch(err => res.status(500).end(err));
+
+});
+
+
 	app.post('/addtolist', (req, res) => {
 		var title = req.body.prtitle;
 	  var id= req.body.prid;

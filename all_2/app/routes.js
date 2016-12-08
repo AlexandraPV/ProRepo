@@ -1,4 +1,3 @@
-// app/routes.js
 
 const mongodb = require('promised-mongo');
 const url = 'mongodb://localhost:27017/magaz';
@@ -7,21 +6,10 @@ const db = mongodb(url);
 
 module.exports = function(app, passport) {
 
-    // =====================================
-    // HOME PAGE (with login links) ========
-    // =====================================
    app.get('/', function(req, res) {
         res.render('index.ejs'); // load the index.ejs file
     });
 
-
-
-
-    // =====================================
-    // LOGIN ===============================
-
-    // =====================================
-    // show the login form
     app.get('/login', function(req, res) {
 
       db.collection('prod').find().skip(2).limit(7)
@@ -117,12 +105,14 @@ app.get('/products',isLoggedIn, (req, res) => {
   var value = req.url;
   if(value.length > 9){
   value = value.slice(12);
+
     var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+    bar = new RegExp(bar);
     console.log(value);
            db.collection('prod').find().skip(1).limit(7)
            .then(sales => {
 
-             db.collection('prod').find({brand:value})
+             db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
                .then(prods => {
                  db.collection('prod').count()
                   .then(count => {
