@@ -483,6 +483,192 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
 
 
+        ////////////////////////////////////////////////////////////////////
+        ///////////////////////JSON////////////////////////////////////////
+
+
+
+
+
+
+
+
+           app.delete('/apiproducts/*', function(req, res, next) {
+             var value = req.url;
+             value = value.slice(13);
+             var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+         //  var name = req.params.brand_name;
+           console.log(bar)
+           db.collection('prod').findOne({ 'name': bar})
+         .then(prod =>
+          db.collection('prod').remove({ 'name': bar})
+          .then(del =>
+           res.json(prod)))
+         .catch(err => res.status(404).json({ error: "ERROR" }));
+
+           });
+
+
+           app.get('/apiproducts/*', function(req, res, next) {
+             var value = req.url;
+             value = value.slice(13);
+             var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+           //  var name = req.params.brand_name;
+           console.log(bar)
+           db.collection('prod').findOne({ 'name': bar})
+           .then(prod =>res.json(prod))
+           .catch(err => res.status(404).json({ error: "ERROR" }));
+
+           });
+
+           app.post('/apiproducts/*', function(req, res, next) {
+             var value = req.url;
+             value = value.slice(13);
+             var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+             var space = '/';
+             var mas = [];
+             mas = bar.split("/");
+             var priceI = parseInt(mas[5]);
+             var lastpriceI = parseFloat(mas[6]);
+             //var mas = [];
+             //mas = splitString(bar, space);
+           //  var name = req.params.brand_name;
+           var hrefProd = mas[0];
+           hrefProd = hrefProd.replace(/ /g, '').replace(/\//g, '');
+           hrefProd= hrefProd.toLowerCase();
+           var hrProd =( '/' + hrefProd);
+           console.log(mas)
+           db.collection('prod').insert({
+             title: mas[0],
+ 						color: mas[1],
+ 						weight: mas[2],
+ 						guarantee: mas[3],
+ 						description: mas[4],
+ 						price: priceI,
+ 						lastprice: lastpriceI,
+ 						type:mas[7],
+ 						brand: mas[8],
+ 						avatar1: 'img1',
+ 						avatar2: 'img2',
+ 						avatar3: 'img3',
+ 						avatar4: 'img4',
+ 						href: hrefProd
+           })
+           .then(prod =>res.json(prod))
+           .catch(err => res.status(404).json({ error: "ERROR" }));
+
+           });
+
+
+           app.get('/apiproductsfiltr/*', function(req, res, next) {
+             var value = req.url;
+             value = value.slice(18);
+
+             var space = '/';
+             var mas = [];
+
+             mas = value.split("/");
+
+             if(mas[0] == "title"){
+
+               db.collection('prod').find({title:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
+                 .then(prod =>res.json(prod))
+                   .catch(err => res.status(404).json({ error: "ERROR" }));
+             }
+             if(mas[0] == "color"){
+               db.collection('prod').find({color:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
+                 .then(prod =>res.json(prod))
+                   .catch(err => res.status(404).json({ error: "ERROR" }));
+             }
+
+             if(mas[0] == "brand"){
+               db.collection('prod').find({brand:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
+                 .then(prod =>res.json(prod))
+                   .catch(err => res.status(404).json({ error: "ERROR" }));
+             }
+             if(mas[0] == "price"){
+               console.log(mas);
+               var a = parseInt(mas[2]);
+               if(mas[1]=="%3E"){  //>
+                 db.collection('prod').find({price: {$gt : a}})
+                   .then(prod =>res.json(prod))
+                     .catch(err => res.status(404).json({ error: "ERROR" }));
+               }
+               if(mas[1]=="%3C"){   //<
+                 db.collection('brands').find({price: {$lt : a}})
+                   .then(prod =>res.json(prod))
+                     .catch(err => res.status(404).json({ error: "ERROR" }));
+               }
+               if(mas[1]=="%3E="){    //>=
+                 db.collection('prod').find({price: {$gte : a}})
+                   .then(prod =>res.json(prod))
+                     .catch(err => res.status(404).json({ error: "ERROR" }));
+               }
+               if(mas[1]=="%3C="){     //<=
+                 db.collection('prod').find({price: {$lte : a}})
+                   .then(prod =>res.json(prod))
+                     .catch(err => res.status(404).json({ error: "ERROR" }));
+               }
+               if(mas[1]=="="){     //=
+                 db.collection('prod').find({price: a})
+                   .then(prod =>res.json(prod))
+                     .catch(err => res.status(404).json({ error: "ERROR" }));
+               }
+
+             }
+
+
+           });
+
+
+           app.post('/apiproductsupdate/*', function(req, res, next) {
+             var value = req.url;
+             value = value.slice(19);
+
+             var space = '/';
+             var mas = [];
+
+             mas = value.split("/");
+
+             if(mas[1] == "title"){
+
+               db.collection('prod').update({title : mas[0]}, {$set: {title : mas[2]}})
+                 .then(prod =>res.json(prod))
+                   .catch(err => res.status(404).json({ error: "ERROR" }));
+             }
+             if(mas[1] == "color"){
+               db.collection('prod').update({title : mas[0]}, {$set: {color : mas[2]}})
+                 .then(prod =>res.json(prod))
+                   .catch(err => res.status(404).json({ error: "ERROR" }));
+             }
+             if(mas[1] == "weight"){
+             db.collection('prod').update({title : mas[0]}, {$set: {weight: mas[2]}})
+                   .then(prod =>res.json(prod))
+                     .catch(err => res.status(404).json({ error: "ERROR" }));
+             }
+             if(mas[1] == "price"){
+               var a = parseInt(mas[2]);
+               db.collection('prod').update({title : mas[0]}, {$set: {price : a}})
+                     .then(prod =>res.json(prod))
+                       .catch(err => res.status(404).json({ error: "ERROR" }));
+               }
+               if(mas[1] == "price"){
+                 var a = parseInt(mas[2]);
+                 db.collection('prod').update({title : mas[0]}, {$set: {price : a}})
+                       .then(prod =>res.json(prod))
+                         .catch(err => res.status(404).json({ error: "ERROR" }));
+                 }
+
+
+           });
+
+
+
+
+
+                   ///////////////////////JSON////////////////////////////////////////
+                   ////////////////////////////////////////////////////////////////////
+
 
 
 
