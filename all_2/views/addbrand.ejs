@@ -54,8 +54,7 @@
                     <a href="#"><img src="img/up.png" title="Logo" alt="Logo" /></a>
                 </div>
 
-              
-                  <section id="search">
+                <section id="search">
 
                     <form action="/search"  method="get" enctype="form-data">
 
@@ -92,77 +91,39 @@
         <div id="main">
             <section id="content">
                 <div id="columL">
-                     <h3>Add product</h3>
-          <form action='/add' method='POST' class='add-form reg-form rf'  enctype="multipart/form-data" >
+                     <h3>Add brand</h3>
+          <form action='/addbrand' method='POST' class='add-form' enctype="multipart/form-data">
 
    		<div class='form-row'>
    			<label for='title'>Name: </label>
-       		<input maxlength="30" type='text' class="rfield test" id='title' name='title'>
-          <span id="msg" style="float:right; margin-right:10px"></span>
+       		<input maxlength="30" type='text' id='name' name='name'>
      		</div>
 
         <div class='form-row'>
-          <label for='brand'>Brand: </label>
-          <input maxlength="20" type='text'  class="rfield test" id='brand' name='brand'>
-          <span id="msg1" style="float:right; margin-right:10px"></span>
+          <label for='brand'>Founder: </label>
+          <input maxlength="100" type='text' id='founder' name='founder'>
         </div>
 
      		<div class='form-row'>
-       		<label for='color'>Color: </label>
-       		<input maxlength="20" type='text' class="rfield test" id='color' name='color'>
-          <span id="msg2" style="float:right; margin-right:10px"></span>
+       		<label for='color'>Date: </label>
+       		<input maxlength="20" type='date' id='date' name='date'>
    		</div>
 
    		<div class='form-row'>
-   			<label for='weight'>Weight: </label>
-   			<input maxlength="20" type='text' class="rfield test" id='weight' name='weight'>
-        <span id="msg3" style="float:right; margin-right:10px"></span>
+   			<label for='weight'>Staf: </label>
+   			<input maxlength="20" type='text' id='staf' name='staf'>
    		</div>
 
    		<div class='form-row'>
-   			<label for='guarantee'>Guarantee: </label>
-   			<input maxlength="20" type='text' class="rfield test" id='guarantee' name='guarantee'>
-          <span id="msg4" style="float:right; margin-right:10px"></span>
+   			<label for='guarantee'>Cost: </label>
+   			<input maxlength="20" type='text' id='cost' name='cost'>
    		</div>
 
-      <div class='form-row'>
-        <label for='price'>Price: </label>
-        <input maxlength="20"  type='text' class="rfield test" id='price' name='price'>
-          <span id="msg5" style="float:right; margin-right:10px"></span>
-      </div>
-
-      <div class='form-row'>
-        <label for='lastprice'>Last Price: </label>
-        <input maxlength="20"  type='text' class="rfield test" id='lastprice' name='lastprice'>
-          <span id="msg6" style="float:right; margin-right:10px"></span>
-      </div>
-
-   		<div class='form-row'>
-   			<label for='description'>Description: </label>
-   			<textarea maxlength="200" id='description' class="rfield test" name='description'></textarea>
-          <span id="msg7" style="float:right; margin-right:10px"></span>
-   		</div>
-      <p>Add 1 photo</p>
+      <p>Add photo</p>
          <input type='file' name='avatar1' />
-      <p>Add 2 photo</p>
-          <input type='file' name='avatar2' />
-      <p>Add 3 photo</p>
-          <input type='file' name='avatar3' />
-      <p>Add 4 photo</p>
-          <input type='file' name='avatar4' />
-
-          <p><select name="type" label="Choose">
-    <option value="comp" selected>Computers and Laptops</option>
-    <option value="phon" >Phones</option>
-    <option value="home">Homeware</option>
-    <option value="cloth" >Clothes and Footwear</option>
-    <option value="book" >Books and stationery</option>
-    <option value="applhome" >Home Appliances</option>
-   </select>
-
 
    		<div class="form-row">
-   			<input type="submit" class="btn_submit disabled" value='Add'>
+   			<input type="submit" value='Add'>
    		</div>
 
    	</form>

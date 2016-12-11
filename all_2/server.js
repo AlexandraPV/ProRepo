@@ -68,6 +68,16 @@ app.get('/add', (req, res) => {
 
 
 
+	app.get('/addbrand', (req, res) => {
+		db.collection('prod').find().skip(5).limit(7)
+		.then(sales => {
+		res.render('addbrand',{
+			sales:sales
+		});
+			})
+		});
+
+
 app.post('/addtocart', (req, res) => {
 	var title = req.body.prtitle;
   var id= req.body.prid;
@@ -88,7 +98,8 @@ app.post('/addcomment', (req, res) => {
 	var com = req.body.description;
 
 
-				db.collection('prod').update({"title": title}, {$push: {"coments": com}})
+
+				db.collection('prod').update({"title": title}, {$push: {"comments": com}})
 
 		.then(() => res.redirect('/products'))
 		.catch(err => res.status(500).end(err));
@@ -120,6 +131,58 @@ app.post('/addcomment', (req, res) => {
 						db.collection('prod').remove({"title": name});
 				})
 				.then(() => res.redirect('/products'))
+				.catch(err => res.status(500).end(err));
+
+		});
+		app.post('/update', (req, res) => {
+			var first_name = req.body.first_name;
+			var second_name = req.body.second_name;
+			var login = req.body.login;
+			var email = req.body.email;
+			var phone = req.body.phone;
+			var about = req.body.about;
+			var avaFile1 = req.files.avatar;
+			var base64String1 = avaFile1.data.toString('base64');
+      var id = req.body.prid;
+			console.log(id);
+			db.collection('users').find({"identef": parseInt(id)})
+			.then(users => {
+						db.collection('users').update({"identef": parseInt(id)}, {local:{
+							first_name: first_name,
+							second_name: second_name,
+							login : login,
+							email :email,
+							phone :phone,
+							about :about,
+							avatar :avatar
+						}});
+				})
+				.then(() => res.redirect('/profile'))
+				.catch(err => res.status(500).end(err));
+
+		});
+
+		app.post('/deletefromlist', (req, res) => {
+			var name = req.body.prtitle;
+			var id= req.body.prid;
+
+			db.collection('users').findOne({"identef": parseInt(id)})
+			.then(users => {
+						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"list": {$in:[name]}}});
+				})
+				.then(() => res.redirect('/list'))
+				.catch(err => res.status(500).end(err));
+
+		});
+		app.post('/deletefromcart', (req, res) => {
+			var name = req.body.prtitle;
+			var id= req.body.prid;
+
+			db.collection('users').findOne({"identef": parseInt(id)})
+			.then(users => {
+						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": {$in:[name]}}});
+				})
+				.then(() => res.redirect('/cart'))
 				.catch(err => res.status(500).end(err));
 
 		});
@@ -194,11 +257,54 @@ app.post('/add', (req, res) => {
 						avatar2: base64String2,
 						avatar3: base64String3,
 						avatar4: base64String4,
-						href: hrefProd
+						href: hrefProd,
+
 					});
 				}
 			})
 			.then(() => res.redirect('/products'))
+			.catch(err => res.status(500).end(err));
+	}
+});
+
+
+app.post('/addbrand', (req, res) => {
+	var name = req.body.name;
+	var founder = req.body.founder;
+	var date = req.body.date;
+	var staf = req.body.staf;
+	var cost = req.body.cost;
+	var avaFile1 = req.files.avatar1;
+
+	var hrefProd = req.body.name;
+var stafI = parseInt(staf);
+var costI = parseFloat(cost);
+	hrefProd = hrefProd.replace(/ /g, '').replace(/\//g, '');
+	hrefProd= hrefProd.toLowerCase();
+	var hrProd =( '/' + hrefProd);
+
+	var base64String1 = avaFile1.data.toString('base64');
+
+	if (!name || !founder || !date || !staf || !cost || !avaFile1 ) res.status(400).end('not ok');
+	else {
+		db.collection('brands').findOne({ name: name})
+			.then(prod => {
+				if (prod) res.status(200).end('brand exists');
+				else {
+
+					return db.collection('brands').insert({
+						name: name,
+						founder: founder,
+						date: date,
+						staf: stafI,
+						cost: costI,
+						avatar1: base64String1,
+
+						href: hrefProd
+					});
+				}
+			})
+			.then(() => res.redirect('/brands'))
 			.catch(err => res.status(500).end(err));
 	}
 });

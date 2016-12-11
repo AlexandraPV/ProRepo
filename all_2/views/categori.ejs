@@ -29,7 +29,7 @@
           <ul>
           <li class="menu">
             <a href="/">Головна</a></li>
-          <li><a href="#">Бренди</a></li>
+          <li><a href="/brands">Бренди</a></li>
           <li><a href="/products">Каталог товарів</a></li>
           <li><a href="#">Контакти</a></li>
           <li><a href="/profile">Акаунт</a></li>
@@ -43,11 +43,12 @@
                 </div>
 
                 <section id="search">
-                  <form >
 
-                      <input type="text"  name='q' placeholder= "Search" id="search_input">
-                      <button type="submit"  id="search_button">Search</button>
-                  </form>
+                    <form action="/search"  method="get" enctype="form-data">
+
+                        <input type="text"  name='q' placeholder= "Search" >
+                        <input type="submit" value="search">
+                    </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>

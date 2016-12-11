@@ -77,7 +77,7 @@ module.exports = function(passport) {
 
                 newUser.local.first_name = req.body.first_name;
                 newUser.local.second_name = req.body.second_name;
-
+                newUser.local.login = req.body.login;
                 newUser.local.phone = req.body.phone;
                 newUser.local.about = req.body.about;
                 newUser.local.avatar = base64String;

@@ -5,9 +5,22 @@
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
-<link rel="stylesheet" href="stylesheets/stylePag.css">
-
   <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
+  <link rel="stylesheet" href="stylesheets/stylePag.css">
+  <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
+  <!--<script src="stylesheets/js/jquery.min.js"></script>-->
+  <script>
+  $(document).ready(function(){
+    $("#search_button").click(function(){
+      alert($("#search_input").val());
+      $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(result){
+        alert(result);
+      }});
+    });
+  });
+  </script>
+
+
 
 <body>
 
@@ -23,7 +36,7 @@
           <li><a href="/products">Каталог товарів</a></li>
           <li><a href="#">Контакти</a></li>
           <li><a href="/profile">Акаунт</a></li>
-<!-- <li><button> <img src="img/korzina1.png" href = "index.html"></button></li>-->
+    <!-- <li><button> <img src="img/korzina1.png" href = "index.html"></button></li>-->
           </ul>
           </nav>
 
@@ -34,11 +47,11 @@
 
                 <section id="search">
 
-                  <form action="/search"  method="get" enctype="form-data">
+                    <form action="/search"  method="get" enctype="form-data">
 
-                      <input type="text"  name='q' placeholder= "Search" >
-                      <input type="submit" value="search">
-                  </form>
+                        <input type="text"  name='q' placeholder= "Search" >
+                        <input type="submit" value="search">
+                    </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
@@ -63,69 +76,53 @@
 
         </header>
 
-                   <span id="slide1" class="slide"></span>
-                   <span id="slide2" class="slide"></span>
-                   <span id="slide3" class="slide"></span>
-                   <span id="slide4" class="slide"></span>
-                   <span id="slide5" class="slide"></span>
-
-                   <ul class="slider">
-
-                       <li class="slides">
-                           <img src="img/6.jpg" alt="" class="g0" />
-                           <img src="img/1.jpg" alt="" class="g1" />
-                           <img src="img/2.jpg" alt="" class="g2" />
-                           <img src="img/3.jpg" alt="" class="g3" />
-                           <img src="img/4.jpg" alt="" class="g4" />
-                           <img src="img/5.jpg" alt="" class="g5" />
-                       </li>
-
-                       <li class="track">
-                           <a href="#slide0" class="tr0"></a>
-                           <a href="#slide1" class="tr1"></a>
-                           <a href="#slide2" class="tr2"></a>
-                           <a href="#slide3" class="tr3"></a>
-                           <a href="#slide4" class="tr4"></a>
-                           <a href="#slide5" class="tr5"></a>
-                       </li>
-                   </ul>
 
 
         <div id="main">
             <section id="content">
                 <div id="columL">
-                  <h3>Interesting offers</h3>
-                 <ul>
-                   <% prods.filter(x => x.title).forEach( prod => { %>
+                     <h3>Brands</h3>
+                    <ul>
+                      <% prods.filter(x => x.name).forEach( prod => { %>
 
-                     <li>
-                         <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
-                         <div class="info">
-                             <a  class="title" href="/products/<%=prod.href%>"><%= prod.title %></a>
+                        <li>
+                          <% if(user.local.role =="admin") { %>
+                            <div class="info">
+                          <div class="actions">
+                          <form action = "/deleteprod" method="post">
+                             <input type="text" hidden="true" name="prtitle" value="<%= prod.name %>">
+                             <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
+                             <input class = "b" type="submit" name="submit" value="X">
+                             </form >
+                          </div>
+                        </div>
+                              <% }; %>
+                            <div class="img"><a id="path" href="/brands/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
+                            <div class="info">
+                                <a  class="title" href="/brands/<%=prod.href%>"><%= prod.name %></a>
 
-                           <p class="size"> <%= prod.description %> </p>
-                             <div class="price">
-                                 <span class="st">Our price:</span><strong>$<%= prod.price %></strong>
-                             </div>
-                             <div class="actions">
+                              <p class="size"> <%= prod.founder %> </p>
+                                <div class="price">
+                                    <span class="st">Staf:</span><strong>$<%= prod.staf %></strong>
+                                </div>
+                                <div class="actions">
 
-                                 <a href="/products/<%=prod.href%>">Details</a>
+                                    <a href="/brands/<%=prod.href%>">Details</a>
 
-                             </div>
-                         </div>
-                     </li>
+                                  <!--  <a href="#">Add to cart</a>-->
+                                </div>
+                            </div>
+                        </li>
 
-                     <% }); %>
+                        <% }); %>
 
-                 </ul>
-
+                    </ul>
                 </div>
-
-
                 <div id="columR">
                     <h3>Top sells</h3>
                     <ul>
                            <% sales.filter(x => x.title).forEach( sale => { %>
+
                         <li>
                             <div class="img"><a href="/products/<%=sale.href%>"><img alt="" src='data:image/jpg;base64,<%= sale.avatar1 %>'></a></div>
                             <div class="info">
@@ -137,18 +134,20 @@
                             </div>
                         </li>
                         <% }); %>
-                    </ul>
-                </div>
-            </section>
-            <section class="pagination">
-                    <ul>
-                          <% for (var i = 0; i < (Math.floor(count/9)+1); i++) {  %>
-                        <li><a href="/pag<%=i%>" title="Страница 1"><%=i+1%></a></li>
-                        <%}%>
+
 
                     </ul>
-            </section>
-        </div>
+                </div>
+                </section>
+                <section class="pagination">
+                  <ul>
+                        <% for (var i = 0; i < (Math.floor(count/9)+1); i++) {  %>
+                      <li><a href="/brpag<%=i%>" title="Страница 1"><%=i+1%></a></li>
+                      <%}%>
+
+                  </ul>
+                </section>
+                </div>
 
 
     <footer>

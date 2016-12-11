@@ -29,7 +29,7 @@
           <ul>
           <li class="menu">
             <a href="/">Головна</a></li>
-          <li><a href="#">Бренди</a></li>
+          <li><a href="/brands">Бренди</a></li>
           <li><a href="/products">Каталог товарів</a></li>
           <li><a href="#">Контакти</a></li>
           <li><a href="/profile">Акаунт</a></li>
@@ -43,10 +43,11 @@
                 </div>
 
                 <section id="search">
-                  <form >
 
-                      <input type="text"  name='q' placeholder= "Search" id="search_input">
-                      <button type="submit"  id="search_button">search</button>
+                  <form action="/search"  method="get" enctype="form-data">
+
+                      <input type="text"  name='q' placeholder= "Search" >
+                      <input type="submit" value="search">
                   </form>
 
                     <ul id="social">
@@ -84,6 +85,15 @@
                       <% prods.filter(x => x.title).forEach( prod => { %>
 
                         <li>
+                          <div class="info">
+                        <div class="actions">
+                        <form action = "/deletefromcart" method="post">
+                           <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
+                           <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
+                           <input class = "b" type="submit" name="submit" value="X">
+                           </form >
+                        </div>
+                      </div>
                             <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
                             <div class="info">
                                 <a  class="title" href="/products/<%=prod.href%>"><%= prod.title %></a>

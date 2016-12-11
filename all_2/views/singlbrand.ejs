@@ -7,7 +7,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
 <link rel="stylesheet" href="../stylesheets/js/jquery.min.js" type="text/css" media="all">
 <script type="text/javascript" src="../stylesheets/js/jquery-1.2.6.js"></script>
-<link rel="stylesheet" href="../stylesheets/styleprod.css" type="text/css" media="all">
+<link rel="stylesheet" href="../stylesheets/styleBr.css" type="text/css" media="all">
 
 <script src="stylesheets/js/jquery.min.js"></script>
 <script>
@@ -79,39 +79,27 @@ $(document).ready(function(){
         </header>
 
 
+
 <script type="text/javascript">
 function changeImg(lin){
   var img = document.getElementById("myImg");
   img.src=lin;
 }
 </script>
+
         <div id="main">
             <section id="content">
                 <div id="columL">
-                    <h3><%= prod.title %></h3>
+                    <h3><%= prod.name %></h3>
                  <div class = "left-left">
                        <div class = "anons">
                            <section>
                              <div class = "image">
-                              <a href = "#"> <img id="myImg"  src='data:image/jpg;base64,<%= prod.avatar1 %>' height="200" width="200" alt = "Apple"></a>
+                              <a href = "#"> <img id="myImg" src='data:image/jpg;base64,<%= prod.avatar1 %>' height="200" width="200" alt = "Apple"></a>
                              </div>
                            </section>
                        </div>
-                    <div class="block">
-                        <div class ="smal_img">
-                          <a href = "#" onclick="changeImg('data:image/jpg;base64,<%= prod.avatar1 %>')"><img src='data:image/jpg;base64,<%= prod.avatar1 %>' height="50" width="50" alt = "Apple"></a>
-                        </div>
-                        <div class ="smal_img">
-                          <a href = "#" onclick="changeImg('data:image/jpg;base64,<%= prod.avatar2 %>')"><img src='data:image/jpg;base64,<%= prod.avatar2 %>' height="50" width="50" alt = "Apple"></a>
-                        </div>
-                        <div class ="smal_img">
-                          <a href = "#" onclick="changeImg('data:image/jpg;base64,<%= prod.avatar3 %>')"><img src='data:image/jpg;base64,<%= prod.avatar3 %>' height="50" width="50" alt = "Apple"></a>
-                        </div>
-                        <div class ="smal_img">
-                          <a href = "#" onclick="changeImg('data:image/jpg;base64,<%= prod.avatar4 %>')"><img src='data:image/jpg;base64,<%= prod.avatar4 %>' height="50" width="50"  alt = "Apple"></a>
-                        </div>
 
-                    </div>
                   </div>
                 <div class="columMed">
 <table>
@@ -120,28 +108,28 @@ function changeImg(lin){
   <tr>
     <td><strong>Name</strong></td>
 
-    <td><%= prod.title%></td>
+    <td><%= prod.name%></td>
   </tr>
   <tr>
-    <td><strong>Price</strong></td>
+    <td><strong>Founder</strong></td>
 
-    <td>$<%= prod.price%></td>
+    <td><%= prod.founder%></td>
   </tr>
 
   <tr>
-    <td><strong>Weight</strong></td>
+    <td><strong>Date</strong></td>
 
-    <td><%= prod.weight %></td>
+    <td><%= prod.date %></td>
   </tr>
   <tr>
-    <td><strong>Guarantee</strong></td>
+    <td><strong>Staf</strong></td>
 
-    <td><%= prod.guarantee %></td>
+    <td><%= prod.staf %></td>
   </tr>
   <tr>
-    <td><strong>Description </strong></td>
+    <td><strong>Cost </strong></td>
 
-    <td><%= prod.description %></td>
+    <td><%= prod.cost %></td>
   </tr>
 
 </tbody>
@@ -149,54 +137,25 @@ function changeImg(lin){
 <ul>
     <li>
 
+      <% if(user.local.role =="admin") { %>
         <div class="info">
+      <div class="actions">
+      <form action = "/deleteprod" method="post">
+         <input type="text" hidden="true" name="prtitle" value="<%= prod.name %>">
+         <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
+         <input class = "a" type="submit" name="submit" value="Delete">
+         </form >
+       </form >
 
-            <div class="actions">
-              <form action = "/addtocart" method="post">
-                <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
-                <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
-               <input class = "a" type="submit" name="submit" value="Add to cart">
-                </form >
-                <form action = "/addtolist" method="post">
-                  <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
-                  <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
-                 <input class = "b" type="submit" name="submit" value="Add to watch list">
-               </form >
-               <form>
-
-                  <input id="but" class = "a" type="button" value="Add comment" >
-
-               </form>
-
-            </div>
-
-            <script type="text/javascript">
-            $(document).ready(function(){
-    $("input#but").click(function(){
-      $("div#p2").append(" <label for='description'>Comment: </label><form action = '/addcomment' method='post'>  <textarea maxlength='200' id='description' name='description'></textarea><input type='text' hidden='true' name='prtitle' value='<%= prod.title %>'><input class = 'b' type='submit' name='submit' value='Add comment'></form >");
-      $("input#but").remove();
-    })
-});
-            </script>
-
-        </div>
-<div id="p2" class='form-row'></div>
+      </div>
+    </div>
+          <% }; %>
 
     </li>
   </ul>
-
-  <div id="columR">
-    <h1> <%=prod.comments%> </h1>
-
-  </div>
-
                 </div>
 
-
-
                 </div>
-
-
                 <div id="columR">
                     <h3>Top sells</h3>
                     <ul>

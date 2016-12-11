@@ -45,6 +45,8 @@ module.exports = function(app, passport) {
      });
 
 
+    
+
      app.get('/propag*', isLoggedIn, (req, res) => {
            var decrease = req.path;
            decrease = decrease.slice(7);
@@ -72,6 +74,33 @@ module.exports = function(app, passport) {
 
          });
 
+         app.get('/brpag*', isLoggedIn, (req, res) => {
+               var decrease = req.path;
+               decrease = decrease.slice(7);
+               var i = parseInt(decrease);
+             db.collection('brands').count()
+               .then(count => {
+             db.collection('brands').find().skip(0+i*9).limit(9+i*9)
+                 .then(prods => {
+             db.collection('prod').find().skip(4).limit(7)
+                 .then(sales => {
+
+                   res.render('brands', {
+                     search_value: "",
+                     sales: sales,
+                     count: count,
+                     prods: prods,
+                     href_add:'addprod',
+                     user : req.user
+                   //	user : req.user
+                   });
+                   })
+                 })
+                 .catch(err => res.status(500).end(err));
+               });
+
+             });
+
 
 
 
@@ -84,10 +113,12 @@ module.exports = function(app, passport) {
 
     	db.collection('prod').findOne({ href: uri_dec})
     		.then(prod => {
+
     			db.collection('prod').find().skip(5).limit(7)
     			.then(sales => {
 
     			res.render('prod', {
+
     				prod: prod,
             sales: sales,
             user : req.user
@@ -99,6 +130,29 @@ module.exports = function(app, passport) {
 
       });
 
+      app.get('/brands/*',isLoggedIn, (req, res) => {
+        var decrease = req.path;
+        decrease = decrease.slice(8);
+        var uri_dec = decodeURIComponent(decrease);
+
+        db.collection('brands').findOne({ href: uri_dec})
+          .then(prod => {
+
+            db.collection('prod').find().skip(5).limit(7)
+            .then(sales => {
+
+            res.render('singlbrand', {
+
+              prod: prod,
+              sales: sales,
+              user : req.user
+            });
+            })
+          })
+
+          .catch(err => res.status(500).end(err));
+
+        });
 
 
 app.get('/products',isLoggedIn, (req, res) => {
@@ -125,7 +179,7 @@ app.get('/products',isLoggedIn, (req, res) => {
                });
              });
                   })
-                 .catch(err => res.status(500).end(err));
+    .catch(err => res.status(500).end(err));
 }else{
 
 	db.collection('prod').find().limit(9)
@@ -148,6 +202,52 @@ app.get('/products',isLoggedIn, (req, res) => {
 }
 });
 
+app.get('/brands',isLoggedIn, (req, res) => {
+  var value = req.url;
+  if(value.length > 9){
+  value = value.slice(12);
+
+    var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+    bar = new RegExp(bar);
+    console.log(value);
+           db.collection('prod').find().skip(1).limit(7)
+           .then(sales => {
+
+             db.collection('brands').find({name:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+               .then(prods => {
+                 db.collection('brands').count()
+                  .then(count => {
+               res.render('brands', {
+                 prods: prods,
+                 sales: sales,
+                 user : req.user,
+                 count: count
+    });
+               });
+             });
+                  })
+    .catch(err => res.status(500).end(err));
+}else{
+
+	db.collection('brands').find().limit(9)
+		.then(prods => {
+			db.collection('prod').find().skip(1).limit(7)
+			.then(sales => {
+        db.collection('brands').count()
+         .then(count => {
+			res.render('brands', {
+				prods: prods,
+				sales:sales,
+        count:count,
+				user : req.user
+			});
+				})
+        })
+		})
+
+		.catch(err => res.status(500).end(err));
+}
+});
 
 
 
@@ -341,7 +441,32 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
 
 
+    app.get('/search',isLoggedIn, (req, res) => {
 
+                var value = req.url;
+                value = value.slice(10);
+                var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+          console.log(value);
+                 db.collection('prod').find().skip(1).limit(7)
+                 .then(sales => {
+
+                   db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                     .then(prods => {
+                       db.collection('prod').count()
+                        .then(count => {
+                     res.render('search', {
+                       value: value,
+                       prods: prods,
+                       sales: sales,
+                       user : req.user,
+                       count: count
+          });
+                     });
+                   });
+                        })
+                       .catch(err => res.status(500).end(err));
+
+                });
 
 
      ////////////////////////////////////////////////////////////////////
