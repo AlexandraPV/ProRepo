@@ -93,18 +93,7 @@ app.post('/addtocart', (req, res) => {
 });
 
 
-app.post('/addcomment', (req, res) => {
-	var title = req.body.prtitle;
-	var com = req.body.description;
 
-
-
-				db.collection('prod').update({"title": title}, {$push: {"comments": com}})
-
-		.then(() => res.redirect('/products'))
-		.catch(err => res.status(500).end(err));
-
-});
 
 
 	app.post('/addtolist', (req, res) => {
@@ -134,34 +123,37 @@ app.post('/addcomment', (req, res) => {
 				.catch(err => res.status(500).end(err));
 
 		});
-		app.post('/update', (req, res) => {
+	/*	app.post('/update', (req, res) => {
 			var first_name = req.body.first_name;
 			var second_name = req.body.second_name;
 			var login = req.body.login;
 			var email = req.body.email;
 			var phone = req.body.phone;
 			var about = req.body.about;
-			var avaFile1 = req.files.avatar;
-			var base64String1 = avaFile1.data.toString('base64');
-      var id = req.body.prid;
+
+			var id = req.body.prid;
 			console.log(id);
 			db.collection('users').find({"identef": parseInt(id)})
+
 			.then(users => {
-						db.collection('users').update({"identef": parseInt(id)}, {local:{
-							first_name: first_name,
-							second_name: second_name,
-							login : login,
-							email :email,
-							phone :phone,
-							about :about,
-							avatar :avatar
+					console.log(users);
+
+						db.collection('users').update({"identef": parseInt(id)}, { local:{
+						first_name: first_name,
+						second_name: second_name,
+						login : login,
+						email :email,
+						phone :phone,
+            about :about
+
 						}});
 				})
+
 				.then(() => res.redirect('/profile'))
 				.catch(err => res.status(500).end(err));
 
 		});
-
+*/
 		app.post('/deletefromlist', (req, res) => {
 			var name = req.body.prtitle;
 			var id= req.body.prid;

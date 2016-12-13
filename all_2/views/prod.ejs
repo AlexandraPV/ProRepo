@@ -21,7 +21,7 @@ $(document).ready(function(){
 });
 </script>
 
-
+</head>
 
 
 
@@ -184,12 +184,24 @@ function changeImg(lin){
 
     </li>
   </ul>
+  <div class="com">
+    <% for (var i = 0; i < prod.comments.length; i++) {  %>
+  <div >
+    <table>
 
-  <div id="columR">
-    <h1> <%=prod.comments%> </h1>
+    <tbody>
+      <tr>
+        <td><strong><%=prod.comments[i][0]%></strong></td>
 
+        <td><%= prod.comments[i][1]%></td>
+      </tr>
+
+
+    </tbody>
+    </table>
   </div>
-
+<%}%>
+</div>
                 </div>
 
 

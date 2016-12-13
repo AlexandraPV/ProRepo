@@ -34,7 +34,7 @@ module.exports = function(app, passport) {
     });
 
 
-    app.get('/update', isLoggedIn, function(req, res) {
+  /*  app.get('/update', isLoggedIn, function(req, res) {
       db.collection('prod').find().skip(4).limit(7)
       .then(sales => {
       res.render('update.ejs',{
@@ -43,9 +43,9 @@ module.exports = function(app, passport) {
       });
         })
      });
+*/
 
 
-    
 
      app.get('/propag*', isLoggedIn, (req, res) => {
            var decrease = req.path;
@@ -103,7 +103,14 @@ module.exports = function(app, passport) {
 
 
 
-
+app.post('/addcomment',isLoggedIn, (req, res) => {
+    var title = req.body.prtitle;
+    var com = req.body.description;
+    var user =req.user;
+   db.collection('prod').update({"title": title}, {$push: {"comments": [user.local.login, com]}})
+      .then(() => res.redirect('/products'))
+      .catch(err => res.status(500).end(err));
+   });
 
 
     app.get('/products/*',isLoggedIn, (req, res) => {
@@ -123,7 +130,8 @@ module.exports = function(app, passport) {
             sales: sales,
             user : req.user
     			});
-    			})
+
+})
     		})
 
     		.catch(err => res.status(500).end(err));
