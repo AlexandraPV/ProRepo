@@ -460,20 +460,20 @@ app.get('/cloth',isLoggedIn, (req, res) => {
                 });
 
 
-  /*  app.get('/search',isLoggedIn, (req, res) => {
+   app.get('/searchsimpl',isLoggedIn, (req, res) => {
 
                 var value = req.url;
-                value = value.slice(10);
-                var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
-          console.log(value);
+                var value = value.slice(21, -25);
+                //var bar = br.slice(0, 24);
+console.log(value);
                  db.collection('prod').find().skip(1).limit(7)
                  .then(sales => {
 
-                   db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                   db.collection('prod').find({brand:{'$regex': '.*' + value + '.*', '$options': '$i'}})
                      .then(prods => {
                        db.collection('prod').count()
                         .then(count => {
-                     res.render('search', {
+                     res.render('searchsimp', {
                        value: value,
                        prods: prods,
                        sales: sales,
@@ -486,7 +486,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
                        .catch(err => res.status(500).end(err));
 
                 });
-*/
+
 
      ////////////////////////////////////////////////////////////////////
      ///////////////////////JSON////////////////////////////////////////

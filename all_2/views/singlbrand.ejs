@@ -144,8 +144,15 @@ function changeImg(lin){
          <input type="text" hidden="true" name="prtitle" value="<%= prod.name %>">
          <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
          <input class = "a" type="submit" name="submit" value="Delete">
-         </form >
+
        </form >
+       <form action = "/searchsimpl" method="get">
+          <input type="text" hidden="true" name="prtitle" value="<%= prod.name %>">
+          
+          <input class = "b" type="submit" name="submit" value="Products of brand">
+
+        </form >
+
 
       </div>
     </div>
