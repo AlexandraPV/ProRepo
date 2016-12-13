@@ -154,6 +154,7 @@ app.post('/addtocart', (req, res) => {
 
 		});
 */
+
 		app.post('/deletefromlist', (req, res) => {
 			var name = req.body.prtitle;
 			var id= req.body.prid;
@@ -245,6 +246,7 @@ app.post('/add', (req, res) => {
 						lastprice: lastprice,
 						type:type,
 						brand: brand,
+						comments: [],
 						avatar1: base64String1,
 						avatar2: base64String2,
 						avatar3: base64String3,

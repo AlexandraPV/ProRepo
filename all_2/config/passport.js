@@ -72,6 +72,7 @@ module.exports = function(passport) {
                 newUser.identef=count;
                 newUser.cart=[];
                 newUser.list=[];
+              
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
 

@@ -447,9 +447,20 @@ app.get('/cloth',isLoggedIn, (req, res) => {
         })
     });
 
-
-
     app.get('/search',isLoggedIn, (req, res) => {
+
+                var value = req.url;
+                var list=[];
+                value = value.slice(10);
+                var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+
+                   db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                     .then(prods => res.json(prods))
+                     .catch(err => res.status(500).end(err));
+                });
+
+
+  /*  app.get('/search',isLoggedIn, (req, res) => {
 
                 var value = req.url;
                 value = value.slice(10);
@@ -475,7 +486,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
                        .catch(err => res.status(500).end(err));
 
                 });
-
+*/
 
      ////////////////////////////////////////////////////////////////////
      ///////////////////////JSON////////////////////////////////////////

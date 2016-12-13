@@ -9,17 +9,19 @@
 <script type="text/javascript" src="../stylesheets/js/jquery-1.2.6.js"></script>
 <link rel="stylesheet" href="../stylesheets/styleprod.css" type="text/css" media="all">
 
-<script src="stylesheets/js/jquery.min.js"></script>
+<script type="text/javascript" src="../stylesheets/js/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
   $("#search_button").click(function(){
     alert($("#search_input").val());
-    $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(result){
-      alert(result);
+    $.ajax({type:"GET", url:"/search" , dataType: "json", data: {q:$("#search_input").val()}, success: function(result){
+      alert(result[0].title);
     }});
   });
 });
 </script>
+
+
 
 </head>
 
@@ -50,11 +52,11 @@ $(document).ready(function(){
 
                 <section id="search">
 
-                    <form action="/search"  method="get" enctype="form-data">
+                  <!--  <form action="/search"  method="get" enctype="form-data">-->
 
-                        <input type="text"  name='q' placeholder= "Search" >
-                        <input type="submit" value="search">
-                    </form>
+                        <input type="text" id="search_input"  name='q' placeholder= "Search" >
+                        <button type="submit" id="search_button" >search</button>
+                  <!--  </form>-->
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="../stylesheets/img/facebook.png"></a></li>
@@ -184,11 +186,15 @@ function changeImg(lin){
 
     </li>
   </ul>
-  <div class="com">
-    <% for (var i = 0; i < prod.comments.length; i++) {  %>
-  <div >
-    <table>
+  </div>
 
+  <div class="com">
+
+    <table>
+      <% if(prod.comments.length>0){%>
+        <h3>Comments:</h3>
+      <%}%>
+  <% for (var i = 0; i < prod.comments.length; i++) {  %>
     <tbody>
       <tr>
         <td><strong><%=prod.comments[i][0]%></strong></td>
@@ -198,11 +204,12 @@ function changeImg(lin){
 
 
     </tbody>
+    <%}%>
     </table>
-  </div>
-<%}%>
+
+
 </div>
-                </div>
+
 
 
 

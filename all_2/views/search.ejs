@@ -12,12 +12,18 @@
   <script>
   $(document).ready(function(){
     $("#search_button").click(function(){
-      alert($("#search_input").val());
-      $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(result){
-        alert(result);
+      
+      $(".bl").remove();
+      $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(prods){
+        for (i in prods){
+          $("#blnew").prepend('<li><div class="img"><a id="path" href="/products/<%=prods[i].href%>"><img alt="" src="data:image/jpg;base64,<%= prods[i].avatar1 %>"></a></div><div class="info"><a  class="title" href="/products/<%=prods[i].href%>"><%= prods[i].title %></a><p class="size"> <%= prods[i].description %> </p><div class="price"><span class="st">Our price:</span><strong>$<%= prods[i].price %></strong></div><div class="actions"><a href="/products/<%=prods[i].href%>">Details</a><form action = "/addtocart" method="post"><input type="text" hidden="true" name="prtitle" value="<%= prods[i].title %>"><input type="text" hidden="true" name="prid" value="<%= user.identef%>"><input class = "b" type="submit" name="submit" value="Add to cart"></form ></div></div></li>');
+              };
+
+        //alert(result);
       }});
     });
   });
+
   </script>
 
 
@@ -81,11 +87,12 @@
 
         <div id="main">
             <section id="content">
-                <div id="columL">
+                <div id="columL" >
                      <h3>You find "<%=value%>"</h3>
+                     <div class="bl">
                     <ul>
                       <% prods.filter(x => x.title).forEach( prod => { %>
-
+<div id="blnew">
                         <li>
                           <% if(user.local.role =="admin") { %>
                             <div class="info">
@@ -118,10 +125,12 @@
                                 </div>
                             </div>
                         </li>
+  </div>
 
                         <% }); %>
 
                     </ul>
+                  </div>
                 </div>
                 <div id="columR">
                     <h3>Top sells</h3>
@@ -143,6 +152,7 @@
 
                     </ul>
                 </div>
+
             </section>
             <section class="pagination">
                   <ul>
