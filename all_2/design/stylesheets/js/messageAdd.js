@@ -60,7 +60,11 @@
                                                 if(inputString==""){
                                                     $("#msg5").css({ "color": "red", });
                                                     $("#msg5").html(" Вы должны заполнить поле");
-                                                } else {
+                                                }else
+                                               if(!(/[0-9]$/.test(inputString))){
+                                                $("#msg5").css({ "color": "red", });
+                                                $("#msg5").html("Мають бути тільки цифри");
+                                              } else {
                                                     $("#msg5").css({ "color": "green", });
                                                     $("#msg5").html(" Ок");
                                                 }
@@ -71,7 +75,11 @@
                                                     if(inputString==""){
                                                         $("#msg6").css({ "color": "red", });
                                                         $("#msg6").html(" Вы должны заполнить поле");
-                                                    } else {
+                                                    }else
+                                                   if(!(/[0-9]$/.test(inputString))){
+                                                    $("#msg6").css({ "color": "red", });
+                                                    $("#msg6").html("Мають бути тільки цифри");
+                                                  } else {
                                                         $("#msg6").css({ "color": "green", });
                                                         $("#msg6").html(" Ок");
                                                     }

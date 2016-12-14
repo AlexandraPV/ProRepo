@@ -5,9 +5,10 @@
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
-  <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
+  <link rel="stylesheet" href="stylesheets/stylecont.css" type="text/css" media="all">
   <link rel="stylesheet" href="stylesheets/stylePag.css">
   <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
+
   <!--<script src="stylesheets/js/jquery.min.js"></script>-->
   <script>
   $(document).ready(function(){
@@ -47,11 +48,11 @@
 
                 <section id="search">
 
-                    <form action="/search"  method="get" enctype="form-data">
+                  <form action="/search"  method="get" enctype="form-data">
 
-                        <input type="text"  name='q' placeholder= "Search" >
-                        <input type="submit" value="search">
-                    </form>
+                      <input type="text"  name='q' placeholder= "Search" >
+                      <input type="submit" value="search">
+                  </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
@@ -78,43 +79,32 @@
 
 
 
+
         <div id="main">
             <section id="content">
                 <div id="columL">
-                     <h3>Brands</h3>
+                     <h3>Умови використання сайту</h3>
                     <ul>
-                      <% prods.filter(x => x.name).forEach( prod => { %>
+
 
                         <li>
-                          <% if(user.local.role =="admin") { %>
-                            <div class="info">
-                          <div class="actions">
-                          <form action = "/deleteprod" method="post">
-                             <input type="text" hidden="true" name="prtitle" value="<%= prod.name %>">
-                             <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
-                             <input class = "b" type="submit" name="submit" value="X">
-                             </form >
-                          </div>
-                        </div>
-                              <% }; %>
-                            <div class="img"><a id="path" href="/brands/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
-                            <div class="info">
-                                <a  class="title" href="/brands/<%=prod.href%>"><%= prod.name %></a>
-
-                              <p class="size"> <%= prod.founder %> </p>
-                                <div class="price">
-                                    <span class="st">Staf:</span><strong>$<%= prod.staf %></strong>
-                                </div>
-                                <div class="actions">
-
-                                    <a href="/brands/<%=prod.href%>">Details</a>
-
-                                  <!--  <a href="#">Add to cart</a>-->
-                                </div>
+                            <div class="cont">
+                                <a  class="title">Використання сайту</a>
+                              <p >Сайт Logo дозволяє вам переглядати та завантажувати матеріали цього сайту тільки для особистого некомерційного використання, за умови збереження вами всієї інформації про авторське право та інших відомостей про право власності, що містяться у вихідних матеріалах і будь-яких їхніх копіях. Заборонено змінювати матеріали цього cайту, а також поширювати або демонструвати їх у будь-якому вигляді або використовувати їх будь-яким іншим чином для суспільних чи комерційних цілей. Будь-яке використання цих матеріалів на інших сайтах або в комп'ютерних мережах заборонено.</p>
                             </div>
                         </li>
-
-                        <% }); %>
+                        <li>
+                            <div class="cont">
+                                <a  class="title">Реєстрація на сайті</a>
+                              <p >Реєструючись на cайті, ви погоджуєтеся надати достовірну та точну інформацію про себе і свої контактні дані. У результаті реєстрації ви отримуєте логін і пароль, за безпеку яких ви несете відповідальність. Ви також несете відповідальність за всі дії під вашим логіном і паролем на cайті. У разі втрати реєстраційних даних ви зобов'язуєтеся повідомити нам про це.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="cont">
+                                <a  class="title">Зворотний зв'язок і коментарі</a>
+                              <p >Звертаючись до нас або залишаючи коментарі на сайті, ви несете відповідальність, що це повідомлення не є незаконним, шкідливим, загрозливим, наклепницьким, суперечить моральним нормам, порушує авторські права, пропагує ненависть і/або дискримінацію людей за расовою, етнічною, статевою, релігійною, соціальною ознаками, містить образи на адресу конкретних осіб або організацій, а також будь-яким іншим чином порушує чинне законодавство України. Ви погоджуєтеся, що будь-яке ваше повідомлення Logo може видаляти без вашої на те згоди, а також безоплатно використовувати на власний розсуд. Logo не несе відповідальності за будь-яку інформацію, розміщену користувачами cайту.</p>
+                            </div>
+                        </li>
 
                     </ul>
                 </div>
@@ -138,16 +128,9 @@
 
                     </ul>
                 </div>
-                </section>
-                <section class="pagination">
-                  <ul>
-                        <% for (var i = 0; i < (Math.floor(count/9)+1); i++) {  %>
-                      <li><a href="/brpag<%=i%>" title="Страница 1"><%=i+1%></a></li>
-                      <%}%>
+            </section>
 
-                  </ul>
-                </section>
-                </div>
+        </div>
 
 
     <footer>

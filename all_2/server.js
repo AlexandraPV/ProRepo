@@ -65,6 +65,14 @@ app.get('/add', (req, res) => {
 		})
 	});
 
+	app.get('/rules', (req, res) => {
+		db.collection('prod').find().skip(5).limit(7)
+		.then(sales => {
+		res.render('contacts',{
+			sales:sales
+		});
+			})
+		});
 
 
 
