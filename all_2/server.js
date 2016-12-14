@@ -131,7 +131,7 @@ app.post('/addtocart', (req, res) => {
 				.catch(err => res.status(500).end(err));
 
 		});
-	/*	app.post('/update', (req, res) => {
+		app.post('/update', (req, res) => {
 			var first_name = req.body.first_name;
 			var second_name = req.body.second_name;
 			var login = req.body.login;
@@ -146,22 +146,22 @@ app.post('/addtocart', (req, res) => {
 			.then(users => {
 					console.log(users);
 
-						db.collection('users').update({"identef": parseInt(id)}, { local:{
-						first_name: first_name,
-						second_name: second_name,
+						db.collection('users').update({"identef": parseInt(id)}, { "local.$first_name": first_name})
+
+					/*	second_name: second_name,
 						login : login,
 						email :email,
 						phone :phone,
             about :about
 
-						}});
+					}});*/
 				})
 
 				.then(() => res.redirect('/profile'))
 				.catch(err => res.status(500).end(err));
 
 		});
-*/
+
 
 		app.post('/deletefromlist', (req, res) => {
 			var name = req.body.prtitle;
@@ -172,6 +172,19 @@ app.post('/addtocart', (req, res) => {
 						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"list": {$in:[name]}}});
 				})
 				.then(() => res.redirect('/list'))
+				.catch(err => res.status(500).end(err));
+
+		});
+
+		app.post('/deletecom', (req, res) => {
+			var num = req.body.prtitle;
+			var id= req.body.prid;
+  console.log(num);
+			var i = parseInt(num);
+
+						db.collection('users').update({"identef": parseInt(id)}, {$pop: {"comments": i}})
+
+				.then(() => res.redirect('/products'))
 				.catch(err => res.status(500).end(err));
 
 		});

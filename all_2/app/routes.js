@@ -34,7 +34,7 @@ module.exports = function(app, passport) {
     });
 
 
-  /*  app.get('/update', isLoggedIn, function(req, res) {
+    app.get('/update', isLoggedIn, function(req, res) {
       db.collection('prod').find().skip(4).limit(7)
       .then(sales => {
       res.render('update.ejs',{
@@ -43,7 +43,7 @@ module.exports = function(app, passport) {
       });
         })
      });
-*/
+
 
 
 
@@ -77,7 +77,7 @@ module.exports = function(app, passport) {
          app.get('/brpag*', isLoggedIn, (req, res) => {
                var decrease = req.path;
                decrease = decrease.slice(7);
-               var i = parseInt(decrease);
+
              db.collection('brands').count()
                .then(count => {
              db.collection('brands').find().skip(0+i*9).limit(9+i*9)
@@ -137,6 +137,42 @@ app.post('/addcomment',isLoggedIn, (req, res) => {
     		.catch(err => res.status(500).end(err));
 
       });
+
+
+
+      app.get('/profile/*',isLoggedIn, (req, res) => {
+        var decrease = req.path;
+        decrease = decrease.slice(9);
+        var uri_dec = decodeURIComponent(decrease);
+        db.collection('user').findOne({login: uri_dec})
+          .then(userP => {
+console.log(userP.identef);
+            db.collection('prod').find().skip(5).limit(7)
+            .then(sales => {
+               if(userP.identef===req.user.identef){
+
+                 res.render('profile',{
+                   sales:sales,
+                   user : req.user
+                 });
+               } else {
+            res.render('profileUser', {
+
+              userO: userP,
+              sales: sales,
+              user : req.user
+            });
+}
+      })
+          })
+
+          .catch(err => res.status(500).end(err));
+
+        });
+
+
+
+
 
       app.get('/brands/*',isLoggedIn, (req, res) => {
         var decrease = req.path;
@@ -432,6 +468,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
              .catch(err => res.status(500).end(err));
 
       		});
+
 
 
 

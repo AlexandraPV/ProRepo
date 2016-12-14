@@ -74,7 +74,7 @@
                        <div class = "anons">
                            <section>
                              <div class = "image">
-               <a href = "#"> <img id="myImg" src='data:image/jpg;base64,<%= user.local.avatar %>' height="200" width="200" alt = "Apple"></a>
+               <a href = "#"> <img id="myImg" src='data:image/jpg;base64,<%= userO.local.avatar %>' height="200" width="200" alt = "Apple"></a>
                              </div>
                            </section>
                        </div>
@@ -90,23 +90,23 @@
   <tr>
     <td><strong>Name</strong></td>
 
-    <td><%= user.local.first_name%></td>
+    <td><%= userO.local.first_name%></td>
   </tr>
   <tr>
     <td><strong>Surname</strong></td>
 
-    <td><%= user.local.second_name%></td>
+    <td><%= userO.local.second_name%></td>
   </tr>
 
   <tr>
     <td><strong>Phone</strong></td>
 
-    <td><%= user.local.phone %></td>
+    <td><%= userO.local.phone %></td>
   </tr>
 
     <td><strong>About myself: </strong></td>
 
-    <td><%= user.local.about %></td>
+    <td><%= userO.local.about %></td>
   </tr>
 
 </tbody>
@@ -115,36 +115,6 @@
     <li>
 
 
-
-
-        <div class="info">
-
-
-
-
-
-            <div class="actions">
-                <a href="/logout" >Logout</a>
-
-
-               <form action = "/cart" method="get">
-                  <input type="text" hidden="true" name="cart" value="<%= user.cart%>">
-                 <input class = "b" type="submit" name="submit" value="Cart">
-               </form >
-                  <form action = "/list" method="get">
-                    <input type="text" hidden="true" name="prid" value="<%= user.list%>">
-                   <input class = "b" type="submit" name="submit" value="Watch list">
-                    </form >
-
-                    <!--   <a id= "admin" href="/update">Update</a>-->
-               <a href="/update">Add information</a>
-                <% if(user.local.role =="admin") { %>
-                <a id= "admin" href="/add">Add product</a>
-                <a id= "admin" href="/addbrand">Add brand</a>
-                    <% }; %>
-
-            </div>
-        </div>
     </li>
   </ul>
                 </div>

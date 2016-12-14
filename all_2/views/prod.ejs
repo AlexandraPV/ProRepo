@@ -189,23 +189,29 @@ function changeImg(lin){
   </div>
 
   <div class="com">
-
-    <table>
+    <ul>
       <% if(prod.comments.length>0){%>
         <h3>Comments:</h3>
       <%}%>
-  <% for (var i = 0; i < prod.comments.length; i++) {  %>
-    <tbody>
-      <tr>
-        <td><strong><%=prod.comments[i][0]%></strong></td>
+      <% for (var i = 0; i < prod.comments.length; i++) {  %>
+        <li>
+            <div class="cont">
+              <form action = "/deletecom" method="post">
+                <% if(user.local.role =="admin") { %>
+                 <input type="text" hidden="true" name="prtitle" value="<%=i%>">
+                 <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
+                 <input  type="submit" name="submit" value="X">
+                <%}%>
+                 <a  class="title" href="/profile/<%=prod.comments[i][0]%>"><%=prod.comments[i][0]%></a>
+ </form >
+            <p ><%= prod.comments[i][1]%></p>
+            </div>
+        </li>
+          <%}%>
+      </ui>
 
-        <td><%= prod.comments[i][1]%></td>
-      </tr>
 
 
-    </tbody>
-    <%}%>
-    </table>
 
 
 </div>

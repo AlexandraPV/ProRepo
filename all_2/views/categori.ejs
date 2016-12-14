@@ -6,31 +6,18 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
   <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
-  <link rel="stylesheet" href="stylesheets/stylePag.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
-<script type="text/javascript" src="../stylesheets/js/jquery-1.2.6.js"></script>
-  <!--<script src="stylesheets/js/jquery.min.js"></script>-->
+  <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
 
   <script>
   $(document).ready(function(){
     $("#search_button").click(function(){
-
-      $(".bl").remove();
-      $.ajax({type:"GET", url:"/search",  data: {q:$("#search_input").val()}, success: function(prods){
-        alert(prods);
-
-        for (i in prods){
-
-          $(".bl-container").append('<div class = "bl"><li><div class="img"><a id="path" href="/products/' + prods[i].href + '"><img alt="" src="data:image/jpg;base64,'  + prods[i].avatar1 + '"></a></div><div class="info"><a  class="title" href="/products/' + prods[i].href + '">' + prods[i].title.replace(/</g,"&lt;") + '</a><p class="size">'+prods[i].description+ '</p><div class="price"><span class="st">Our price:</span><strong>$' + prods[i].price +'</strong></div><div class="actions"><a href="/products/' + prods[i].href + '">Details</a><form action = "/addtocart" method="post"><input type="text" hidden="true" name="prtitle" value="' + prods[i].title + '"><input type="text" hidden="true" name="prid" value=""><input class = "b" type="submit" name="submit" value="Add to cart"></form ></div></div></li></div>');
-              };
-
-        //alert(result);
+      alert($("#search_input").val());
+      $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(result){
+        alert(result);
       }});
     });
   });
-
   </script>
-
 
 <body>
 
@@ -44,9 +31,9 @@
             <a href="/">Головна</a></li>
           <li><a href="/brands">Бренди</a></li>
           <li><a href="/products">Каталог товарів</a></li>
-          <li><a href="/rules">Правила користування</a></li>
+          <li><a href="#">Контакти</a></li>
           <li><a href="/profile">Акаунт</a></li>
-    <!-- <li><button> <img src="img/korzina1.png" href = "index.html"></button></li>-->
+          <!-- <li><button> <img src="img/korzina1.png" href = "index.html"></button></li>-->
           </ul>
           </nav>
 
@@ -57,9 +44,11 @@
 
                 <section id="search">
 
+                    <form action="/search"  method="get" enctype="form-data">
 
-                  <input type="text" id="search_input"  name='q' placeholder= "Search" >
-                  <button type="submit" id="search_button" >search</button>
+                        <input type="text"  name='q' placeholder= "Search" >
+                        <input type="submit" value="search">
+                    </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
@@ -71,16 +60,17 @@
                 </section>
             </div>
 
-            <section id="submenu">
-              <ul>
-              <li><a href="/comp">Комп'ютери та ноутбуки</a></li>
-              <li><a href="/phones">Телефони</a></li>
-              <li><a href="/home">Товари для дому</a></li>
-              <li><a href="/cloth">Одяг та взуття</a></li>
-              <li><a href="/book">Книги та канцтовари</a></li>
-              <li><a href="/applhome">Побутова техніка</a></li>
-              </ul>
-            </section>
+
+              <section id="submenu">
+                <ul>
+                <li><a href="/comp">Комп'ютери та ноутбуки</a></li>
+                <li><a href="/phones">Телефони</a></li>
+                <li><a href="/home">Товари для дому</a></li>
+                <li><a href="/cloth">Одяг та взуття</a></li>
+                <li><a href="/book">Книги та канцтовари</a></li>
+                <li><a href="/applhome">Побутова техніка</a></li>
+                </ul>
+              </section>
 
         </header>
 
@@ -91,23 +81,10 @@
             <section id="content">
                 <div id="columL">
                      <h3>Interesting offers</h3>
-
                     <ul>
-                      <div class="bl-container">
                       <% prods.filter(x => x.title).forEach( prod => { %>
-<div class="bl">
+
                         <li>
-                          <% if(user.local.role =="admin") { %>
-                            <div class="info">
-                          <div class="actions">
-                          <form action = "/deleteprod" method="post">
-                             <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
-                             <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
-                             <input class = "b" type="submit" name="submit" value="X">
-                             </form >
-                          </div>
-                        </div>
-                              <% }; %>
                             <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
                             <div class="info">
                                 <a  class="title" href="/products/<%=prod.href%>"><%= prod.title %></a>
@@ -124,16 +101,13 @@
                                       <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
                                      <input class = "b" type="submit" name="submit" value="Add to cart">
                                       </form >
-                                  <!--  <a href="#">Add to cart</a>-->
                                 </div>
                             </div>
                         </li>
-  </div>
 
                         <% }); %>
-</div>
-                    </ul>
 
+                    </ul>
                 </div>
                 <div id="columR">
                     <h3>Top sells</h3>
@@ -156,14 +130,6 @@
                     </ul>
                 </div>
             </section>
-            <section class="pagination">
-                  <ul>
-                        <% for (var i = 0; i < (Math.floor(count/9)+1); i++) {  %>
-                      <li><a href="/propag<%=i%>" title="Страница 1"><%=i+1%></a></li>
-                      <%}%>
-
-                  </ul>
-          </section>
         </div>
 
 

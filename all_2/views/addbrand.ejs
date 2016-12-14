@@ -6,7 +6,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" type="image/x-icon" href="img/fav.png">
   <script src="stylesheets/js/jquery.min.js"></script>
-  <script src="stylesheets/js/messageAdd.js"></script>
+  <script src="stylesheets/js/messageAddBrand.js"></script>
   <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
 
   <script>
@@ -92,38 +92,43 @@
             <section id="content">
                 <div id="columL">
                      <h3>Add brand</h3>
-          <form action='/addbrand' method='POST' class='add-form' enctype="multipart/form-data">
+          <form action='/addbrand' method='POST' class='add-form reg-form rf' enctype="multipart/form-data">
 
    		<div class='form-row'>
    			<label for='title'>Name: </label>
-       		<input maxlength="30" type='text' id='name' name='name'>
+       		<input maxlength="30" type='text' class="rfield test" id='name' name='name'>
+          <span id="msg" style="float:right; margin-right:10px"></span>
      		</div>
 
         <div class='form-row'>
           <label for='brand'>Founder: </label>
-          <input maxlength="100" type='text' id='founder' name='founder'>
+          <input maxlength="100" type='text' class="rfield test" id='founder' name='founder'>
+          <span id="msg1" style="float:right; margin-right:10px"></span>
         </div>
 
      		<div class='form-row'>
        		<label for='color'>Date: </label>
-       		<input maxlength="20" type='date' id='date' name='date'>
+       		<input maxlength="20" type='date' class="rfield test" id='date' name='date'>
+          <span id="msg2" style="float:right; margin-right:10px"></span>
    		</div>
 
    		<div class='form-row'>
    			<label for='weight'>Staf: </label>
-   			<input maxlength="20" type='text' id='staf' name='staf'>
+   			<input maxlength="20" type='text' class="rfield test" id='staf' name='staf'>
+        <span id="msg3" style="float:right; margin-right:10px"></span>
    		</div>
 
    		<div class='form-row'>
    			<label for='guarantee'>Cost: </label>
-   			<input maxlength="20" type='text' id='cost' name='cost'>
+   			<input maxlength="20" type='text' class="rfield test" id='cost' name='cost'>
+        <span id="msg4" style="float:right; margin-right:10px"></span>
    		</div>
 
       <p>Add photo</p>
          <input type='file' name='avatar1' />
 
    		<div class="form-row">
-   			<input type="submit" value='Add'>
+   			<input type="submit" class="btn_submit disabled" value='Add'>
    		</div>
 
    	</form>
