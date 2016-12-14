@@ -53,14 +53,15 @@ header {
     padding: 37px 0 0 39px;
 }
 #search {
+
     float: right;
     margin: 21px 41px 0 0;
     text-align: right;
 }
-#search form {
+#search  .h{
     float:right;
 }
-#search form input[type="text"] {
+#search  input[type="text"] {
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #E0E0E0;
     float: left;
@@ -69,7 +70,26 @@ header {
     padding: 5px;
     width: 129px;
 }
-#search form input[type="submit"] {
+#search  input[type="submit"] {
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    border-left-width:0px;
+    color: #383838;
+    cursor:pointer;
+    float: left;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    height: 27px;
+    padding: 0;
+    width: 64px;
+}
+#search .j{
+   display: inline-block;
+}
+
+#search  button[type="submit"] {
+
     background-color: #FFFFFF;
     border: 1px solid #E0E0E0;
     border-left-width:0px;
@@ -84,21 +104,13 @@ header {
     width: 64px;
 }
 
-#search  button[type="submit"] {
-    background-color: #FFFFFF;
-    border: 1px solid #E0E0E0;
-    border-left-width:0px;
-    color: #383838;
-    cursor:pointer;
-    float: left;
-    font-family: Arial,Helvetica,sans-serif;
-    font-size: 11px;
-    font-weight: bold;
-    height: 27px;
-    padding: 0;
-    width: 64px;
-}
 #social {
+  position: absolute;
+  position:absolute;
+ top:21px;
+ right:246px;
+
+
     float:right;
     list-style:none outside none;
     margin:0 30px 0 0;

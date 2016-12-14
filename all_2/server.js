@@ -1,45 +1,30 @@
-
-// set up ======================================================================
-// get all the tools we need
 var express  = require('express');
 var app      = express();
 var port     = process.env.PORT || 8080;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
-
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
-
 var configDB = require('./config/database.js');
 
-// configuration ===============================================================
-mongoose.connect(configDB.url); // connect to our database
+mongoose.connect(configDB.url);
+app.use(morgan('dev'));
+app.use(cookieParser());
+app.use(bodyParser());
 
-// require('./config/passport')(passport); // pass passport for configuration
+app.set('view engine', 'ejs');
 
-// set up our express application
-app.use(morgan('dev')); // log every request to the console
-app.use(cookieParser()); // read cookies (needed for auth)
-app.use(bodyParser()); // get information from html forms
-
-app.set('view engine', 'ejs'); // set up ejs for templating
-
-// required for passport
-app.use(session({ secret: 'appallowpasstook' })); // session secret
+app.use(session({ secret: 'appallowpasstook' }));
 app.use(passport.initialize());
-app.use(passport.session()); // persistent login sessions
-app.use(flash()); // use connect-flash for flash messages stored in session
-
-
+app.use(passport.session());
+app.use(flash());
 
 const mongodb = require('promised-mongo');
 var path = require('path');
-
 const busboyBodyParser = require('busboy-body-parser');
-
 const url = 'mongodb://localhost:27017/magaz';
 const db = mongodb(url);
 
@@ -57,12 +42,12 @@ const salt = '%656_das9870';
 
 
 app.get('/add', (req, res) => {
-	db.collection('prod').find().skip(5).limit(7)
-	.then(sales => {
-	res.render('add',{
-		sales:sales
-	});
-		})
+			db.collection('prod').find().skip(5).limit(7)
+			.then(sales => {
+			res.render('add',{
+				sales:sales
+			});
+				})
 	});
 
 	app.get('/rules', (req, res) => {
@@ -85,7 +70,6 @@ app.get('/add', (req, res) => {
 			})
 		});
 
-
 app.post('/addtocart', (req, res) => {
 	var title = req.body.prtitle;
   var id= req.body.prid;
@@ -100,11 +84,7 @@ app.post('/addtocart', (req, res) => {
 
 });
 
-
-
-
-
-	app.post('/addtolist', (req, res) => {
+app.post('/addtolist', (req, res) => {
 		var title = req.body.prtitle;
 	  var id= req.body.prid;
 		console.log(id);
@@ -116,9 +96,9 @@ app.post('/addtocart', (req, res) => {
 			.then(() => res.redirect('/products'))
 			.catch(err => res.status(500).end(err));
 
-		});
+});
 
-		app.post('/deleteprod', (req, res) => {
+app.post('/deleteprod', (req, res) => {
 			var name = req.body.prtitle;
 		  var id= req.body.prid;
 
@@ -130,8 +110,9 @@ app.post('/addtocart', (req, res) => {
 				.then(() => res.redirect('/products'))
 				.catch(err => res.status(500).end(err));
 
-		});
-		app.post('/update', (req, res) => {
+});
+
+app.post('/update', (req, res) => {
 			var first_name = req.body.first_name;
 			var second_name = req.body.second_name;
 			var login = req.body.login;
@@ -140,13 +121,13 @@ app.post('/addtocart', (req, res) => {
 			var about = req.body.about;
 
 			var id = req.body.prid;
-			console.log(id);
-			db.collection('users').find({"identef": parseInt(id)})
+			console.log(first_name);
+			db.collection('users').findOne({"identef": parseInt(id)})
 
 			.then(users => {
 					console.log(users);
-
-						db.collection('users').update({"identef": parseInt(id)}, { "local.$first_name": first_name})
+      mongoose.Schema().update({"first_name": users.local.first_name}, {$set:{ "first_name": first_name}})
+						//db.collection('users').update({"identef": parseInt(id)}, {$set:{ local.$.first_name: first_name}})
 
 					/*	second_name: second_name,
 						login : login,
@@ -160,10 +141,10 @@ app.post('/addtocart', (req, res) => {
 				.then(() => res.redirect('/profile'))
 				.catch(err => res.status(500).end(err));
 
-		});
+});
 
 
-		app.post('/deletefromlist', (req, res) => {
+app.post('/deletefromlist', (req, res) => {
 			var name = req.body.prtitle;
 			var id= req.body.prid;
 
@@ -174,21 +155,25 @@ app.post('/addtocart', (req, res) => {
 				.then(() => res.redirect('/list'))
 				.catch(err => res.status(500).end(err));
 
+});
+
+app.post('/deletecom', (req, res) => {
+					var num = req.body.prtitle;
+					var id= req.body.prid;
+					var log = req.body.prlog;
+					var com = req.body.prcom;
+	        var i = parseInt(num);
+		db.collection('prod').findOne({href: id})
+		.then(prod => {
+			console.log(prod.brand);
+
+		db.collection('prod').update({href: id}, {$pull:{"comments" : [log, com]}})
+						.then(() => res.redirect('/products'))
+						.catch(err => res.status(500).end(err));
 		});
+});
 
-		app.post('/deletecom', (req, res) => {
-			var num = req.body.prtitle;
-			var id= req.body.prid;
-  console.log(num);
-			var i = parseInt(num);
-
-						db.collection('users').update({"identef": parseInt(id)}, {$pop: {"comments": i}})
-
-				.then(() => res.redirect('/products'))
-				.catch(err => res.status(500).end(err));
-
-		});
-		app.post('/deletefromcart', (req, res) => {
+app.post('/deletefromcart', (req, res) => {
 			var name = req.body.prtitle;
 			var id= req.body.prid;
 
@@ -199,8 +184,7 @@ app.post('/addtocart', (req, res) => {
 				.then(() => res.redirect('/cart'))
 				.catch(err => res.status(500).end(err));
 
-		});
-
+});
 
 app.get('/', (req, res) => {
 
@@ -221,7 +205,7 @@ app.get('/', (req, res) => {
 				})
 		})
 		.catch(err => res.status(500).end(err));
-  });
+});
 
 app.post('/add', (req, res) => {
 	var title = req.body.title;
@@ -282,7 +266,6 @@ app.post('/add', (req, res) => {
 	}
 });
 
-
 app.post('/addbrand', (req, res) => {
 	var name = req.body.name;
 	var founder = req.body.founder;
@@ -292,8 +275,8 @@ app.post('/addbrand', (req, res) => {
 	var avaFile1 = req.files.avatar1;
 
 	var hrefProd = req.body.name;
-var stafI = parseInt(staf);
-var costI = parseFloat(cost);
+  var stafI = parseInt(staf);
+  var costI = parseFloat(cost);
 	hrefProd = hrefProd.replace(/ /g, '').replace(/\//g, '');
 	hrefProd= hrefProd.toLowerCase();
 	var hrProd =( '/' + hrefProd);
@@ -324,6 +307,46 @@ var costI = parseFloat(cost);
 	}
 });
 
+app.post('/deleteprod', (req, res) => {
+	var title = req.body.prtitle;
+  var id= req.body.prid;
+
+	db.collection('users').find({"identef": parseInt(id)})
+	.then(users => {
+
+				db.collection('prod').remove({"title": title});
+		})
+		.then(() => res.redirect('/products'))
+		.catch(err => res.status(500).end(err));
+
+});
+
+app.get('/pag*', (req, res) => {
+			var decrease = req.path;
+			decrease = decrease.slice(4);
+			var i = parseInt(decrease);
+		db.collection('prod').count()
+			.then(count => {
+		db.collection('prod').find().skip(0+i*9).limit(9+i*9)
+				.then(prods => {
+		db.collection('prod').find().skip(4).limit(7)
+				.then(sales => {
+
+					res.render('index', {
+						sales: sales,
+						count: count,
+						prods: prods,
+						href_add:'addprod',
+					//	user : req.user
+					});
+					})
+				})
+				.catch(err => res.status(500).end(err));
+			});
+
+});
+
+
 ////////////////////////////////////////////////////////////////////
 ///////////////////////JSON////////////////////////////////////////
 
@@ -333,7 +356,7 @@ app.get('/jsonadd', (req, res) => {
 	 .catch(err => res.status(404).json({ error: err }));
 });
 
-   app.post('/jsonaddtocart', (req, res) => {
+app.post('/jsonaddtocart', (req, res) => {
   	var title = req.body.prtitle;
     var id= req.body.prid;
   	if (!title || ! id){
@@ -341,9 +364,9 @@ app.get('/jsonadd', (req, res) => {
 	   }
   	  db.collection('users').find({"identef": parseInt(id)})
 		  .then(user => res.json(user))
-	 });
+});
 
-	app.post('/jsonaddtolist', (req, res) => {
+app.post('/jsonaddtolist', (req, res) => {
 	  	var title = req.body.prtitle;
 	   var id= req.body.prid;
 		 if (!title || ! id){
@@ -351,9 +374,9 @@ app.get('/jsonadd', (req, res) => {
 		 }
 		 db.collection('users').find({"identef": parseInt(id)})
 			 .then(user => res.json(user))
-	});
+});
 
-		app.post('/jsonPadd', (req, res) => {
+app.post('/jsonPadd', (req, res) => {
 			var title = req.body.title;
 			var color = req.body.color;
 			var weight = req.body.weight;
@@ -398,64 +421,18 @@ app.get('/jsonadd', (req, res) => {
 						.then(sales => res.json(sales))*/
 						.catch(err => res.status(404).json({ error: err }));
 			}
-		});
+});
 
-	app.get('/json', (req, res) => {
+app.get('/json', (req, res) => {
 			db.collection('prod').find()
 				.then(prod => res.json(prod))
 				/*	db.collection('prod').find().skip(1).limit(7)
 					.then(sales => res.json(sales))*/
 					.catch(err => res.status(404).json({ error: err }));
-				})
+})
 
 ///////////////////////JSON////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
-
-
-
-app.post('/deleteprod', (req, res) => {
-	var title = req.body.prtitle;
-  var id= req.body.prid;
-
-	db.collection('users').find({"identef": parseInt(id)})
-	.then(users => {
-
-				db.collection('prod').remove({"title": title});
-		})
-		.then(() => res.redirect('/products'))
-		.catch(err => res.status(500).end(err));
-
-});
-
-app.get('/pag*', (req, res) => {
-	var decrease = req.path;
-	decrease = decrease.slice(4);
-	var i = parseInt(decrease);
-db.collection('prod').count()
-	.then(count => {
-db.collection('prod').find().skip(0+i*9).limit(9+i*9)
-		.then(prods => {
-db.collection('prod').find().skip(4).limit(7)
-		.then(sales => {
-
-			res.render('index', {
-				sales: sales,
-				count: count,
-				prods: prods,
-				href_add:'addprod',
-			//	user : req.user
-			});
-			})
-		})
-		.catch(err => res.status(500).end(err));
-	});
-
-});
-
-
-
-
-
 
 
 

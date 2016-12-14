@@ -52,11 +52,11 @@ $(document).ready(function(){
 
                 <section id="search">
 
-                  <!--  <form action="/search"  method="get" enctype="form-data">-->
+                  <form action="/searchwind"  method="get" enctype="form-data">
 
-                        <input type="text" id="search_input"  name='q' placeholder= "Search" >
-                        <button type="submit" id="search_button" >search</button>
-                  <!--  </form>-->
+                      <input type="text"  name='q' placeholder= "Search" >
+                      <input type="submit" value="search">
+                  </form>
 
                     <ul id="social">
                       <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="../stylesheets/img/facebook.png"></a></li>
@@ -199,7 +199,9 @@ function changeImg(lin){
               <form action = "/deletecom" method="post">
                 <% if(user.local.role =="admin") { %>
                  <input type="text" hidden="true" name="prtitle" value="<%=i%>">
-                 <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
+                 <input type="text" hidden="true" name="prid" value="<%= prod.href%>">
+                 <input type="text" hidden="true" name="prlog" value="<%=prod.comments[i][0]%>">
+                 <input type="text" hidden="true" name="prcom" value="<%=prod.comments[i][1]%>">
                  <input  type="submit" name="submit" value="X">
                 <%}%>
                  <a  class="title" href="/profile/<%=prod.comments[i][0]%>"><%=prod.comments[i][0]%></a>

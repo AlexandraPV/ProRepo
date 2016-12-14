@@ -9,22 +9,25 @@
   <link rel="stylesheet" href="stylesheets/stylePag.css">
   <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
   <!--<script src="stylesheets/js/jquery.min.js"></script>-->
-  <script>
-  $(document).ready(function(){
-    $("#search_button").click(function(){
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+  <script type="text/javascript" src="../stylesheets/js/jquery-1.2.6.js"></script>
+    <!--<script src="stylesheets/js/jquery.min.js"></script>-->
 
-      $(".bl").remove();
-      $.ajax({type:"GET",  data: {q:$("#search_input").val()}, success: function(prods){
-        for (i in prods){
-          $("#blnew").prepend('<li><div class="img"><a id="path" href="/products/<%=prods[i].href%>"><img alt="" src="data:image/jpg;base64,<%= prods[i].avatar1 %>"></a></div><div class="info"><a  class="title" href="/products/<%=prods[i].href%>"><%= prods[i].title %></a><p class="size"> <%= prods[i].description %> </p><div class="price"><span class="st">Our price:</span><strong>$<%= prods[i].price %></strong></div><div class="actions"><a href="/products/<%=prods[i].href%>">Details</a><form action = "/addtocart" method="post"><input type="text" hidden="true" name="prtitle" value="<%= prods[i].title %>"><input type="text" hidden="true" name="prid" value="<%= user.identef%>"><input class = "b" type="submit" name="submit" value="Add to cart"></form ></div></div></li>');
-              };
+    <script>
+    $(document).ready(function(){
+      $("#search_button").click(function(){
 
-        //alert(result);
-      }});
+        $(".bl").remove();
+        $(".pagination").remove();
+        $.ajax({type:"GET", url:"/search",  data: {q:$("#search_input").val()}, success: function(prods){
+          for (i in prods){
+            $(".bl-container").append('<div class = "bl"><li><div class="img"><a id="path" href="/products/' + prods[i].href + '"><img alt="" src="data:image/jpg;base64,'  + prods[i].avatar1 + '"></a></div><div class="info"><a  class="title" href="/products/' + prods[i].href.replace(/</g,"&lt;") + '">' + prods[i].title.replace(/</g,"&lt;") + '</a><p class="size">'+prods[i].description.replace(/</g,"&lt;")+ '</p><div class="price"><span class="st">Our price:</span><strong>$' + prods[i].price.replace(/</g,"&lt;") +'</strong></div><div class="actions"><a href="/products/' + prods[i].href.replace(/</g,"&lt;") + '">Details</a><form action = "/addtocart" method="post"><input type="text" hidden="true" name="prtitle" value="' + prods[i].title.replace(/</g,"&lt;") + '"><input type="text" hidden="true" name="prid" value=""><input class = "b" type="submit" name="submit" value="Add to cart"></form ></div></div></li></div>');
+                };
+        }});
+      });
     });
-  });
 
-  </script>
+    </script>
 
 
 
@@ -52,8 +55,7 @@
                 </div>
 
                 <section id="search">
-
-                  <form action="/search"  method="get" enctype="form-data">
+                  <form action="/searchwind"  method="get" enctype="form-data">
 
                       <input type="text"  name='q' placeholder= "Search" >
                       <input type="submit" value="search">
@@ -89,10 +91,11 @@
             <section id="content">
                 <div id="columL" >
                      <h3>You find "<%=value%>"</h3>
-                     <div class="bl">
+
                     <ul>
+                      <div class="bl-container">
                       <% prods.filter(x => x.title).forEach( prod => { %>
-<div id="blnew">
+<div id="bl">
                         <li>
                           <% if(user.local.role =="admin") { %>
                             <div class="info">
@@ -128,9 +131,9 @@
   </div>
 
                         <% }); %>
-
+</div>
                     </ul>
-                  </div>
+
                 </div>
                 <div id="columR">
                     <h3>Top sells</h3>

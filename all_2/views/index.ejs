@@ -8,6 +8,25 @@
 <link rel="stylesheet" href="stylesheets/stylePag.css">
 
   <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+  <script type="text/javascript" src="../stylesheets/js/jquery-1.2.6.js"></script>
+    <!--<script src="stylesheets/js/jquery.min.js"></script>-->
+
+    <script>
+    $(document).ready(function(){
+      $("#search_button").click(function(){
+        $(".bl").remove();
+        $(".pagination").remove();
+        $.ajax({type:"GET", url:"/search",  data: {q:$("#search_input").val()}, success: function(prods){
+          for (i in prods){
+            $(".bl-container").append('<div class = "bl"><li><div class="img"><a id="path" href="/products/' + prods[i].href + '"><img alt="" src="data:image/jpg;base64,'  + prods[i].avatar1 + '"></a></div><div class="info"><a  class="title" href="/products/' + prods[i].href.replace(/</g,"&lt;") + '">' + prods[i].title.replace(/</g,"&lt;") + '</a><p class="size">'+prods[i].description.replace(/</g,"&lt;")+ '</p><div class="price"><span class="st">Our price:</span><strong>$' + prods[i].price.replace(/</g,"&lt;") +'</strong></div><div class="actions"><a href="/products/' + prods[i].href.replace(/</g,"&lt;") + '">Details</a><form action = "/addtocart" method="post"><input type="text" hidden="true" name="prtitle" value="' + prods[i].title.replace(/</g,"&lt;") + '"><input type="text" hidden="true" name="prid" value=""><input class = "b" type="submit" name="submit" value="Add to cart"></form ></div></div></li></div>');
+                };
+
+        }});
+      });
+    });
+
+    </script>
 
 <body>
 
@@ -34,19 +53,19 @@
 
                 <section id="search">
 
-                  <form action="/search"  method="get" enctype="form-data">
+                  <ul id="social" class ="j">
+                    <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
+                    <li><a href="https://twitter.com" title="twitter" rel="external nofollow"><img alt="" src="img/twitter.png"></a></li>
+                    <li><a href="https://vk.com/" title="vk" rel="external nofollow"><img alt="" src="img/vk.png"></a></li>
+                    <li><a href="https://ok.ru" title="odnoklassniki" rel="external nofollow"><img alt="" src="img/odnoklassniki.png"></a></li>
+                    <li><a href="https://www.youtube.com" title="youtube" rel="external nofollow"><img alt="" src="img/youtube.png"></a></li>
+                </ul>
 
-                      <input type="text"  name='q' placeholder= "Search" >
-                      <input type="submit" value="search">
-                  </form>
+<ui class="h">
+                  <input type="text" class ="j" id="search_input"  name='q' placeholder= "Search" >
+                  <button type="submit" class ="j" id="search_button" >Search</button>
 
-                    <ul id="social">
-                      <li><a href="https://www.facebook.com" title="facebook" rel="external nofollow"><img alt="" src="img/facebook.png"></a></li>
-                      <li><a href="https://twitter.com" title="twitter" rel="external nofollow"><img alt="" src="img/twitter.png"></a></li>
-                      <li><a href="https://vk.com/" title="vk" rel="external nofollow"><img alt="" src="img/vk.png"></a></li>
-                      <li><a href="https://ok.ru" title="odnoklassniki" rel="external nofollow"><img alt="" src="img/odnoklassniki.png"></a></li>
-                      <li><a href="https://www.youtube.com" title="youtube" rel="external nofollow"><img alt="" src="img/youtube.png"></a></li>
-                  </ul>
+</ui>
                 </section>
             </div>
 
@@ -96,8 +115,9 @@
                 <div id="columL">
                   <h3>Interesting offers</h3>
                  <ul>
+                   <div class="bl-container">
                    <% prods.filter(x => x.title).forEach( prod => { %>
-
+<div class="bl">
                      <li>
                          <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
                          <div class="info">
@@ -114,9 +134,9 @@
                              </div>
                          </div>
                      </li>
-
+</div>
                      <% }); %>
-
+</div>
                  </ul>
 
                 </div>

@@ -6,11 +6,11 @@ const db = mongodb(url);
 
 module.exports = function(app, passport) {
 
-   app.get('/', function(req, res) {
+app.get('/', function(req, res) {
         res.render('index.ejs'); // load the index.ejs file
-    });
+});
 
-    app.get('/login', function(req, res) {
+app.get('/login', function(req, res) {
 
       db.collection('prod').find().skip(2).limit(7)
      .then(sales => {
@@ -18,10 +18,9 @@ module.exports = function(app, passport) {
        sales:sales
      });
        })
-    });
+});
 
-
-    app.get('/signup', function(req, res) {
+app.get('/signup', function(req, res) {
 
       db.collection('prod').find().skip(4).limit(7)
     	.then(sales => {
@@ -29,12 +28,9 @@ module.exports = function(app, passport) {
     		sales:sales
     	});
     		})
+});
 
-
-    });
-
-
-    app.get('/update', isLoggedIn, function(req, res) {
+app.get('/update', isLoggedIn, function(req, res) {
       db.collection('prod').find().skip(4).limit(7)
       .then(sales => {
       res.render('update.ejs',{
@@ -42,12 +38,9 @@ module.exports = function(app, passport) {
         user : req.user
       });
         })
-     });
+});
 
-
-
-
-     app.get('/propag*', isLoggedIn, (req, res) => {
+app.get('/propag*', isLoggedIn, (req, res) => {
            var decrease = req.path;
            decrease = decrease.slice(7);
            var i = parseInt(decrease);
@@ -72,9 +65,9 @@ module.exports = function(app, passport) {
              .catch(err => res.status(500).end(err));
            });
 
-         });
+});
 
-         app.get('/brpag*', isLoggedIn, (req, res) => {
+app.get('/brpag*', isLoggedIn, (req, res) => {
                var decrease = req.path;
                decrease = decrease.slice(7);
 
@@ -99,9 +92,7 @@ module.exports = function(app, passport) {
                  .catch(err => res.status(500).end(err));
                });
 
-             });
-
-
+});
 
 app.post('/addcomment',isLoggedIn, (req, res) => {
     var title = req.body.prtitle;
@@ -110,10 +101,9 @@ app.post('/addcomment',isLoggedIn, (req, res) => {
    db.collection('prod').update({"title": title}, {$push: {"comments": [user.local.login, com]}})
       .then(() => res.redirect('/products'))
       .catch(err => res.status(500).end(err));
-   });
+});
 
-
-    app.get('/products/*',isLoggedIn, (req, res) => {
+app.get('/products/*',isLoggedIn, (req, res) => {
     	var decrease = req.path;
       decrease = decrease.slice(10);
       var uri_dec = decodeURIComponent(decrease);
@@ -131,22 +121,20 @@ app.post('/addcomment',isLoggedIn, (req, res) => {
             user : req.user
     			});
 
-})
+      })
     		})
 
     		.catch(err => res.status(500).end(err));
 
-      });
+});
 
-
-
-      app.get('/profile/*',isLoggedIn, (req, res) => {
+app.get('/profile/*',isLoggedIn, (req, res) => {
         var decrease = req.path;
         decrease = decrease.slice(9);
         var uri_dec = decodeURIComponent(decrease);
         db.collection('user').findOne({login: uri_dec})
           .then(userP => {
-console.log(userP.identef);
+       console.log(userP.identef);
             db.collection('prod').find().skip(5).limit(7)
             .then(sales => {
                if(userP.identef===req.user.identef){
@@ -162,19 +150,15 @@ console.log(userP.identef);
               sales: sales,
               user : req.user
             });
-}
+      }
       })
           })
 
           .catch(err => res.status(500).end(err));
 
-        });
+});
 
-
-
-
-
-      app.get('/brands/*',isLoggedIn, (req, res) => {
+app.get('/brands/*',isLoggedIn, (req, res) => {
         var decrease = req.path;
         decrease = decrease.slice(8);
         var uri_dec = decodeURIComponent(decrease);
@@ -196,122 +180,118 @@ console.log(userP.identef);
 
           .catch(err => res.status(500).end(err));
 
-        });
-
+});
 
 app.get('/products',isLoggedIn, (req, res) => {
-  var value = req.url;
-  if(value.length > 9){
-  value = value.slice(12);
+        var value = req.url;
+        if(value.length > 9){
+        value = value.slice(12);
 
-    var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
-    bar = new RegExp(bar);
-    console.log(value);
-           db.collection('prod').find().skip(1).limit(7)
-           .then(sales => {
+          var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+          bar = new RegExp(bar);
+          console.log(value);
+                 db.collection('prod').find().skip(1).limit(7)
+                 .then(sales => {
 
-             db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
-               .then(prods => {
-                 db.collection('prod').count()
-                  .then(count => {
-               res.render('products', {
-                 prods: prods,
-                 sales: sales,
-                 user : req.user,
-                 count: count
-    });
-               });
-             });
-                  })
-    .catch(err => res.status(500).end(err));
-}else{
+                   db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                     .then(prods => {
+                       db.collection('prod').count()
+                        .then(count => {
+                     res.render('products', {
+                       prods: prods,
+                       sales: sales,
+                       user : req.user,
+                       count: count
+          });
+                     });
+                   });
+                        })
+          .catch(err => res.status(500).end(err));
+      }else{
 
-	db.collection('prod').find().limit(9)
-		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
-			.then(sales => {
-        db.collection('prod').count()
-         .then(count => {
-			res.render('products', {
-				prods: prods,
-				sales:sales,
-        count:count,
-				user : req.user
-			});
-				})
-        })
-		})
+      	db.collection('prod').find().limit(9)
+      		.then(prods => {
+      			db.collection('prod').find().skip(1).limit(7)
+      			.then(sales => {
+              db.collection('prod').count()
+               .then(count => {
+      			res.render('products', {
+      				prods: prods,
+      				sales:sales,
+              count:count,
+      				user : req.user
+      			});
+      				})
+              })
+      		})
 
-		.catch(err => res.status(500).end(err));
-}
+      		.catch(err => res.status(500).end(err));
+      }
 });
 
 app.get('/brands',isLoggedIn, (req, res) => {
-  var value = req.url;
-  if(value.length > 9){
-  value = value.slice(12);
+          var value = req.url;
+          if(value.length > 9){
+          value = value.slice(12);
 
-    var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
-    bar = new RegExp(bar);
-    console.log(value);
-           db.collection('prod').find().skip(1).limit(7)
-           .then(sales => {
+            var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+            bar = new RegExp(bar);
+            console.log(value);
+                   db.collection('prod').find().skip(1).limit(7)
+                   .then(sales => {
 
-             db.collection('brands').find({name:{'$regex': '.*' + value + '.*', '$options': '$i'}})
-               .then(prods => {
-                 db.collection('brands').count()
-                  .then(count => {
-               res.render('brands', {
-                 prods: prods,
-                 sales: sales,
-                 user : req.user,
-                 count: count
-    });
-               });
-             });
-                  })
-    .catch(err => res.status(500).end(err));
-}else{
+                     db.collection('brands').find({name:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                       .then(prods => {
+                         db.collection('brands').count()
+                          .then(count => {
+                       res.render('brands', {
+                         prods: prods,
+                         sales: sales,
+                         user : req.user,
+                         count: count
+            });
+                       });
+                     });
+                          })
+            .catch(err => res.status(500).end(err));
+             }else{
 
-	db.collection('brands').find().limit(9)
-		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
-			.then(sales => {
-        db.collection('brands').count()
-         .then(count => {
-			res.render('brands', {
-				prods: prods,
-				sales:sales,
-        count:count,
-				user : req.user
-			});
-				})
-        })
-		})
+        	db.collection('brands').find().limit(9)
+        		.then(prods => {
+        			db.collection('prod').find().skip(1).limit(7)
+        			.then(sales => {
+                db.collection('brands').count()
+                 .then(count => {
+        			res.render('brands', {
+        				prods: prods,
+        				sales:sales,
+                count:count,
+        				user : req.user
+        			});
+        				})
+                })
+        		})
 
-		.catch(err => res.status(500).end(err));
-}
+        		.catch(err => res.status(500).end(err));
+        }
 });
-
-
 
 app.get('/phones',isLoggedIn, (req, res) => {
-	db.collection('prod').find({"type":"phon"})
-		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
-			.then(sales => {
+    	db.collection('prod').find({"type":"phon"})
+    		.then(prods => {
+    			db.collection('prod').find().skip(1).limit(7)
+    			.then(sales => {
 
-			res.render('categori', {
-				prods: prods,
-				sales:sales,
-        user : req.user
-			});
-				})
-		})
-		.catch(err => res.status(500).end(err));
+    			res.render('categori', {
+    				prods: prods,
+    				sales:sales,
+            user : req.user
+    			});
+    				})
+    		})
+    		.catch(err => res.status(500).end(err));
 
 });
-
 
 app.get('/comp',isLoggedIn, (req, res) => {
 	db.collection('prod').find({"type":"comp"})
@@ -364,7 +344,6 @@ app.get('/book',isLoggedIn, (req, res) => {
 
 });
 
-
 app.get('/applhome',isLoggedIn, (req, res) => {
 	db.collection('prod').find({"type":"applhome"})
 		.then(prods => {
@@ -399,9 +378,7 @@ app.get('/cloth',isLoggedIn, (req, res) => {
 
 });
 
-
-
-   app.get('/cart',isLoggedIn, (req, res) => {
+app.get('/cart',isLoggedIn, (req, res) => {
     var user = req.user;
     var cart = user.cart;
      var mas=[];
@@ -430,14 +407,9 @@ app.get('/cloth',isLoggedIn, (req, res) => {
    				})
           .catch(err => res.status(500).end(err));
 
-   		});
+});
 
-
-
-
-
-
-      app.get('/list',isLoggedIn, (req, res) => {
+app.get('/list',isLoggedIn, (req, res) => {
        var user = req.user;
        var list = user.list;
         var mas=[];
@@ -467,14 +439,9 @@ app.get('/cloth',isLoggedIn, (req, res) => {
       				})
              .catch(err => res.status(500).end(err));
 
-      		});
+});
 
-
-
-
-
-
-    app.get('/profile', isLoggedIn, function(req, res) {
+app.get('/profile', isLoggedIn, function(req, res) {
       db.collection('prod').find().skip(4).limit(7)
       .then(sales => {
       res.render('profile.ejs',{
@@ -482,9 +449,9 @@ app.get('/cloth',isLoggedIn, (req, res) => {
         user : req.user
       });
         })
-    });
+});
 
-    app.get('/search',isLoggedIn, (req, res) => {
+app.get('/search',isLoggedIn, (req, res) => {
 
                 var value = req.url;
                 var list=[];
@@ -494,15 +461,14 @@ app.get('/cloth',isLoggedIn, (req, res) => {
                    db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
                      .then(prods => res.json(prods))
                      .catch(err => res.status(500).end(err));
-                });
+});
 
-
-   app.get('/searchsimpl',isLoggedIn, (req, res) => {
+app.get('/searchsimpl',isLoggedIn, (req, res) => {
 
                 var value = req.url;
                 var value = value.slice(21, -25);
                 //var bar = br.slice(0, 24);
-console.log(value);
+         console.log(value);
                  db.collection('prod').find().skip(1).limit(7)
                  .then(sales => {
 
@@ -522,70 +488,94 @@ console.log(value);
                         })
                        .catch(err => res.status(500).end(err));
 
-                });
+});
+
+app.get('/searchwind',isLoggedIn, (req, res) => {
+                  var value = req.url;
+
+                  value = value.slice(14);
+                  console.log(value);
+
+                              db.collection('prod').find().skip(1).limit(7)
+                              .then(sales => {
+
+                                db.collection('prod').find({brand:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                                  .then(prods => {
+                                    db.collection('prod').count()
+                                     .then(count => {
+                                  res.render('search', {
+                                    value: value,
+                                    prods: prods,
+                                    sales: sales,
+                                    user : req.user,
+                                    count: count
+                       });
+                                  });
+                                });
+                                     })
+                                    .catch(err => res.status(500).end(err));
+
+});
 
 
-     ////////////////////////////////////////////////////////////////////
-     ///////////////////////JSON////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////
+///////////////////////JSON////////////////////////////////////////
 
 
-
-
-     		app.get('/jsonphones', (req, res) => {
+app.get('/jsonphones', (req, res) => {
      			db.collection('prod').find({"type":"phon"})
      				.then(prod => res.json(prod))
      				/*	db.collection('prod').find().skip(1).limit(7)
      					.then(sales => res.json(sales))*/
      					.catch(err => res.status(404).json({ error: err }));
 
-     		});
+});
 
-        app.get('/jsoncomp', (req, res) => {
+app.get('/jsoncomp', (req, res) => {
           db.collection('prod').find({"type":"comp"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 
-        });
+});
 
-        app.get('/jsonhome', (req, res) => {
+app.get('/jsonhome', (req, res) => {
           db.collection('prod').find({"type":"home"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 
-        });
+});
 
-        app.get('/jsonbook', (req, res) => {
+app.get('/jsonbook', (req, res) => {
           db.collection('prod').find({"type":"book"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 
-        });
+});
 
-        app.get('/jsonapplhome', (req, res) => {
+app.get('/jsonapplhome', (req, res) => {
           db.collection('prod').find({"type":"applhome"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
+});
 
-        });
-
-        app.get('/jsonapplcloth', (req, res) => {
+app.get('/jsonapplcloth', (req, res) => {
           db.collection('prod').find({"type":"applcloth"})
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
+});
 
-        });
-
-      app.get('/jsonprofile', isLoggedIn, function(req, res) {
+app.get('/jsonprofile', isLoggedIn, function(req, res) {
         var  user = req.user;
           if (!user){
       			res.json({'error':'need login'})
@@ -593,18 +583,17 @@ console.log(value);
       	else{	db.collection('users').find({"identef": parseInt(user.identef)})
       			 .then(users => res.json(users))
            }
-        });
+});
 
-      app.get('/jsonproducts',isLoggedIn, (req, res) => {
+app.get('/jsonproducts',isLoggedIn, (req, res) => {
         	db.collection('prod').find()
             .then(prod => res.json(prod))
             /*	db.collection('prod').find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
-        		})
+})
 
-
-    app.get('/jsoncart',isLoggedIn, (req, res) => {
+app.get('/jsoncart',isLoggedIn, (req, res) => {
              var user = req.user;
              var cart = user.cart;
               var mas=[]
@@ -626,18 +615,14 @@ console.log(value);
             					.then(sales => res.json(sales))*/
             					.catch(err => res.status(404).json({ error: err }));
                });
+});
 
 
-               });
+///////////////////////JSON////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
 
-
-
-     ///////////////////////JSON////////////////////////////////////////
-     ////////////////////////////////////////////////////////////////////
-
-
-     app.get('/jsonlist',isLoggedIn, (req, res) => {
+app.get('/jsonlist',isLoggedIn, (req, res) => {
       var user = req.user;
       var list = user.list;
        var mas=[]
@@ -658,23 +643,13 @@ console.log(value);
                .then(sales => res.json(sales))*/
                .catch(err => res.status(404).json({ error: err }));
         });
+});
+
+////////////////////////////////////////////////////////////////////
+///////////////////////JSON////////////////////////////////////////
 
 
-        });
-
-
-
-        ////////////////////////////////////////////////////////////////////
-        ///////////////////////JSON////////////////////////////////////////
-
-
-
-
-
-
-
-
-           app.delete('/apiproducts/*', function(req, res, next) {
+app.delete('/apiproducts/*', function(req, res, next) {
              var value = req.url;
              value = value.slice(13);
              var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
@@ -687,10 +662,9 @@ console.log(value);
            res.json(prod)))
          .catch(err => res.status(404).json({ error: "ERROR" }));
 
-           });
+});
 
-
-           app.get('/apiproducts/*', function(req, res, next) {
+app.get('/apiproducts/*', function(req, res, next) {
              var value = req.url;
              value = value.slice(13);
              var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
@@ -700,9 +674,9 @@ console.log(value);
            .then(prod =>res.json(prod))
            .catch(err => res.status(404).json({ error: "ERROR" }));
 
-           });
+});
 
-           app.post('/apiproducts/*', function(req, res, next) {
+app.post('/apiproducts/*', function(req, res, next) {
              var value = req.url;
              value = value.slice(13);
              var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
@@ -738,10 +712,9 @@ console.log(value);
            .then(prod =>res.json(prod))
            .catch(err => res.status(404).json({ error: "ERROR" }));
 
-           });
+});
 
-
-           app.get('/apiproductsfiltr/*', function(req, res, next) {
+app.get('/apiproductsfiltr/*', function(req, res, next) {
              var value = req.url;
              value = value.slice(18);
 
@@ -797,12 +770,9 @@ console.log(value);
                }
 
              }
+});
 
-
-           });
-
-
-           app.post('/apiproductsupdate/*', function(req, res, next) {
+app.post('/apiproductsupdate/*', function(req, res, next) {
              var value = req.url;
              value = value.slice(19);
 
@@ -841,46 +811,36 @@ console.log(value);
                  }
 
 
-           });
+});
 
+///////////////////////JSON////////////////////////////////////////
+////////////////////////////////////////////////////////////////////
 
-
-
-
-                   ///////////////////////JSON////////////////////////////////////////
-                   ////////////////////////////////////////////////////////////////////
-
-
-
-
-
-    app.get('/logout', function(req, res) {
+app.get('/logout', function(req, res) {
         req.logout();
         res.redirect('/login');
-    });
-    // app/routes.js
-    app.post('/signup', passport.authenticate('local-signup', {
+});
+
+app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
-    }));
-    app.post('/login', passport.authenticate('local-login', {
+}));
+
+app.post('/login', passport.authenticate('local-login', {
           successRedirect : '/profile', // redirect to the secure profile section
           failureRedirect : '/login', // redirect back to the signup page if there is an error
           failureFlash : true // allow flash messages
-      }));
-
+}));
 
 };
 
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
-
     // if they aren't redirect them to the home page
     res.redirect('/login');
 }
