@@ -8,6 +8,8 @@
 
   <link rel="stylesheet" href="stylesheets/js/jquery.min.js" type="text/css" media="all">
   <link rel="stylesheet" href="stylesheets/style.css" type="text/css" media="all">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+  <script type="text/javascript" src="../stylesheets/js/jquery-1.2.6.js"></script>
   <script>
   $(document).ready(function(){
     $("#search_button").click(function(){
@@ -83,15 +85,33 @@
                      <h3>Cart</h3>
                     <ul>
                       <% prods.filter(x => x.title).forEach( prod => { %>
-
+<div id="<%=prod.href%>">
                         <li>
+
                           <div class="info">
                         <div class="actions">
-                        <form action = "/deletefromcart" method="post">
+                        <!--<form action = "/deletefromcart" method="post">
                            <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
                            <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
                            <input class = "b" type="submit" name="submit" value="X">
-                           </form >
+                         </form >-->
+                         <button class = "b delete"  type="submit" name="submit" value="<%= prod.href %>">X</button>
+                           <script>
+                           $(document).ready(function(){
+                            $(".delete").click(function(){
+                            btn = $(this);
+                            
+                            $.ajax({type: "delete", url:"/deletefromcart" + '?prtitle=' + btn.attr("value"), success: function(result){
+                            // alert(result);
+
+                            if (result.error === 'ERROR'){
+                            alert('error');}
+                            else
+                            {$("#"+btn.attr("value")).remove();}
+                            }});
+                            });
+                            });
+                           </script>
                         </div>
                       </div>
                             <div class="img"><a id="path" href="/products/<%=prod.href%>"><img alt="" src='data:image/jpg;base64,<%= prod.avatar1 %>'></a></div>
@@ -112,8 +132,9 @@
                                    </form >-->
                                 </div>
                             </div>
-                        </li>
 
+                        </li>
+</div>
                         <% }); %>
 
                     </ul>

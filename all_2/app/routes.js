@@ -390,7 +390,7 @@ app.get('/cart',isLoggedIn, (req, res) => {
         .then(prods => {
           for (var i=0; i<cart.length; i++) {
             for (var j=0; j<prods.length; j++){
-              if (cart[i]==prods[j].title){
+              if (cart[i]==prods[j].href){
                 mas.push(prods[j]);
                 console.log("elem" + cart[i]);
                 break;
@@ -420,7 +420,7 @@ app.get('/list',isLoggedIn, (req, res) => {
            .then(prods => {
              for (var i=0; i<list.length; i++) {
                for (var j=0; j<prods.length; j++){
-                 if (list[i]==prods[j].title){
+                 if (list[i]==prods[j].href){
                    mas.push(prods[j]);
                    console.log("elem" + list[i]);
                    break;
@@ -641,18 +641,21 @@ app.post('/addphoto', isLoggedIn, (req, res) => {
 
 });
 
-app.post('/deletefromlist',isLoggedIn,  (req, res) => {
-			var name = req.body.prtitle;
-			var id= req.body.prid;
+app.delete('/deletefromlist*',isLoggedIn,  (req, res) => {
 
-			db.collection('users').findOne({"identef": parseInt(id)})
-			.then(users => {
-						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"list": {$in:[name]}}});
-				})
-				.then(() => res.redirect('/list'))
-				.catch(err => res.status(500).end(err));
+    var value = req.url;
+    value = value.slice(24);
+    //var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+       //  var name = req.params.brand_name;
+     console.log(value);
 
-});
+     id=req.user.identef;
+
+              db.collection('users').update({"identef": parseInt(id)}, {$pull: {"list": {$in:[value]}}})
+              .then(del =>res.json({ error: "NONE" }))
+              .catch(err => res.status(404).json({ error: "ERROR" }));
+  });
+
 
 app.post('/deletecom',isLoggedIn,  (req, res) => {
 					var num = req.body.prtitle;
@@ -670,17 +673,18 @@ app.post('/deletecom',isLoggedIn,  (req, res) => {
 		});
 });
 
-app.post('/deletefromcart', isLoggedIn,  (req, res) => {
-			var name = req.body.prtitle;
-			var id= req.body.prid;
+app.delete('/deletefromcart*', isLoggedIn,  (req, res) => {
+  var value = req.url;
+  value = value.slice(24);
+  //var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
+     //  var name = req.params.brand_name;
+   console.log(value);
 
-			db.collection('users').findOne({"identef": parseInt(id)})
-			.then(users => {
-						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": {$in:[name]}}});
-				})
-				.then(() => res.redirect('/cart'))
-				.catch(err => res.status(500).end(err));
+   id=req.user.identef;
 
+						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": {$in:[value]}}})
+            .then(del =>res.json({ error: "NONE" }))
+            .catch(err => res.status(404).json({ error: "ERROR" }));
 });
 
 app.post('/add', isLoggedIn, (req, res) => {

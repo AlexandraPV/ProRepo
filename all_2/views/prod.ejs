@@ -155,12 +155,12 @@ function changeImg(lin){
 
             <div class="actions">
               <form action = "/addtocart" method="post">
-                <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
+                <input type="text" hidden="true" name="prtitle" value="<%= prod.href %>">
                 <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
                <input class = "a" type="submit" name="submit" value="Add to cart">
                 </form >
                 <form action = "/addtolist" method="post">
-                  <input type="text" hidden="true" name="prtitle" value="<%= prod.title %>">
+                  <input type="text" hidden="true" name="prtitle" value="<%= prod.href %>">
                   <input type="text" hidden="true" name="prid" value="<%= user.identef%>">
                  <input class = "b" type="submit" name="submit" value="Add to watch list">
                </form >
@@ -177,7 +177,7 @@ function changeImg(lin){
     $("input#but").click(function(){
       $("div#p2").append(" <label for='description'>Comment: </label><form action = '/addcomment' method='post'>  <textarea maxlength='200' id='description' name='description'></textarea><input type='text' hidden='true' name='prtitle' value='<%= prod.title %>'><input class = 'b' type='submit' name='submit' value='Add comment'></form >");
       $("input#but").remove();
-      
+
     })
 });
             </script>

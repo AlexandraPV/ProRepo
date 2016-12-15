@@ -549,3 +549,20 @@ span#slide4:target ~ ul.slider li.track .tr4,
 span#slide5:target ~ ul.slider li.track .tr5 {
     background-color:#696969;
 }
+
+
+#columL  button.b {
+
+    background-color: #FFFFFF;
+    border: 1px solid #E0E0E0;
+    
+    color: #383838;
+    cursor:pointer;
+    float: left;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    height: 27px;
+    padding: 0;
+    width: 20px;
+}
