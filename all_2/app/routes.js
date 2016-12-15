@@ -136,29 +136,29 @@ app.get('/profile/*',isLoggedIn, (req, res) => {
        console.log(uri_dec);
 
 
-        User.find({'local.login': uri_dec})
+        User.findOne({'local.login': uri_dec})
         .then(docs => {
-       var us1 = docs.local.login;
+        
+       var us1 = docs.identef;
        //var us1p = parseInt(us1);
-       var us2 = req.user.local.login;
+       var us2 = req.user.identef;
        //var us2p = parseInt(us2);
-       console.log("us1" + us1);
+       console.log(docs.identef);
        console.log("us2" + us2);
        if(us2==us1){
             db.collection('prod').find().skip(5).limit(7)
             .then(sales => {
-
 
                  res.render('profile',{
                    sales:sales,
                    user : req.user
                  });
                    })
-               } else {
+               } else if(us2!=us1) {
                  db.collection('prod').find().skip(5).limit(7)
                  .then(sales => {
             res.render('profileUser', {
-              userO: docs,
+              users: docs,
               sales: sales,
               user : req.user
 
@@ -638,7 +638,7 @@ app.post('/addphoto', isLoggedIn, (req, res) => {
       var avaFile = req.files.avatar;
       var base64String = avaFile.data.toString('base64');
 			var id = req.body.prid;
-			
+
 			db.collection('users').findOne({"identef": parseInt(id)})
 			.then(users => {
 					console.log(users);
@@ -808,6 +808,27 @@ app.post('/deleteprod',isLoggedIn, (req, res) => {
 		})
 		.then(() => res.redirect('/products'))
 		.catch(err => res.status(500).end(err));
+
+});
+
+app.get('/userslist',isLoggedIn, (req, res) => {
+  db.collection('users').find().limit(9)
+    .then(prods => {
+      db.collection('prod').find().skip(1).limit(7)
+      .then(sales => {
+        db.collection('prod').count()
+          .then(count => {
+      res.render('userslist', {
+        prods: prods,
+        sales: sales,
+        count: count,
+        user : req.user
+      });
+        })
+          })
+    })
+
+    .catch(err => res.status(500).end(err));
 
 });
 
