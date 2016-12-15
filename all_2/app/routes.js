@@ -2,7 +2,8 @@
 const mongodb = require('promised-mongo');
 const url = 'mongodb://localhost:27017/magaz';
 const db = mongodb(url);
-
+var mongoose = require('mongoose');
+var User = require('../app/models/user');
 
 module.exports = function(app, passport) {
 
@@ -132,31 +133,43 @@ app.get('/profile/*',isLoggedIn, (req, res) => {
         var decrease = req.path;
         decrease = decrease.slice(9);
         var uri_dec = decodeURIComponent(decrease);
-        db.collection('user').findOne({login: uri_dec})
-          .then(userP => {
-       console.log(userP.identef);
+       console.log(uri_dec);
+
+
+        User.find({'local.login': uri_dec})
+        .then(docs => {
+       var us1 = docs.local.login;
+       //var us1p = parseInt(us1);
+       var us2 = req.user.local.login;
+       //var us2p = parseInt(us2);
+       console.log("us1" + us1);
+       console.log("us2" + us2);
+       if(us2==us1){
             db.collection('prod').find().skip(5).limit(7)
             .then(sales => {
-               if(userP.identef===req.user.identef){
+
 
                  res.render('profile',{
                    sales:sales,
                    user : req.user
                  });
+                   })
                } else {
+                 db.collection('prod').find().skip(5).limit(7)
+                 .then(sales => {
             res.render('profileUser', {
-
-              userO: userP,
+              userO: docs,
               sales: sales,
               user : req.user
+
             });
+              })
       }
-      })
-          })
 
+
+   })
           .catch(err => res.status(500).end(err));
-
-});
+});   //!!!
 
 app.get('/brands/*',isLoggedIn, (req, res) => {
         var decrease = req.path;
@@ -518,6 +531,285 @@ app.get('/searchwind',isLoggedIn, (req, res) => {
 });
 
 
+///
+app.get('/add', (req, res) => {
+			db.collection('prod').find().skip(5).limit(7)
+			.then(sales => {
+			res.render('add',{
+				sales:sales
+			});
+				})
+});
+
+app.get('/rules', (req, res) => {
+		db.collection('prod').find().skip(5).limit(7)
+		.then(sales => {
+		res.render('contacts',{
+			sales:sales
+		});
+			})
+});
+
+app.get('/addbrand', (req, res) => {
+		db.collection('prod').find().skip(5).limit(7)
+		.then(sales => {
+		res.render('addbrand',{
+			sales:sales
+		});
+			})
+});
+
+app.post('/addtocart', isLoggedIn,  (req, res) => {
+	var title = req.body.prtitle;
+  var id= req.body.prid;
+	console.log(id);
+	db.collection('users').find({"identef": parseInt(id)})
+	.then(users => {
+		console.log(users);
+				db.collection('users').update({"identef": parseInt(id)}, {$push: {"cart": title}});
+		})
+		.then(() => res.redirect('/products'))
+		.catch(err => res.status(500).end(err));
+
+});
+
+app.post('/addtolist', isLoggedIn,  (req, res) => {
+		var title = req.body.prtitle;
+	  var id= req.body.prid;
+		console.log(id);
+		db.collection('users').find({"identef": parseInt(id)})
+		.then(users => {
+			console.log(users);
+					db.collection('users').update({"identef": parseInt(id)}, {$push: {"list": title}});
+			})
+			.then(() => res.redirect('/products'))
+			.catch(err => res.status(500).end(err));
+
+});
+
+app.post('/deleteprod', isLoggedIn,  (req, res) => {
+			var name = req.body.prtitle;
+		  var id= req.body.prid;
+
+			db.collection('users').find({"identef": parseInt(id)})
+			.then(users => {
+
+						db.collection('prod').remove({"title": name});
+				})
+				.then(() => res.redirect('/products'))
+				.catch(err => res.status(500).end(err));
+
+});
+
+app.post('/update', isLoggedIn, (req, res) => {
+			var first_name = req.body.first_name;
+			var second_name = req.body.second_name;
+			var login = req.body.login;
+			var email = req.body.email;
+			var phone = req.body.phone;
+			var about = req.body.about;
+
+			var id = req.body.prid;
+			console.log(first_name);
+			db.collection('users').findOne({"identef": parseInt(id)})
+			.then(users => {
+					console.log(users);
+          User.findOne({"identef": parseInt(id)}, function (err, doc){
+      doc.local.first_name = first_name;
+      doc.local.second_name=second_name;
+      doc.local.login=login;
+      doc.local.email=email;
+      doc.local.phone=phone;
+      doc.local.about=about;
+
+
+      doc.save();
+    });
+
+				})
+
+				.then(() => res.redirect('/profile'))
+				.catch(err => res.status(500).end(err));
+
+});
+
+app.post('/addphoto', isLoggedIn, (req, res) => {
+
+      var avaFile = req.files.avatar;
+      var base64String = avaFile.data.toString('base64');
+			var id = req.body.prid;
+			
+			db.collection('users').findOne({"identef": parseInt(id)})
+			.then(users => {
+					console.log(users);
+          User.findOne({"identef": parseInt(id)}, function (err, doc){
+      doc.local.avatar = base64String;
+
+      doc.save();
+    });
+
+				})
+
+				.then(() => res.redirect('/profile'))
+				.catch(err => res.status(500).end(err));
+
+});
+
+app.post('/deletefromlist',isLoggedIn,  (req, res) => {
+			var name = req.body.prtitle;
+			var id= req.body.prid;
+
+			db.collection('users').findOne({"identef": parseInt(id)})
+			.then(users => {
+						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"list": {$in:[name]}}});
+				})
+				.then(() => res.redirect('/list'))
+				.catch(err => res.status(500).end(err));
+
+});
+
+app.post('/deletecom',isLoggedIn,  (req, res) => {
+					var num = req.body.prtitle;
+					var id= req.body.prid;
+					var log = req.body.prlog;
+					var com = req.body.prcom;
+	        var i = parseInt(num);
+		db.collection('prod').findOne({href: id})
+		.then(prod => {
+			console.log(prod.brand);
+
+		db.collection('prod').update({href: id}, {$pull:{"comments" : [log, com]}})
+						.then(() => res.redirect('/products'))
+						.catch(err => res.status(500).end(err));
+		});
+});
+
+app.post('/deletefromcart', isLoggedIn,  (req, res) => {
+			var name = req.body.prtitle;
+			var id= req.body.prid;
+
+			db.collection('users').findOne({"identef": parseInt(id)})
+			.then(users => {
+						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": {$in:[name]}}});
+				})
+				.then(() => res.redirect('/cart'))
+				.catch(err => res.status(500).end(err));
+
+});
+
+app.post('/add', isLoggedIn, (req, res) => {
+	var title = req.body.title;
+	var color = req.body.color;
+	var weight = req.body.weight;
+	var guarantee = req.body.guarantee;
+	var description = req.body.description;
+	var lastprice = req.body.lastprice;
+	var price = req.body.price;
+	var type = req.body.type;
+	var brand = req.body.brand;
+	var admEmail = req.body.email;
+	var admpass = req.body.password;
+	var avaFile1 = req.files.avatar1;
+	var avaFile2 = req.files.avatar2;
+	var avaFile3 = req.files.avatar3;
+	var avaFile4 = req.files.avatar4;
+	var hrefProd = req.body.title;
+
+	hrefProd = hrefProd.replace(/ /g, '').replace(/\//g, '');
+	hrefProd= hrefProd.toLowerCase();
+	var hrProd =( '/' + hrefProd);
+
+	var base64String1 = avaFile1.data.toString('base64');
+	var base64String2 = avaFile2.data.toString('base64');
+	var base64String3 = avaFile3.data.toString('base64');
+	var base64String4 = avaFile4.data.toString('base64');
+	if (!title || !color || !brand || !price || !lastprice || !type || !weight || !description || !guarantee || !avaFile1 || !avaFile2 || !avaFile3 || !avaFile4) res.status(400).end('not ok');
+	else {
+		db.collection('prod').findOne({ title: title})
+			.then(prod => {
+				if (prod) res.status(200).end('prod exists');
+				else {
+
+
+					return db.collection('prod').insert({
+						title: title,
+						color: color,
+						weight: weight,
+						guarantee: guarantee,
+						description: description,
+						price: price,
+						lastprice: lastprice,
+						type:type,
+						brand: brand,
+						comments: [],
+						avatar1: base64String1,
+						avatar2: base64String2,
+						avatar3: base64String3,
+						avatar4: base64String4,
+						href: hrefProd,
+
+					});
+				}
+			})
+			.then(() => res.redirect('/products'))
+			.catch(err => res.status(500).end(err));
+	}
+});
+
+app.post('/addbrand', isLoggedIn, (req, res) => {
+	var name = req.body.name;
+	var founder = req.body.founder;
+	var date = req.body.date;
+	var staf = req.body.staf;
+	var cost = req.body.cost;
+	var avaFile1 = req.files.avatar1;
+
+	var hrefProd = req.body.name;
+  var stafI = parseInt(staf);
+  var costI = parseFloat(cost);
+	hrefProd = hrefProd.replace(/ /g, '').replace(/\//g, '');
+	hrefProd= hrefProd.toLowerCase();
+	var hrProd =( '/' + hrefProd);
+
+	var base64String1 = avaFile1.data.toString('base64');
+
+	if (!name || !founder || !date || !staf || !cost || !avaFile1 ) res.status(400).end('not ok');
+	else {
+		db.collection('brands').findOne({ name: name})
+			.then(prod => {
+				if (prod) res.status(200).end('brand exists');
+				else {
+
+					return db.collection('brands').insert({
+						name: name,
+						founder: founder,
+						date: date,
+						staf: stafI,
+						cost: costI,
+						avatar1: base64String1,
+
+						href: hrefProd
+					});
+				}
+			})
+			.then(() => res.redirect('/brands'))
+			.catch(err => res.status(500).end(err));
+	}
+});
+
+app.post('/deleteprod',isLoggedIn, (req, res) => {
+	var title = req.body.prtitle;
+  var id= req.body.prid;
+
+	db.collection('users').find({"identef": parseInt(id)})
+	.then(users => {
+
+				db.collection('prod').remove({"title": title});
+		})
+		.then(() => res.redirect('/products'))
+		.catch(err => res.status(500).end(err));
+
+});
 
 ////////////////////////////////////////////////////////////////////
 ///////////////////////JSON////////////////////////////////////////

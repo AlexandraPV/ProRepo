@@ -311,6 +311,7 @@ nav ul li a:hover, nav ul li.menu a {
     color: #009832;
     display: block;
     float:right;
+    margin-top: 10px;
     font-size: 11px;
     font-weight: bold;
     line-height: 16px;
@@ -318,6 +319,7 @@ nav ul li a:hover, nav ul li.menu a {
     text-decoration: none;
 }
 .actions input.a {
+      margin-top: 10px;
   margin-left: 10px;
    border: 1px solid #E0E0E0;
    color:#fd7a01;
@@ -338,6 +340,7 @@ nav ul li a:hover, nav ul li.menu a {
    display: block;
    float:right;
    font-size: 11px;
+   margin-top: 10px;
    font-weight: bold;
    line-height: 16px;
    padding: 5px;
@@ -560,6 +563,112 @@ div.left-left{
     font-weight: bold;
     line-height: 16px;
     padding: 5px;
+
     text-decoration: none;
     border: 1px solid #E0E0E0;
+}
+
+#columL{
+  min-height: 360px;
+}
+
+
+#content #columL  .cont {
+    padding: 5px 5px 0 5px;
+}
+#content #columR .cont {
+    float: left;
+    overflow: hidden;
+    padding: 17px 0 0 21px;
+    width: 164px;
+}
+#content  .cont .title {
+    color: #4B4B4B;
+    display: inline-block;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    width: 150px;
+}
+#content  .cont .title:hover {
+    color: #049733;
+}
+#content #columL  .cont p {
+    color: #7F7F7F;
+    font-size: 11px;
+    line-height: 16px;
+    padding-top: 3px;
+}
+#content #columL  .cont .price {
+    background: none repeat scroll 0 0 #F7F7F7;
+    color: #383838;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 16px;
+    margin: 17px 0 10px;
+    padding: 6px 0 6px 8px;
+}
+#content #columR  .cont .price {
+    color: #383838;
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 16px;
+    padding-top: 25px;
+}
+
+
+#content #columL  .cont .price .st {
+    color: #7F7F7F;
+    font-size: 11px;
+    line-height: 16px;
+    margin-right: 3px;
+}
+#content #columR .cont .price .usual, #content #columR ul li .info .price .special {
+    color: #7F7F7F;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 16px;
+    padding-right: 6px;
+    text-decoration: line-through;
+
+}
+#content #columR  .cont .price .special {
+    color: #FD7A01;
+    font-weight: bold;
+    text-decoration: none;
+}
+#content #columL  .cont .actions {
+    overflow:hidden;
+}
+#content #columL .cont .actions a {
+    border: 1px solid #E0E0E0;
+    color: #fd7a01;
+    display: block;
+    float:left;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 16px;
+    padding: 5px;
+    text-decoration: none;
+}
+#content #columL ul li .cont .actions input.b {
+    color: #009832;
+    background: #ffffff;
+    float:left;
+    display: block;
+    float:right;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 16px;
+    padding: 5px;
+    text-decoration: none;
+    border: 1px solid #E0E0E0;
+}
+
+#content #columR ul li .info .price .special {
+    color: #FD7A01;
+    font-weight: bold;
+    text-decoration: none;
 }

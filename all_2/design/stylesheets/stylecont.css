@@ -497,3 +497,9 @@ mark, rp, rt, ruby, summary, time {display:inline;}
     text-decoration: none;
     border: 1px solid #E0E0E0;
 }
+
+#content #columR ul li .info .price .special {
+    color: #FD7A01;
+    font-weight: bold;
+    text-decoration: none;
+}

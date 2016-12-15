@@ -771,3 +771,6 @@ div.com{
   overflow: hidden;
 word-wrap: break-word;
 }
+ textarea{
+   max-width: 400px;
+ }

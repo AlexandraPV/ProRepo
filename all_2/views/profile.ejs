@@ -9,6 +9,13 @@
 
 
 <link rel="stylesheet" href="../stylesheets/styleprof.css" type="text/css" media="all">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js">
+<script type="text/javascript" src="../stylesheets/js/jquery-1.2.6.js"></script>
+  <!--<script src="stylesheets/js/jquery.min.js"></script>-->
+  <link rel="stylesheet" href="../stylesheets/js/jquery.min.js" type="text/css" media="all">
+
+  <script type="text/javascript" src="../stylesheets/js/jquery.min.js"></script>
+
 
 <body>
 
@@ -75,7 +82,9 @@
                            <section>
                              <div class = "image">
                <a href = "#"> <img id="myImg" src='data:image/jpg;base64,<%= user.local.avatar %>' height="200" width="200" alt = "Apple"></a>
+
                              </div>
+                             <div id="p2" class='form-row'></div>
                            </section>
                        </div>
                     <div class="block">
@@ -138,12 +147,26 @@
 
                     <!--   <a id= "admin" href="/update">Update</a>-->
                <a href="/update">Add information</a>
+            <input id="add_photo" class = "b" type="button" value="Add photo" >
+
                 <% if(user.local.role =="admin") { %>
                 <a id= "admin" href="/add">Add product</a>
                 <a id= "admin" href="/addbrand">Add brand</a>
                     <% }; %>
 
             </div>
+
+            <script type="text/javascript">
+            $(document).ready(function(){
+            $("input#add_photo").click(function(){
+            $("div#p2").append("<div class='cont'><form action='/addphoto' method='POST' enctype='multipart/form-data' class='reg-form rf '><p class='title'>Add new photo</p><input type='file' name='avatar'><div class='form-row'>  <input type='text' hidden='true' name='prid' value='<%= user.identef%>'><input type='submit' class='btn_submit disabled' value='Add'></div></form></div>");
+            $("input#add_photo").remove();
+
+            })
+            });
+            </script>
+
+
         </div>
     </li>
   </ul>
