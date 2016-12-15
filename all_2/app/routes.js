@@ -135,10 +135,8 @@ app.get('/profile/*',isLoggedIn, (req, res) => {
         var uri_dec = decodeURIComponent(decrease);
        console.log(uri_dec);
 
-
         User.findOne({'local.login': uri_dec})
         .then(docs => {
-
        var us1 = docs.identef;
        //var us1p = parseInt(us1);
        var us2 = req.user.identef;
@@ -155,10 +153,9 @@ app.get('/profile/*',isLoggedIn, (req, res) => {
                  });
                    })
 
-
    })
           .catch(err => res.status(500).end(err));
-});   //!!!
+});
 
 app.get('/brands/*',isLoggedIn, (req, res) => {
         var decrease = req.path;
@@ -1138,11 +1135,8 @@ app.post('/login', passport.authenticate('local-login', {
 };
 
 
-// route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-    // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
-    // if they aren't redirect them to the home page
     res.redirect('/login');
 }
