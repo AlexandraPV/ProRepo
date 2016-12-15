@@ -1,6 +1,6 @@
 var express  = require('express');
 var app      = express();
-var port     = process.env.PORT || 8080;
+var port     = process.env.PORT || 8800;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
@@ -9,24 +9,35 @@ var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var configDB = require('./config/database.js');
+//var User = require('../app/models/user');
+const mongodb = require('promised-mongo');
+var User  = require('./app/models/user');
+var Brand  = require('./app/models/brand');
+var Prod  = require('./app/models/prod');
+const url = 'mongodb://alisandra:maugli98lisik@ds127958.mlab.com:27958/magaz';
+var db = mongoose.connect(configDB.url);
+console.log("#######################");
+// const db = mongodb(url);
+// var db = mongoose.connection;
 
-mongoose.connect(configDB.url);
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser());
 
 app.set('view engine', 'ejs');
 
+
+
+
 app.use(session({ secret: 'appallowpasstook' }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-const mongodb = require('promised-mongo');
 var path = require('path');
 const busboyBodyParser = require('busboy-body-parser');
-const url = 'mongodb://localhost:27017/magaz';
-const db = mongodb(url);
+
+
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -38,15 +49,23 @@ app.use(busboyBodyParser({ limit: '5mb' }));
 app.use(express.static(path.join(__dirname, 'design')));
 const salt = '%656_das9870';
 
-
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
 
 app.get('/', (req, res) => {
 
-		db.collection('prod').find().limit(9)
+		Prod.find().limit(9)
 		.then(prods => {
-			db.collection('prod').find().skip(4).limit(7)
+			Prod.find().skip(4).limit(7)
 			.then(sales => {
-				db.collection('prod').count()
+				Prod.count()
 					.then(count => {
 			res.render('index', {
 				sales: sales,
@@ -65,11 +84,11 @@ app.get('/pag*', (req, res) => {
 			var decrease = req.path;
 			decrease = decrease.slice(4);
 			var i = parseInt(decrease);
-		db.collection('prod').count()
+		Prod.count()
 			.then(count => {
-		db.collection('prod').find().skip(0+i*9).limit(9+i*9)
+		Prod.find().skip(0+i*9).limit(9+i*9)
 				.then(prods => {
-		db.collection('prod').find().skip(4).limit(7)
+	  Prod.find().skip(4).limit(7)
 				.then(sales => {
 
 					res.render('index', {
@@ -91,7 +110,7 @@ app.get('/pag*', (req, res) => {
 ///////////////////////JSON////////////////////////////////////////
 
 app.get('/jsonadd', (req, res) => {
-	db.collection('prod').find().skip(5).limit(7)
+	Prod.find().skip(5).limit(7)
 	.then(sales => res.json(sales))
 	 .catch(err => res.status(404).json({ error: err }));
 });
@@ -102,7 +121,7 @@ app.post('/jsonaddtocart', (req, res) => {
   	if (!title || ! id){
 		res.json({'error':'need login'})
 	   }
-  	  db.collection('users').find({"identef": parseInt(id)})
+  	  User.find({"identef": parseInt(id)})
 		  .then(user => res.json(user))
 });
 
@@ -112,7 +131,7 @@ app.post('/jsonaddtolist', (req, res) => {
 		 if (!title || ! id){
 			res.json({'error':'need login'})
 		 }
-		 db.collection('users').find({"identef": parseInt(id)})
+		 User.find({"identef": parseInt(id)})
 			 .then(user => res.json(user))
 });
 
@@ -132,13 +151,12 @@ app.post('/jsonPadd', (req, res) => {
 
 			if (!title || !color || !brand || !price || !lastprice || !type || !weight || !description || !guarantee ) res.status(400).json({"error": "empty field"});
 			else {
-				db.collection('prod').findOne({ title: title})
+				Prod.findOne({ title: title})
 					.then(prod => {
 						if (prod) res.status(200).json({"error": "prod exists"});
 						else {
 
-
-							db.collection('prod').insert({
+							Prod.insert({
 								title: title,
 								color: color,
 								weight: weight,
@@ -164,7 +182,7 @@ app.post('/jsonPadd', (req, res) => {
 });
 
 app.get('/json', (req, res) => {
-			db.collection('prod').find()
+			Prod.find()
 				.then(prod => res.json(prod))
 				/*	db.collection('prod').find().skip(1).limit(7)
 					.then(sales => res.json(sales))*/
@@ -175,8 +193,8 @@ app.get('/json', (req, res) => {
 ////////////////////////////////////////////////////////////////////
 
 
-require('./app/routes.js')(app, passport); 
+require('./app/routes.js')(app, passport);
 require('./config/passport')(passport);
 
 
-app.listen(8000, () => console.log('App started.'));
+app.listen(port, () => console.log('App started.'));

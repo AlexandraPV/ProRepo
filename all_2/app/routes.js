@@ -1,10 +1,12 @@
 
 const mongodb = require('promised-mongo');
-const url = 'mongodb://localhost:27017/magaz';
-const db = mongodb(url);
+const url = 'mongodb://alisandra:maugli98lisik@ds127958.mlab.com:27958/magaz';
+//const db = mongodb(url);
 var mongoose = require('mongoose');
-var User = require('../app/models/user');
 
+var User = require('../app/models/user');
+var Brand  = require('../app/models/brand');
+var Prod  = require('../app/models/prod');
 module.exports = function(app, passport) {
 
 app.get('/', function(req, res) {
@@ -13,7 +15,7 @@ app.get('/', function(req, res) {
 
 app.get('/login', function(req, res) {
 
-      db.collection('prod').find().skip(2).limit(7)
+      Prod.find().skip(2).limit(7)
      .then(sales => {
      res.render('login.ejs',{
        sales:sales
@@ -23,7 +25,7 @@ app.get('/login', function(req, res) {
 
 app.get('/signup', function(req, res) {
 
-      db.collection('prod').find().skip(4).limit(7)
+      Prod.find().skip(4).limit(7)
     	.then(sales => {
     	res.render('signup.ejs',{
     		sales:sales
@@ -32,7 +34,7 @@ app.get('/signup', function(req, res) {
 });
 
 app.get('/update', isLoggedIn, function(req, res) {
-      db.collection('prod').find().skip(4).limit(7)
+      Prod.find().skip(4).limit(7)
       .then(sales => {
       res.render('update.ejs',{
         sales:sales,
@@ -45,11 +47,11 @@ app.get('/propag*', isLoggedIn, (req, res) => {
            var decrease = req.path;
            decrease = decrease.slice(7);
            var i = parseInt(decrease);
-         db.collection('prod').count()
+         Prod.count()
            .then(count => {
-         db.collection('prod').find().skip(0+i*9).limit(9+i*9)
+         Prod.find().skip(0+i*9).limit(9+i*9)
              .then(prods => {
-         db.collection('prod').find().skip(4).limit(7)
+         Prod.find().skip(4).limit(7)
              .then(sales => {
 
                res.render('products', {
@@ -72,11 +74,11 @@ app.get('/brpag*', isLoggedIn, (req, res) => {
                var decrease = req.path;
                decrease = decrease.slice(7);
 
-             db.collection('brands').count()
+             Brand.count()
                .then(count => {
-             db.collection('brands').find().skip(0+i*9).limit(9+i*9)
+             Brand.find().skip(0+i*9).limit(9+i*9)
                  .then(prods => {
-             db.collection('prod').find().skip(4).limit(7)
+             Prod.find().skip(4).limit(7)
                  .then(sales => {
 
                    res.render('brands', {
@@ -99,7 +101,7 @@ app.post('/addcomment',isLoggedIn, (req, res) => {
     var title = req.body.prtitle;
     var com = req.body.description;
     var user =req.user;
-   db.collection('prod').update({"title": title}, {$push: {"comments": [user.local.login, com]}})
+   Prod.update({"title": title}, {$push: {"comments": [user.local.login, com]}})
       .then(() => res.redirect('/products'))
       .catch(err => res.status(500).end(err));
 });
@@ -109,10 +111,10 @@ app.get('/products/*',isLoggedIn, (req, res) => {
       decrease = decrease.slice(10);
       var uri_dec = decodeURIComponent(decrease);
 
-    	db.collection('prod').findOne({ href: uri_dec})
+    	Prod.findOne({ href: uri_dec})
     		.then(prod => {
 
-    			db.collection('prod').find().skip(5).limit(7)
+    			Prod.find().skip(5).limit(7)
     			.then(sales => {
 
     			res.render('prod', {
@@ -143,7 +145,7 @@ app.get('/profile/*',isLoggedIn, (req, res) => {
        //var us2p = parseInt(us2);
        console.log(docs);
        console.log("us2" + us2);
-            db.collection('prod').find().skip(5).limit(7)
+            Prod.find().skip(5).limit(7)
             .then(sales => {
 
                  res.render('profileUser',{
@@ -162,10 +164,10 @@ app.get('/brands/*',isLoggedIn, (req, res) => {
         decrease = decrease.slice(8);
         var uri_dec = decodeURIComponent(decrease);
 
-        db.collection('brands').findOne({ href: uri_dec})
+        Brand.findOne({ href: uri_dec})
           .then(prod => {
 
-            db.collection('prod').find().skip(5).limit(7)
+            Prod.find().skip(5).limit(7)
             .then(sales => {
 
             res.render('singlbrand', {
@@ -189,12 +191,12 @@ app.get('/products',isLoggedIn, (req, res) => {
           var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
           bar = new RegExp(bar);
           console.log(value);
-                 db.collection('prod').find().skip(1).limit(7)
+                 Prod.find().skip(1).limit(7)
                  .then(sales => {
 
-                   db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                   Prod.find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
                      .then(prods => {
-                       db.collection('prod').count()
+                       Prod.count()
                         .then(count => {
                      res.render('products', {
                        prods: prods,
@@ -208,11 +210,11 @@ app.get('/products',isLoggedIn, (req, res) => {
           .catch(err => res.status(500).end(err));
       }else{
 
-      	db.collection('prod').find().limit(9)
+      	Prod.find().limit(9)
       		.then(prods => {
-      			db.collection('prod').find().skip(1).limit(7)
+      			Prod.find().skip(1).limit(7)
       			.then(sales => {
-              db.collection('prod').count()
+              Prod.count()
                .then(count => {
       			res.render('products', {
       				prods: prods,
@@ -236,12 +238,12 @@ app.get('/brands',isLoggedIn, (req, res) => {
             var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
             bar = new RegExp(bar);
             console.log(value);
-                   db.collection('prod').find().skip(1).limit(7)
+                   Prod.find().skip(1).limit(7)
                    .then(sales => {
 
-                     db.collection('brands').find({name:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                     Brand.find({name:{'$regex': '.*' + value + '.*', '$options': '$i'}})
                        .then(prods => {
-                         db.collection('brands').count()
+                         Brand.count()
                           .then(count => {
                        res.render('brands', {
                          prods: prods,
@@ -255,11 +257,11 @@ app.get('/brands',isLoggedIn, (req, res) => {
             .catch(err => res.status(500).end(err));
              }else{
 
-        	db.collection('brands').find().limit(9)
+        	Brand.find().limit(9)
         		.then(prods => {
-        			db.collection('prod').find().skip(1).limit(7)
+        			Prod.find().skip(1).limit(7)
         			.then(sales => {
-                db.collection('brands').count()
+                Brand.count()
                  .then(count => {
         			res.render('brands', {
         				prods: prods,
@@ -276,9 +278,9 @@ app.get('/brands',isLoggedIn, (req, res) => {
 });
 
 app.get('/phones',isLoggedIn, (req, res) => {
-    	db.collection('prod').find({"type":"phon"})
+    	Prod.find({"type":"phon"})
     		.then(prods => {
-    			db.collection('prod').find().skip(1).limit(7)
+    			Prod.find().skip(1).limit(7)
     			.then(sales => {
 
     			res.render('categori', {
@@ -293,9 +295,9 @@ app.get('/phones',isLoggedIn, (req, res) => {
 });
 
 app.get('/comp',isLoggedIn, (req, res) => {
-	db.collection('prod').find({"type":"comp"})
+	Prod.find({"type":"comp"})
 		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
+			Prod.find().skip(1).limit(7)
 			.then(sales => {
 
 			res.render('categori', {
@@ -310,9 +312,9 @@ app.get('/comp',isLoggedIn, (req, res) => {
 });
 
 app.get('/home',isLoggedIn, (req, res) => {
-	db.collection('prod').find({"type":"home"})
+	Prod.find({"type":"home"})
 		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
+			Prod.find().skip(1).limit(7)
 			.then(sales => {
 
 			res.render('categori', {
@@ -327,9 +329,9 @@ app.get('/home',isLoggedIn, (req, res) => {
 });
 
 app.get('/book',isLoggedIn, (req, res) => {
-	db.collection('prod').find({"type":"book"})
+	Prod.find({"type":"book"})
 		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
+			Prod.find().skip(1).limit(7)
 			.then(sales => {
 
 			res.render('categori', {
@@ -344,9 +346,9 @@ app.get('/book',isLoggedIn, (req, res) => {
 });
 
 app.get('/applhome',isLoggedIn, (req, res) => {
-	db.collection('prod').find({"type":"applhome"})
+	Prod.find({"type":"applhome"})
 		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
+			Prod.find().skip(1).limit(7)
 			.then(sales => {
 
 			res.render('categori', {
@@ -361,9 +363,9 @@ app.get('/applhome',isLoggedIn, (req, res) => {
 });
 
 app.get('/cloth',isLoggedIn, (req, res) => {
-	db.collection('prod').find({"type":"cloth"})
+	Prod.find({"type":"cloth"})
 		.then(prods => {
-			db.collection('prod').find().skip(1).limit(7)
+			Prod.find().skip(1).limit(7)
 			.then(sales => {
 
 			res.render('categori', {
@@ -383,10 +385,10 @@ app.get('/cart',isLoggedIn, (req, res) => {
      var mas=[];
 
     console.log(cart);
-    db.collection('prod').find().skip(1).limit(7)
+    Prod.find().skip(1).limit(7)
     .then(sales => {
 
-      db.collection('prod').find()
+      Prod.find()
         .then(prods => {
           for (var i=0; i<cart.length; i++) {
             for (var j=0; j<prods.length; j++){
@@ -413,10 +415,10 @@ app.get('/list',isLoggedIn, (req, res) => {
        var list = user.list;
         var mas=[];
 
-       db.collection('prod').find().skip(1).limit(7)
+       Prod.find().skip(1).limit(7)
        .then(sales => {
 
-         db.collection('prod').find()
+         Prod.find()
            .then(prods => {
              for (var i=0; i<list.length; i++) {
                for (var j=0; j<prods.length; j++){
@@ -441,7 +443,7 @@ app.get('/list',isLoggedIn, (req, res) => {
 });
 
 app.get('/profile', isLoggedIn, function(req, res) {
-      db.collection('prod').find().skip(4).limit(7)
+      Prod.find().skip(4).limit(7)
       .then(sales => {
       res.render('profile.ejs',{
         sales:sales,
@@ -457,7 +459,7 @@ app.get('/search',isLoggedIn, (req, res) => {
                 value = value.slice(10);
                 var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
 
-                   db.collection('prod').find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                   Prod.find({title:{'$regex': '.*' + value + '.*', '$options': '$i'}})
                      .then(prods => res.json(prods))
                      .catch(err => res.status(500).end(err));
 });
@@ -467,13 +469,13 @@ app.get('/searchsimpl',isLoggedIn, (req, res) => {
                 var value = req.url;
                 var value = value.slice(21, -25);
                 //var bar = br.slice(0, 24);
-         console.log(value);
-                 db.collection('prod').find().skip(1).limit(7)
+                console.log(value);
+                 Prod.find().skip(1).limit(7)
                  .then(sales => {
 
-                   db.collection('prod').find({brand:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                   Prod.find({brand:{'$regex': '.*' + value + '.*', '$options': '$i'}})
                      .then(prods => {
-                       db.collection('prod').count()
+                       Prod.count()
                         .then(count => {
                      res.render('searchsimp', {
                        value: value,
@@ -495,12 +497,12 @@ app.get('/searchwind',isLoggedIn, (req, res) => {
                   value = value.slice(14);
                   console.log(value);
 
-                              db.collection('prod').find().skip(1).limit(7)
+                              Prod.find().skip(1).limit(7)
                               .then(sales => {
 
-                                db.collection('prod').find({brand:{'$regex': '.*' + value + '.*', '$options': '$i'}})
+                                Prod.find({brand:{'$regex': '.*' + value + '.*', '$options': '$i'}})
                                   .then(prods => {
-                                    db.collection('prod').count()
+                                    Prod.count()
                                      .then(count => {
                                   res.render('search', {
                                     value: value,
@@ -519,7 +521,7 @@ app.get('/searchwind',isLoggedIn, (req, res) => {
 
 ///
 app.get('/add', (req, res) => {
-			db.collection('prod').find().skip(5).limit(7)
+			Prod.find().skip(5).limit(7)
 			.then(sales => {
 			res.render('add',{
 				sales:sales
@@ -528,7 +530,7 @@ app.get('/add', (req, res) => {
 });
 
 app.get('/rules', (req, res) => {
-		db.collection('prod').find().skip(5).limit(7)
+		Prod.find().skip(5).limit(7)
 		.then(sales => {
 		res.render('contacts',{
 			sales:sales
@@ -537,7 +539,7 @@ app.get('/rules', (req, res) => {
 });
 
 app.get('/addbrand', (req, res) => {
-		db.collection('prod').find().skip(5).limit(7)
+		Prod.find().skip(5).limit(7)
 		.then(sales => {
 		res.render('addbrand',{
 			sales:sales
@@ -549,10 +551,10 @@ app.post('/addtocart', isLoggedIn,  (req, res) => {
 	var title = req.body.prtitle;
   var id= req.body.prid;
 	console.log(id);
-	db.collection('users').find({"identef": parseInt(id)})
+	User.find({"identef": parseInt(id)})
 	.then(users => {
 		console.log(users);
-				db.collection('users').update({"identef": parseInt(id)}, {$push: {"cart": title}});
+				User.update({"identef": parseInt(id)}, {$push: {"cart": title}});
 		})
 		.then(() => res.redirect('/products'))
 		.catch(err => res.status(500).end(err));
@@ -563,10 +565,10 @@ app.post('/addtolist', isLoggedIn,  (req, res) => {
 		var title = req.body.prtitle;
 	  var id= req.body.prid;
 		console.log(id);
-		db.collection('users').find({"identef": parseInt(id)})
+		User.find({"identef": parseInt(id)})
 		.then(users => {
 			console.log(users);
-					db.collection('users').update({"identef": parseInt(id)}, {$push: {"list": title}});
+					User.update({"identef": parseInt(id)}, {$push: {"list": title}});
 			})
 			.then(() => res.redirect('/products'))
 			.catch(err => res.status(500).end(err));
@@ -577,10 +579,10 @@ app.post('/deleteprod', isLoggedIn,  (req, res) => {
 			var name = req.body.prtitle;
 		  var id= req.body.prid;
 
-			db.collection('users').find({"identef": parseInt(id)})
+			User.find({"identef": parseInt(id)})
 			.then(users => {
 
-						db.collection('prod').remove({"title": name});
+						Prod.remove({"title": name});
 				})
 				.then(() => res.redirect('/products'))
 				.catch(err => res.status(500).end(err));
@@ -597,7 +599,7 @@ app.post('/update', isLoggedIn, (req, res) => {
 
 			var id = req.body.prid;
 			console.log(first_name);
-			db.collection('users').findOne({"identef": parseInt(id)})
+			User.findOne({"identef": parseInt(id)})
 			.then(users => {
 					console.log(users);
           User.findOne({"identef": parseInt(id)}, function (err, doc){
@@ -625,7 +627,7 @@ app.post('/addphoto', isLoggedIn, (req, res) => {
       var base64String = avaFile.data.toString('base64');
 			var id = req.body.prid;
 
-			db.collection('users').findOne({"identef": parseInt(id)})
+			User.findOne({"identef": parseInt(id)})
 			.then(users => {
 					console.log(users);
           User.findOne({"identef": parseInt(id)}, function (err, doc){
@@ -651,7 +653,7 @@ app.delete('/deletefromlist*',isLoggedIn,  (req, res) => {
 
      id=req.user.identef;
 
-              db.collection('users').update({"identef": parseInt(id)}, {$pull: {"list": {$in:[value]}}})
+              User.update({"identef": parseInt(id)}, {$pull: {"list": {$in:[value]}}})
               .then(del =>res.json({ error: "NONE" }))
               .catch(err => res.status(404).json({ error: "ERROR" }));
   });
@@ -663,11 +665,11 @@ app.post('/deletecom',isLoggedIn,  (req, res) => {
 					var log = req.body.prlog;
 					var com = req.body.prcom;
 	        var i = parseInt(num);
-		db.collection('prod').findOne({href: id})
+		Prod.findOne({href: id})
 		.then(prod => {
 			console.log(prod.brand);
 
-		db.collection('prod').update({href: id}, {$pull:{"comments" : [log, com]}})
+		Prod.update({href: id}, {$pull:{"comments" : [log, com]}})
 						.then(() => res.redirect('/products'))
 						.catch(err => res.status(500).end(err));
 		});
@@ -682,7 +684,7 @@ app.delete('/deletefromcart*', isLoggedIn,  (req, res) => {
 
    id=req.user.identef;
 
-						db.collection('users').update({"identef": parseInt(id)}, {$pull: {"cart": {$in:[value]}}})
+						User.update({"identef": parseInt(id)}, {$pull: {"cart": {$in:[value]}}})
             .then(del =>res.json({ error: "NONE" }))
             .catch(err => res.status(404).json({ error: "ERROR" }));
 });
@@ -715,13 +717,13 @@ app.post('/add', isLoggedIn, (req, res) => {
 	var base64String4 = avaFile4.data.toString('base64');
 	if (!title || !color || !brand || !price || !lastprice || !type || !weight || !description || !guarantee || !avaFile1 || !avaFile2 || !avaFile3 || !avaFile4) res.status(400).end('not ok');
 	else {
-		db.collection('prod').findOne({ title: title})
+		Prod.findOne({ title: title})
 			.then(prod => {
 				if (prod) res.status(200).end('prod exists');
 				else {
 
 
-					return db.collection('prod').insert({
+					return Prod.insert({
 						title: title,
 						color: color,
 						weight: weight,
@@ -765,12 +767,12 @@ app.post('/addbrand', isLoggedIn, (req, res) => {
 
 	if (!name || !founder || !date || !staf || !cost || !avaFile1 ) res.status(400).end('not ok');
 	else {
-		db.collection('brands').findOne({ name: name})
+		Brand.findOne({ name: name})
 			.then(prod => {
 				if (prod) res.status(200).end('brand exists');
 				else {
 
-					return db.collection('brands').insert({
+					return Brand.insert({
 						name: name,
 						founder: founder,
 						date: date,
@@ -791,10 +793,10 @@ app.post('/deleteprod',isLoggedIn, (req, res) => {
 	var title = req.body.prtitle;
   var id= req.body.prid;
 
-	db.collection('users').find({"identef": parseInt(id)})
+	User.find({"identef": parseInt(id)})
 	.then(users => {
 
-				db.collection('prod').remove({"title": title});
+				Prod.remove({"title": title});
 		})
 		.then(() => res.redirect('/products'))
 		.catch(err => res.status(500).end(err));
@@ -802,11 +804,11 @@ app.post('/deleteprod',isLoggedIn, (req, res) => {
 });
 
 app.get('/userslist',isLoggedIn, (req, res) => {
-  db.collection('users').find().limit(9)
+  User.find().limit(9)
     .then(prods => {
-      db.collection('prod').find().skip(1).limit(7)
+      Prod.find().skip(1).limit(7)
       .then(sales => {
-        db.collection('prod').count()
+        Prod.count()
           .then(count => {
       res.render('userslist', {
         prods: prods,
@@ -827,53 +829,53 @@ app.get('/userslist',isLoggedIn, (req, res) => {
 
 
 app.get('/jsonphones', (req, res) => {
-     			db.collection('prod').find({"type":"phon"})
+     			Prod.find({"type":"phon"})
      				.then(prod => res.json(prod))
-     				/*	db.collection('prod').find().skip(1).limit(7)
+     				/*	Prod.find().skip(1).limit(7)
      					.then(sales => res.json(sales))*/
      					.catch(err => res.status(404).json({ error: err }));
 
 });
 
 app.get('/jsoncomp', (req, res) => {
-          db.collection('prod').find({"type":"comp"})
+          Prod.find({"type":"comp"})
             .then(prod => res.json(prod))
-            /*	db.collection('prod').find().skip(1).limit(7)
+            /*	Prod.find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 
 });
 
 app.get('/jsonhome', (req, res) => {
-          db.collection('prod').find({"type":"home"})
+          Prod.find({"type":"home"})
             .then(prod => res.json(prod))
-            /*	db.collection('prod').find().skip(1).limit(7)
+            /*	Prod.find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 
 });
 
 app.get('/jsonbook', (req, res) => {
-          db.collection('prod').find({"type":"book"})
+          Prod.find({"type":"book"})
             .then(prod => res.json(prod))
-            /*	db.collection('prod').find().skip(1).limit(7)
+            /*	Prod.find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 
 });
 
 app.get('/jsonapplhome', (req, res) => {
-          db.collection('prod').find({"type":"applhome"})
+        Prod.find({"type":"applhome"})
             .then(prod => res.json(prod))
-            /*	db.collection('prod').find().skip(1).limit(7)
+            /*	Prod.find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 });
 
 app.get('/jsonapplcloth', (req, res) => {
-          db.collection('prod').find({"type":"applcloth"})
+          Prod.find({"type":"applcloth"})
             .then(prod => res.json(prod))
-            /*	db.collection('prod').find().skip(1).limit(7)
+            /*	Prod.find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 });
@@ -883,15 +885,15 @@ app.get('/jsonprofile', isLoggedIn, function(req, res) {
           if (!user){
       			res.json({'error':'need login'})
       		}
-      	else{	db.collection('users').find({"identef": parseInt(user.identef)})
+      	else{	User.find({"identef": parseInt(user.identef)})
       			 .then(users => res.json(users))
            }
 });
 
 app.get('/jsonproducts',isLoggedIn, (req, res) => {
-        	db.collection('prod').find()
+        	Prod.find()
             .then(prod => res.json(prod))
-            /*	db.collection('prod').find().skip(1).limit(7)
+            /*	Prod.find().skip(1).limit(7)
               .then(sales => res.json(sales))*/
               .catch(err => res.status(404).json({ error: err }));
 })
@@ -902,11 +904,11 @@ app.get('/jsoncart',isLoggedIn, (req, res) => {
               var mas=[]
              console.log(cart);
 
-               db.collection('prod').find()
+               Prod.find()
                  .then(prods => {
                    for (var i=0; i<cart.length; i++) {
                      for (var j=0; j<prods.length; j++){
-                       if (cart[i]==prods[j].title){
+                       if (cart[i]==prods[j].href){
                          mas.push(prods[j]);
                          console.log("elem" + cart[i]);
                          break;
@@ -914,7 +916,7 @@ app.get('/jsoncart',isLoggedIn, (req, res) => {
                    }
                  }res.json(mas)
 
-            				/*	db.collection('prod').find().skip(1).limit(7)
+            				/*	Prod.find().skip(1).limit(7)
             					.then(sales => res.json(sales))*/
             					.catch(err => res.status(404).json({ error: err }));
                });
@@ -930,11 +932,11 @@ app.get('/jsonlist',isLoggedIn, (req, res) => {
       var list = user.list;
        var mas=[]
 
-        db.collection('prod').find()
+        Prod.find()
           .then(prods => {
             for (var i=0; i<list.length; i++) {
               for (var j=0; j<prods.length; j++){
-                if (list[i]==prods[j].title){
+                if (list[i]==prods[j].href){
                   mas.push(prods[j]);
                   console.log("elem" + list[i]);
                   break;
@@ -942,7 +944,7 @@ app.get('/jsonlist',isLoggedIn, (req, res) => {
             }
           }res.json(mas)
 
-             /*	db.collection('prod').find().skip(1).limit(7)
+             /*	Prod.find().skip(1).limit(7)
                .then(sales => res.json(sales))*/
                .catch(err => res.status(404).json({ error: err }));
         });
@@ -958,9 +960,9 @@ app.delete('/apiproducts/*', function(req, res, next) {
              var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
          //  var name = req.params.brand_name;
            console.log(bar)
-           db.collection('prod').findOne({ 'name': bar})
+           Prod.findOne({ 'name': bar})
          .then(prod =>
-          db.collection('prod').remove({ 'name': bar})
+          Prod.remove({ 'name': bar})
           .then(del =>
            res.json(prod)))
          .catch(err => res.status(404).json({ error: "ERROR" }));
@@ -973,7 +975,7 @@ app.get('/apiproducts/*', function(req, res, next) {
              var bar = value.slice(0, 1).toUpperCase() +  value.slice(1);
            //  var name = req.params.brand_name;
            console.log(bar)
-           db.collection('prod').findOne({ 'name': bar})
+           Prod.findOne({ 'name': bar})
            .then(prod =>res.json(prod))
            .catch(err => res.status(404).json({ error: "ERROR" }));
 
@@ -996,7 +998,7 @@ app.post('/apiproducts/*', function(req, res, next) {
            hrefProd= hrefProd.toLowerCase();
            var hrProd =( '/' + hrefProd);
            console.log(mas)
-           db.collection('prod').insert({
+          Prod.insert({
              title: mas[0],
  						color: mas[1],
  						weight: mas[2],
@@ -1028,18 +1030,18 @@ app.get('/apiproductsfiltr/*', function(req, res, next) {
 
              if(mas[0] == "title"){
 
-               db.collection('prod').find({title:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
+               Prod.find({title:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
                  .then(prod =>res.json(prod))
                    .catch(err => res.status(404).json({ error: "ERROR" }));
              }
              if(mas[0] == "color"){
-               db.collection('prod').find({color:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
+               Prod.find({color:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
                  .then(prod =>res.json(prod))
                    .catch(err => res.status(404).json({ error: "ERROR" }));
              }
 
              if(mas[0] == "brand"){
-               db.collection('prod').find({brand:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
+               Prod.find({brand:{'$regex': '.*' + mas[1] + '.*', '$options': '$i'}})
                  .then(prod =>res.json(prod))
                    .catch(err => res.status(404).json({ error: "ERROR" }));
              }
@@ -1047,27 +1049,27 @@ app.get('/apiproductsfiltr/*', function(req, res, next) {
                console.log(mas);
                var a = parseInt(mas[2]);
                if(mas[1]=="%3E"){  //>
-                 db.collection('prod').find({price: {$gt : a}})
+                 Prod.find({price: {$gt : a}})
                    .then(prod =>res.json(prod))
                      .catch(err => res.status(404).json({ error: "ERROR" }));
                }
                if(mas[1]=="%3C"){   //<
-                 db.collection('brands').find({price: {$lt : a}})
+                 Prod.find({price: {$lt : a}})
                    .then(prod =>res.json(prod))
                      .catch(err => res.status(404).json({ error: "ERROR" }));
                }
                if(mas[1]=="%3E="){    //>=
-                 db.collection('prod').find({price: {$gte : a}})
+                 Prod.find({price: {$gte : a}})
                    .then(prod =>res.json(prod))
                      .catch(err => res.status(404).json({ error: "ERROR" }));
                }
                if(mas[1]=="%3C="){     //<=
-                 db.collection('prod').find({price: {$lte : a}})
+                 Prod.find({price: {$lte : a}})
                    .then(prod =>res.json(prod))
                      .catch(err => res.status(404).json({ error: "ERROR" }));
                }
                if(mas[1]=="="){     //=
-                 db.collection('prod').find({price: a})
+                 Prod.find({price: a})
                    .then(prod =>res.json(prod))
                      .catch(err => res.status(404).json({ error: "ERROR" }));
                }
@@ -1086,29 +1088,29 @@ app.post('/apiproductsupdate/*', function(req, res, next) {
 
              if(mas[1] == "title"){
 
-               db.collection('prod').update({title : mas[0]}, {$set: {title : mas[2]}})
+               Prod.update({title : mas[0]}, {$set: {title : mas[2]}})
                  .then(prod =>res.json(prod))
                    .catch(err => res.status(404).json({ error: "ERROR" }));
              }
              if(mas[1] == "color"){
-               db.collection('prod').update({title : mas[0]}, {$set: {color : mas[2]}})
+               Prod.update({title : mas[0]}, {$set: {color : mas[2]}})
                  .then(prod =>res.json(prod))
                    .catch(err => res.status(404).json({ error: "ERROR" }));
              }
              if(mas[1] == "weight"){
-             db.collection('prod').update({title : mas[0]}, {$set: {weight: mas[2]}})
+             Prod.update({title : mas[0]}, {$set: {weight: mas[2]}})
                    .then(prod =>res.json(prod))
                      .catch(err => res.status(404).json({ error: "ERROR" }));
              }
              if(mas[1] == "price"){
                var a = parseInt(mas[2]);
-               db.collection('prod').update({title : mas[0]}, {$set: {price : a}})
+               Prod.update({title : mas[0]}, {$set: {price : a}})
                      .then(prod =>res.json(prod))
                        .catch(err => res.status(404).json({ error: "ERROR" }));
                }
                if(mas[1] == "price"){
                  var a = parseInt(mas[2]);
-                 db.collection('prod').update({title : mas[0]}, {$set: {price : a}})
+                 Prod.update({title : mas[0]}, {$set: {price : a}})
                        .then(prod =>res.json(prod))
                          .catch(err => res.status(404).json({ error: "ERROR" }));
                  }
