@@ -138,33 +138,22 @@ app.get('/profile/*',isLoggedIn, (req, res) => {
 
         User.findOne({'local.login': uri_dec})
         .then(docs => {
-        
+
        var us1 = docs.identef;
        //var us1p = parseInt(us1);
        var us2 = req.user.identef;
        //var us2p = parseInt(us2);
-       console.log(docs.identef);
+       console.log(docs);
        console.log("us2" + us2);
-       if(us2==us1){
             db.collection('prod').find().skip(5).limit(7)
             .then(sales => {
 
-                 res.render('profile',{
+                 res.render('profileUser',{
                    sales:sales,
-                   user : req.user
+                   user : req.user,
+                   users: docs
                  });
                    })
-               } else if(us2!=us1) {
-                 db.collection('prod').find().skip(5).limit(7)
-                 .then(sales => {
-            res.render('profileUser', {
-              users: docs,
-              sales: sales,
-              user : req.user
-
-            });
-              })
-      }
 
 
    })

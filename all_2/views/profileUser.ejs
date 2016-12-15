@@ -113,7 +113,50 @@
 </table>
 <ul>
     <li>
+      <div class="info">
 
+
+
+
+       <% if(user.local.login ==users.local.login) { %>
+          <div class="actions">
+              <a href="/logout" >Logout</a>
+
+
+             <form action = "/cart" method="get">
+                <input type="text" hidden="true" name="cart" value="<%= user.cart%>">
+               <input class = "b" type="submit" name="submit" value="Cart">
+             </form >
+                <form action = "/list" method="get">
+                  <input type="text" hidden="true" name="prid" value="<%= user.list%>">
+                 <input class = "b" type="submit" name="submit" value="Watch list">
+                  </form >
+
+                  <!--   <a id= "admin" href="/update">Update</a>-->
+             <a href="/update">Add information</a>
+          <input id="add_photo" class = "b" type="button" value="Add photo" >
+
+              <% if(user.local.role =="admin") { %>
+              <a id= "admin" href="/add">Add product</a>
+              <a id= "admin" href="/addbrand">Add brand</a>
+              <a id= "admin" href="/userslist">List of users</a>
+                  <% }; %>
+
+          </div>
+            <% }; %>
+
+          <script type="text/javascript">
+          $(document).ready(function(){
+          $("input#add_photo").click(function(){
+          $("div#p2").append("<div class='cont'><form action='/addphoto' method='POST' enctype='multipart/form-data' class='reg-form rf '><p class='title'>Add new photo</p><input type='file' name='avatar'><div class='form-row'>  <input type='text' hidden='true' name='prid' value='<%= user.identef%>'><input type='submit' class='btn_submit disabled' value='Add'></div></form></div>");
+          $("input#add_photo").remove();
+
+          })
+          });
+          </script>
+
+
+      </div>
 
     </li>
   </ul>
